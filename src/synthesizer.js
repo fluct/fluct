@@ -33,7 +33,7 @@ export default class Synthesizer {
    * @return {String}
    */
   _getBasePath() {
-    return this._getSwagger().basePath || '';
+    return this._getSwagger().basePath || '/';
   }
 
   /**
