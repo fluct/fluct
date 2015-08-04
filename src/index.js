@@ -1,3 +1,3 @@
-import Synthesizer from './synthesizer'
+import Composer from './composer'
 
-export default { Synthesizer: Synthesizer }
+export default { Composer: Composer }

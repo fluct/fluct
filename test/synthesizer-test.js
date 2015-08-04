@@ -1,9 +1,9 @@
 import assert from 'assert'
 import { Mock } from 'stackable-fetcher'
-import { Synthesizer } from '../src/index'
+import { Composer } from '../src/index'
 
-describe('Synthesizer', () => {
-  const synthesizer = new Synthesizer({
+describe('Composer', () => {
+  const composer = new Composer({
     accessKeyId: 'accessKeyId',
     region: 'region',
     secretAcceessKey: 'secretAcceessKey',
@@ -16,7 +16,7 @@ describe('Synthesizer', () => {
   describe('#createResources', () => {
     it('sends requests to create resources', () => {
       assert(
-        synthesizer.createResources({
+        composer.createResources({
           restapiId: 'restapiId'
         }) instanceof Promise
       );
@@ -26,7 +26,7 @@ describe('Synthesizer', () => {
   describe('#createRestapi', () => {
     it('sends request to create new restapi', () => {
       assert(
-        synthesizer.createRestapi() instanceof Promise
+        composer.createRestapi() instanceof Promise
       );
     });
   });
@@ -34,7 +34,7 @@ describe('Synthesizer', () => {
   describe('#deleteDefaultModels', () => {
     it('sends requests to delete default models', () => {
       assert(
-        synthesizer.deleteDefaultModels({
+        composer.deleteDefaultModels({
           restapiId: 'restapiId'
         }) instanceof Promise
       );
@@ -44,7 +44,7 @@ describe('Synthesizer', () => {
   describe('#getPaths', () => {
     it('returns all paths defined in swagger file', () => {
       assert.deepEqual(
-        synthesizer.getPaths(),
+        composer.getPaths(),
         [
           '/v1/products',
           '/v1/products/child'
@@ -54,9 +54,9 @@ describe('Synthesizer', () => {
   });
 
   describe('#use', () => {
-    it('returns new Synthesizer', () => {
+    it('returns new Composer', () => {
       assert(
-        synthesizer.use(() => {}) instanceof Synthesizer
+        composer.use(() => {}) instanceof Composer
       );
     });
   });

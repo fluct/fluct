@@ -1,16 +1,16 @@
-# api-synthesizer
+# api-composer
 A library to synthesize Amazon API Gateway and Amazon Lambda.
 
 ## Install
 ```
-npm install api-synthesizer
+npm install api-composer
 ```
 
 ## Usage
 ```js
-import { Synthesizer } from 'api-synthesizer'
+import { Composer } from 'api-composer'
 
-let synthesizer = new Synthesizer({
+let composer = new Composer({
   accessKeyId: '...',
   region: '...',
   secretAcceessKey: '...',
@@ -18,5 +18,5 @@ let synthesizer = new Synthesizer({
 });
 
 // Returns all paths defined in swagger.yml
-synthesizer.getPaths()
+composer.getPaths()
 ```

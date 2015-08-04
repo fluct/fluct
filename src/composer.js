@@ -6,7 +6,7 @@ import yaml from 'js-yaml'
 /**
  * @class
  */
-export default class Synthesizer {
+export default class Composer {
   /**
    * @param {String} accessKeyId
    * @param {Client=} client
@@ -87,7 +87,7 @@ export default class Synthesizer {
   /**
    * @param {Function} middleware
    * @param {Object=} options
-   * @return {Synthesizer}
+   * @return {Composer}
    */
   use(middleware, options) {
     return new this.constructor({
