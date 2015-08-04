@@ -16,7 +16,7 @@ export default class Synthesizer {
    */
   constructor({ accessKeyId, client, region, secretAcceessKey, swaggerFilePath }) {
     this.accessKeyId = accessKeyId;
-    this._client = client;
+    this.client = client;
     this.region = region;
     this.secretAcceessKey = secretAcceessKey;
     this.swaggerFilePath = swaggerFilePath;
@@ -53,14 +53,14 @@ export default class Synthesizer {
    * @return {Client}
    */
   getClient() {
-    if (!this._client) {
-      this._client = new Client({
+    if (!this.client) {
+      this.client = new Client({
         accessKeyId: this.accessKeyId,
         region: this.region,
         secretAcceessKey: this.secretAcceessKey
       });
     }
-    return this._client;
+    return this.client;
   }
 
   /**
@@ -101,10 +101,10 @@ export default class Synthesizer {
    * @return {Object}
    */
   getSwagger() {
-    if (!this._swagger) {
-      this._swagger = this.parseSwaggerFile();
+    if (!this.swagger) {
+      this.swagger = this.parseSwaggerFile();
     }
-    return this._swagger;
+    return this.swagger;
   }
 
   /**
