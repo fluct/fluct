@@ -1,5 +1,5 @@
 # api-synthesizer
-A toolchain to synthesize Amazon API Gateway and Amazon Lambda.
+A library synthesize Amazon API Gateway and Amazon Lambda.
 
 ## Install
 ```

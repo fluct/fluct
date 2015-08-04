@@ -1,6 +1,19 @@
 {
   "name": "api-synthesizer",
   "version": "0.0.1",
-  "main": "index.js",
-  "license": "MIT"
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "gulp build",
+    "test": "gulp test"
+  },
+  "files": [
+    "lib"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "^5.8.20",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.2.0",
+    "gulp-mocha": "^2.1.3"
+  }
 }
