@@ -23,6 +23,17 @@ export default class Synthesizer {
   }
 
   /**
+   * @param {String} restapiId
+   * @return {Promise}
+   */
+  createResources({ restapiId }) {
+    return this.getClient().createResources({
+      paths: this.getPaths(),
+      restapiId: restapiId
+    });
+  }
+
+  /**
    * @return {Promise}
    */
   createRestapi() {

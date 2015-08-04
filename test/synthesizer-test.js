@@ -13,6 +13,16 @@ describe('Synthesizer', () => {
     {}
   );
 
+  describe('#createResources', () => {
+    it('sends requests to create resources', () => {
+      assert(
+        synthesizer.createResources({
+          restapiId: 'restapiId'
+        }) instanceof Promise
+      );
+    });
+  });
+
   describe('#createRestapi', () => {
     it('sends request to create new restapi', () => {
       assert(
