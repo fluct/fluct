@@ -17,6 +17,7 @@
     "gulp-mocha": "^2.1.3"
   },
   "dependencies": {
+    "amazon-api-gateway-client": "^0.1.0",
     "js-yaml": "^3.3.1"
   }
 }
