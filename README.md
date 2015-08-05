@@ -7,16 +7,15 @@ npm install api-composer
 ```
 
 ## Usage
+`Composer#deploy` creates resources on API Gateway from your swagger file.
+
 ```js
 import { Composer } from 'api-composer'
 
-let composer = new Composer({
+new Composer({
   accessKeyId: '...',
   region: '...',
   secretAcceessKey: '...',
   swaggerFilePath: '/path/to/swagger.yml'
-});
-
-// Returns all paths defined in swagger.yml
-composer.getPaths()
+}).deploy();
 ```

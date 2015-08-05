@@ -13,10 +13,10 @@ describe('Composer', () => {
     {}
   );
 
-  describe('#createResources', () => {
+  describe('#createResourceSets', () => {
     it('sends requests to create resources', () => {
       assert(
-        composer.createResources({
+        composer.createResourceSets({
           restapiId: 'restapiId'
         }) instanceof Promise
       );
@@ -27,6 +27,14 @@ describe('Composer', () => {
     it('sends request to create new restapi', () => {
       assert(
         composer.createRestapi() instanceof Promise
+      );
+    });
+  });
+
+  describe('#deploy', () => {
+    it('sends requests', () => {
+      assert(
+        composer.deploy() instanceof Promise
       );
     });
   });
