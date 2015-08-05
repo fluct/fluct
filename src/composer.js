@@ -180,7 +180,6 @@ export default class Composer {
     const basePath = this.getBasePath();
     const pathsMap = this.getSwagger().paths;
     const map = {};
-    console.log(pathsMap);
     Object.keys(pathsMap).forEach((entrypointPath) => {
       map[path.join(basePath, entrypointPath)] = pathsMap[entrypointPath];
     });
