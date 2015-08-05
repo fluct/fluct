@@ -141,10 +141,8 @@ export default class Composer {
     return this.createRestapi().then((restapi) => {
       return this.deleteDefaultModels({
         restapiId: restapi.source.id
-      }).then(() => {
-        return restapi;
       });
-    }).then((restapi) => {
+    }).then(() => {
       return this.createResourceSets({
         restapiId: restapi.source.id
       });
