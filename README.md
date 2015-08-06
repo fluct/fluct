@@ -6,7 +6,7 @@ The goals of this project are:
 - Server-less web application
 - Isolated components
 - Infinite scalability
-- Cost-effective
+- Cost-effectiveness
 
 ## Install
 ```
@@ -14,8 +14,6 @@ npm install fluct -g
 ```
 
 ## Usage
-Fluct provides `fluct` executable.
-
 ### fluct new
 Create a new application (where "myapp" is the application name):
 
@@ -37,10 +35,17 @@ $ fluct generate list_users
 ```
 
 ### fluct server
-The `fluct server` command launches a web server on http://localhost:3000
+Launches a web server on http://127.0.0.1:3000
 that behaves like Amazon API Gateway and Amazon Lambda for development use.
 You'll use this any time you want to access your web application in local machine.
 
 ```
 fluct server
+```
+
+### fluct deploy
+Upload your functions to Amazon Lambda and update your endpoints on Amazon API Gateway.
+
+```
+fluct deploy
 ```
