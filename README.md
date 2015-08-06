@@ -27,7 +27,7 @@ fluct new myapp
 Generate a new action to list users (where "list_users" is the action name):
 
 ```
-fluct generate action list_users
+fluct generate list_users
 ```
 
 ### fluct server

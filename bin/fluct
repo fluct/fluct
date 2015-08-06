@@ -1,0 +1,12 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+
+program
+  .command('generate')
+  .description('Generate a new action directory and files')
+  .action(function (commandLineOptions) {
+    console.log(commandLineOptions);
+  });
+
+program.parse(process.argv);
