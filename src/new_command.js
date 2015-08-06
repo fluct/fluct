@@ -4,7 +4,7 @@ import mkdirp from 'mkdirp'
 /**
  * @class
  */
-export default class GenerateCommand {
+export default class NewCommand {
   /**
    * @param {String} name Passed function name
    * @param {Command} command A command object of commander.js
@@ -23,8 +23,12 @@ export default class GenerateCommand {
     this.logEntryCreatedEvent(destination);
   }
 
-  createActionDirectory() {
-    this.createDirectory(this.getActionPath());
+  createApplicationDirectory() {
+    this.createDirectory(`./${this.name}`);
+  }
+
+  createFunctionsDirectory() {
+    this.createDirectory(`./${this.name}/functions`);
   }
 
   /**
@@ -35,26 +39,11 @@ export default class GenerateCommand {
     this.logEntryCreatedEvent(path);
   }
 
-  createIndexJs() {
-    this.copyFile(this.getIndexJsTemplatePath(), `${this.getActionPath()}/index.js`);
-  }
-
   createPackageJson() {
-    this.copyFile(this.getPackageJsonTemplatePath(), `${this.getActionPath()}/package.json`);
-  }
-
-  /**
-   * @return {String}
-   */
-  getActionPath() {
-    return `./functions/${this.name}`;
-  }
-
-  /**
-   * @return {String}
-   */
-  getIndexJsTemplatePath() {
-    return `${__dirname}/../templates/index.js`;
+    this.copyFile(
+      this.getPackageJsonTemplatePath(),
+      `./${this.name}/package.json`
+    );
   }
 
   /**
@@ -75,8 +64,8 @@ export default class GenerateCommand {
    * Call this method to run this command.
    */
   run() {
-    this.createActionDirectory();
-    this.createIndexJs();
+    this.createApplicationDirectory();
+    this.createFunctionsDirectory();
     this.createPackageJson();
   }
 }

@@ -1,14 +1,27 @@
 #!/usr/bin/env node
 
 var program = require('commander');
-var GenerateCommand = require('../lib/index.js').GenerateCommand;
+var GenerateCommand = require('../lib/generate_command');
+var NewCommand = require('../lib/new_command');
 
 program
   .command('generate')
   .arguments('<name>')
-  .description('Generate a new action directory and files')
+  .description('Generate a new action')
   .action(function (name, command) {
+    console.log(name);
     new GenerateCommand({
+      command: command,
+      name: name
+    }).run()
+  });
+
+program
+  .command('new')
+  .arguments('<name>')
+  .description('Generate a new application')
+  .action(function (name, command) {
+    new NewCommand({
       command: command,
       name: name
     }).run()

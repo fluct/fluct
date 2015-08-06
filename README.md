@@ -20,11 +20,14 @@ Fluct provides `fluct` executable.
 Create a new application (where "myapp" is the application name):
 
 ```
-fluct new myapp
+$ fluct new myapp
+  Created ./myapp
+  Created ./myapp/functions
+  Created ./myapp/package.json
 ```
 
 ### fluct generate
-Generate a new action to list users (where "list_users" is the action name):
+Generate a new action (where "list_users" is the action name):
 
 ```
 $ fluct generate list_users
