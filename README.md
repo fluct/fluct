@@ -40,12 +40,12 @@ that behaves like Amazon API Gateway and Amazon Lambda for development use.
 You'll use this any time you want to access your web application in local machine.
 
 ```
-fluct server
+$ fluct server
 ```
 
 ### fluct deploy
 Upload your functions to Amazon Lambda and update your endpoints on Amazon API Gateway.
 
 ```
-fluct deploy
+$ fluct deploy
 ```
