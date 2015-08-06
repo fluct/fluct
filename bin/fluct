@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 
 var program = require('commander');
+var GenerateCommand = require('../lib/index.js').GenerateCommand;
 
 program
   .command('generate')
   .description('Generate a new action directory and files')
-  .action(function (commandLineOptions) {
-    console.log(commandLineOptions);
+  .action(function (command) {
+    new GenerateCommand({ command: command }).run()
   });
 
 program.parse(process.argv);
