@@ -5,6 +5,13 @@ var GenerateCommand = require('../lib/generate_command');
 var NewCommand = require('../lib/new_command');
 
 program
+  .command('deploy')
+  .description('Deploy functions to AWS')
+  .action(function (command) {
+    console.log('Comming soon');
+  });
+
+program
   .command('generate')
   .arguments('<generator>')
   .arguments('<name>')
@@ -26,6 +33,13 @@ program
       command: command,
       name: name
     }).run()
+  });
+
+program
+  .command('server')
+  .description('Launch a web server')
+  .action(function (command) {
+    console.log('Comming soon');
   });
 
 program.parse(process.argv);
