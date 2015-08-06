@@ -28,6 +28,7 @@ Generate a new action to list users (where "list_users" is the action name):
 
 ```
 $ fluct generate list_users
+  Created ./functions/list_users
   Created ./functions/list_users/index.js
   Created ./functions/list_users/package.json
 ```

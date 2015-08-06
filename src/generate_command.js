@@ -14,20 +14,33 @@ export default class GenerateCommand {
     this.name = name;
   }
 
+  /**
+   * @param {String} source
+   * @param {String} destination
+   */
+  copyFile(source, destination) {
+    fs.createReadStream(source).pipe(fs.createWriteStream(destination));
+    this.logEntryCreatedEvent(destination);
+  }
+
   createActionDirectory() {
-    mkdirp.sync(this.getActionPath());
+    this.createDirectory(this.getActionPath());
+  }
+
+  /**
+   * @param {String} path
+   */
+  createDirectory(path) {
+    mkdirp.sync(path);
+    this.logEntryCreatedEvent(path);
   }
 
   createIndexJs() {
-    const indexJsPath = `${this.getActionPath()}/index.js`;
-    fs.createReadStream(this.getIndexJsTemplatePath()).pipe(fs.createWriteStream(indexJsPath));
-    this.logEntryCreatedEvent(indexJsPath);
+    this.copyFile(this.getIndexJsTemplatePath(), `${this.getActionPath()}/index.js`);
   }
 
   createPackageJson() {
-    const packageJsonPath = `${this.getActionPath()}/package.json`;
-    fs.createReadStream(this.getPackageJsonTemplatePath()).pipe(fs.createWriteStream(packageJsonPath));
-    this.logEntryCreatedEvent(packageJsonPath);
+    this.copyFile(this.getPackageJsonTemplatePath(), `${this.getActionPath()}/package.json`);
   }
 
   /**
