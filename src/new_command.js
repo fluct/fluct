@@ -1,26 +1,17 @@
-import fs from 'fs'
-import mkdirp from 'mkdirp'
+import BaseCommand from './base_command'
 
 /**
  * @class
  */
-export default class NewCommand {
+export default class NewCommand extends BaseCommand {
   /**
    * @param {String} name Passed function name
    * @param {Command} command A command object of commander.js
    */
   constructor({ command, name }) {
+    super();
     this.command = command;
     this.name = name;
-  }
-
-  /**
-   * @param {String} source
-   * @param {String} destination
-   */
-  copyFile(source, destination) {
-    fs.createReadStream(source).pipe(fs.createWriteStream(destination));
-    this.logEntryCreatedEvent(destination);
   }
 
   createApplicationDirectory() {
@@ -29,14 +20,6 @@ export default class NewCommand {
 
   createFunctionsDirectory() {
     this.createDirectory(`./${this.name}/functions`);
-  }
-
-  /**
-   * @param {String} path
-   */
-  createDirectory(path) {
-    mkdirp.sync(path);
-    this.logEntryCreatedEvent(path);
   }
 
   createPackageJson() {
@@ -51,13 +34,6 @@ export default class NewCommand {
    */
   getPackageJsonTemplatePath() {
     return `${__dirname}/../templates/package.json`;
-  }
-
-  /**
-   * @param {String} path
-   */
-  logEntryCreatedEvent(path) {
-    console.log(`  Created ${path}`);
   }
 
   /**

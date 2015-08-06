@@ -1,38 +1,21 @@
-import fs from 'fs'
-import mkdirp from 'mkdirp'
+import BaseCommand from './base_command'
 
 /**
  * @class
  */
-export default class GenerateCommand {
+export default class GenerateCommand extends BaseCommand {
   /**
    * @param {String} name Passed function name
    * @param {Command} command A command object of commander.js
    */
   constructor({ command, name }) {
+    super();
     this.command = command;
     this.name = name;
   }
 
-  /**
-   * @param {String} source
-   * @param {String} destination
-   */
-  copyFile(source, destination) {
-    fs.createReadStream(source).pipe(fs.createWriteStream(destination));
-    this.logEntryCreatedEvent(destination);
-  }
-
   createActionDirectory() {
     this.createDirectory(this.getActionPath());
-  }
-
-  /**
-   * @param {String} path
-   */
-  createDirectory(path) {
-    mkdirp.sync(path);
-    this.logEntryCreatedEvent(path);
   }
 
   createIndexJs() {
@@ -62,13 +45,6 @@ export default class GenerateCommand {
    */
   getPackageJsonTemplatePath() {
     return `${__dirname}/../templates/package.json`;
-  }
-
-  /**
-   * @param {String} path
-   */
-  logEntryCreatedEvent(path) {
-    console.log(`  Created ${path}`);
   }
 
   /**
