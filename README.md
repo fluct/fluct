@@ -2,6 +2,12 @@
 Fluct is a web-application framework that includes everything needed to manage
 Amazon API Gateway and Amazon Lambda backend web applications.
 
+## Goals
+- Server-less web application
+- Isolated components
+- Infinite scalability
+- Cost-effective
+
 ## Install
 ```
 npm install fluct
