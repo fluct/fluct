@@ -1,8 +1,8 @@
-# fluct
+# Fluct
 Fluct is a web-application framework that includes everything needed to manage
 Amazon API Gateway and Amazon Lambda backend web applications.
+The goals of this project are:
 
-## Goals
 - Server-less web application
 - Isolated components
 - Infinite scalability
