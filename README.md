@@ -14,7 +14,7 @@ npm install fluct -g
 ```
 
 ## Usage
-The `fluct` executable provides some sub-commands.
+Fluct provides `fluct` executable.
 
 ### fluct new
 Create a new application (where "myapp" is the application name):
@@ -33,7 +33,9 @@ $ fluct generate list_users
 ```
 
 ### fluct server
-Start the web server on http://localhost:3000 for development:
+The `fluct server` command launches a web server on http://localhost:3000
+that behaves like Amazon API Gateway and Amazon Lambda for development use.
+You'll use this any time you want to access your web application in local machine.
 
 ```
 fluct server
