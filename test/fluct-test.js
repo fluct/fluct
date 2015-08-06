@@ -3,7 +3,7 @@ import { Mock } from 'stackable-fetcher'
 import { Composer } from '../src/index'
 
 describe('Composer', () => {
-  const composer = new Composer({
+  const fluct = new Composer({
     accessKeyId: 'accessKeyId',
     region: 'region',
     secretAcceessKey: 'secretAcceessKey',
@@ -16,7 +16,7 @@ describe('Composer', () => {
   describe('#createResourceSets', () => {
     it('sends requests to create resources', () => {
       assert(
-        composer.createResourceSets({
+        fluct.createResourceSets({
           restapiId: 'restapiId'
         }) instanceof Promise
       );
@@ -26,7 +26,7 @@ describe('Composer', () => {
   describe('#createRestapi', () => {
     it('sends request to create new restapi', () => {
       assert(
-        composer.createRestapi() instanceof Promise
+        fluct.createRestapi() instanceof Promise
       );
     });
   });
@@ -34,7 +34,7 @@ describe('Composer', () => {
   describe('#deploy', () => {
     it('sends requests', () => {
       assert(
-        composer.deploy() instanceof Promise
+        fluct.deploy() instanceof Promise
       );
     });
   });
@@ -42,7 +42,7 @@ describe('Composer', () => {
   describe('#deleteDefaultModels', () => {
     it('sends requests to delete default models', () => {
       assert(
-        composer.deleteDefaultModels({
+        fluct.deleteDefaultModels({
           restapiId: 'restapiId'
         }) instanceof Promise
       );
@@ -52,7 +52,7 @@ describe('Composer', () => {
   describe('#getPaths', () => {
     it('returns all paths defined in swagger file', () => {
       assert.deepEqual(
-        composer.getPaths(),
+        fluct.getPaths(),
         [
           '/v1/products',
           '/v1/products/child'
@@ -64,7 +64,7 @@ describe('Composer', () => {
   describe('#use', () => {
     it('returns new Composer', () => {
       assert(
-        composer.use(() => {}) instanceof Composer
+        fluct.use(() => {}) instanceof Composer
       );
     });
   });

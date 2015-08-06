@@ -1,21 +1,32 @@
-# api-composer
-A library to synthesize Amazon API Gateway and Amazon Lambda.
+# fluct
+Fluct is a web-application framework that includes everything needed to manage
+Amazon API Gateway and Amazon Lambda backend web applications.
 
 ## Install
 ```
-npm install api-composer
+npm install fluct
 ```
 
 ## Usage
-`Composer#deploy` creates resources on API Gateway from your swagger file.
+The `fluct` executable provides some sub-commands.
 
-```js
-import { Composer } from 'api-composer'
+### fluct new
+Create a new application (where "myapp" is the application name):
 
-new Composer({
-  accessKeyId: '...',
-  region: '...',
-  secretAcceessKey: '...',
-  swaggerFilePath: '/path/to/swagger.yml'
-}).deploy();
+```
+fluct new myapp
+```
+
+### fluct generate
+Generate a new action to list users (where "list_users" is the action name):
+
+```
+fluct generate action list_users
+```
+
+### fluct server
+Start the web server on http://localhost:3000 for development:
+
+```
+fluct server
 ```
