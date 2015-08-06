@@ -24,11 +24,11 @@ $ fluct new myapp
   Created ./myapp/package.json
 ```
 
-### fluct generate
+### fluct generate action
 Generate a new action (where "list_users" is the action name):
 
 ```
-$ fluct generate list_users
+$ fluct generate action list_users
   Created ./actions/list_users
   Created ./actions/list_users/index.js
   Created ./actions/list_users/package.json

@@ -6,12 +6,13 @@ var NewCommand = require('../lib/new_command');
 
 program
   .command('generate')
+  .arguments('<generator>')
   .arguments('<name>')
-  .description('Generate a new action')
-  .action(function (name, command) {
-    console.log(name);
+  .description('Generate a new resource')
+  .action(function (generator, name, command) {
     new GenerateCommand({
       command: command,
+      generator: generator,
       name: name
     }).run()
   });

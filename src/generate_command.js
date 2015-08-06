@@ -5,12 +5,14 @@ import BaseCommand from './base_command'
  */
 export default class GenerateCommand extends BaseCommand {
   /**
-   * @param {String} name Passed function name
+   * @param {String} generator Only "action" is supported
+   * @param {String} name
    * @param {Command} command A command object of commander.js
    */
-  constructor({ command, name }) {
+  constructor({ command, generator, name }) {
     super();
     this.command = command;
+    this.generator = generator;
     this.name = name;
   }
 
