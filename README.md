@@ -29,9 +29,9 @@ Generate a new action (where "list_users" is the action name):
 
 ```
 $ fluct generate list_users
-  Created ./functions/list_users
-  Created ./functions/list_users/index.js
-  Created ./functions/list_users/package.json
+  Created ./actions/list_users
+  Created ./actions/list_users/index.js
+  Created ./actions/list_users/package.json
 ```
 
 ### fluct server

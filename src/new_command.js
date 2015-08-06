@@ -18,8 +18,8 @@ export default class NewCommand extends BaseCommand {
     this.createDirectory(`./${this.name}`);
   }
 
-  createFunctionsDirectory() {
-    this.createDirectory(`./${this.name}/functions`);
+  createActionsDirectory() {
+    this.createDirectory(`./${this.name}/actions`);
   }
 
   createPackageJson() {
@@ -41,7 +41,7 @@ export default class NewCommand extends BaseCommand {
    */
   run() {
     this.createApplicationDirectory();
-    this.createFunctionsDirectory();
+    this.createActionsDirectory();
     this.createPackageJson();
   }
 }

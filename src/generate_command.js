@@ -30,7 +30,7 @@ export default class GenerateCommand extends BaseCommand {
    * @return {String}
    */
   getActionPath() {
-    return `./functions/${this.name}`;
+    return `./actions/${this.name}`;
   }
 
   /**
