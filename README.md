@@ -4,13 +4,15 @@ Amazon API Gateway and Amazon Lambda backend web applications.
 The goals of this project are:
 
 - Server-less web application
-- Isolated components
+- Easy and rapid development
+- Multiple staging environments
+- Endpoint-isolated deployments
 - Infinite scalability
-- Cost-effectiveness
+- Cost savings
 
 ## Install
 ```
-npm install fluct -g
+npm install fluct
 ```
 
 ## Usage
@@ -20,7 +22,7 @@ Create a new application (where "myapp" is the application name):
 ```
 $ fluct new myapp
   Created ./myapp
-  Created ./myapp/functions
+  Created ./myapp/actions
   Created ./myapp/package.json
 ```
 
