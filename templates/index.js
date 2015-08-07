@@ -1,3 +1,3 @@
-export.handler = function (event, context) {
-  context.done();
-}
+exports.handler = function (event, context) {
+  context.done('test');
+};

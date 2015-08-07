@@ -37,12 +37,12 @@ $ fluct generate action list_users
 ```
 
 ### fluct server
-Launches a web server on http://127.0.0.1:3000
-that behaves like Amazon API Gateway and Amazon Lambda for development use.
-You'll use this any time you want to access your web application in local machine.
+Launches a local web server that behaves like Amazon API Gateway and Amazon Lambda for development use.
+You'll use this any time you want to access your web application in your local machine.
 
 ```
 $ fluct server
+Server starting on http://127.0.0.1:3000
 ```
 
 ### fluct deploy
@@ -50,4 +50,32 @@ Upload your functions to Amazon Lambda and update your endpoints on Amazon API G
 
 ```
 $ fluct deploy
+```
+
+## Action
+The behaviors of your application is defined as a collection of actions.
+An action is defined in a set of `index.js` and `package.json` files,
+located in a directory named with its action name (e.g. `list_users`).
+
+### index.js
+index.js defines a handler for your Amazon Lambda function.
+
+```js
+export.handler = function (event, context) {
+  context.done('Hello, world!');
+}
+```
+
+### package.json
+package.json defines package dependencies and metadata for Lambda & API Gateway.
+
+```json
+{
+  "name": "dummy",
+  "version": "0.0.1",
+  "fluct": {
+    "httpMethod": "GET",
+    "path": "/users"
+  }
+}
 ```
