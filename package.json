@@ -10,9 +10,7 @@
     "bin",
     "lib"
   ],
-  "bins": [
-    "bin/fluct"
-  ],
+  "bin": "bin/fluct",
   "license": "MIT",
   "devDependencies": {
     "babel": "^5.8.20",
