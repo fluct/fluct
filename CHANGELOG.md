@@ -1,3 +1,7 @@
+## v0.0.4
+- Add a new command: `fluct server`
+- Fix package.json bin property
+
 ## v0.0.3
 - Add missing bin dir into fluct npm package
 
