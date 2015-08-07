@@ -37,6 +37,10 @@ export default class Action {
     return this.getPackage().fluct.path;
   }
 
+  /**
+   * @param {http.IncomingMessage} request
+   * @param {http.ServerResponse} response
+   */
   handler(request, response) {
     require(`${process.cwd()}/actions/${this.name}/index.js`).handler(
       {},
