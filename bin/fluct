@@ -39,6 +39,7 @@ program
 program
   .command('server')
   .description('Launch a web server')
+  .option('-p, --port <number>', 'Run server on the specified port (default: 3000)')
   .action(function (command) {
     new ServerCommand({
       command: command

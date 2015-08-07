@@ -14,10 +14,21 @@ export default class ServerCommand extends BaseCommand {
   }
 
   /**
+   * @return {Integer}
+   */
+  getPort() {
+    if (this.command.port) {
+      return parseInt(this.command.port, 10);
+    } else {
+      return 3000;
+    }
+  }
+
+  /**
    * Call this method to run this command.
    */
   run() {
-    const port = 3000;
+    const port = this.getPort();
     console.log(`Server starting on http://localhost:${port}`);
     http.createServer((request, response) => {
       response.writeHead(200, { 'Content-Type': 'text/plain' });
