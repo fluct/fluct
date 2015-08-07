@@ -3,6 +3,7 @@
 var program = require('commander');
 var GenerateCommand = require('../lib/generate_command');
 var NewCommand = require('../lib/new_command');
+var ServerCommand = require('../lib/server_command');
 
 program
   .command('deploy')
@@ -39,7 +40,9 @@ program
   .command('server')
   .description('Launch a web server')
   .action(function (command) {
-    console.log('Comming soon');
+    new ServerCommand({
+      command: command
+    }).run();
   });
 
 program.parse(process.argv);
