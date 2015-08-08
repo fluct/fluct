@@ -31,6 +31,6 @@ export default class BaseCommand {
    * @param {String} path
    */
   logEntryCreatedEvent(path) {
-    console.log(`  Created ${path}`);
+    console.log(`Created ${path}`);
   }
 }
