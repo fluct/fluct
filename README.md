@@ -12,7 +12,7 @@ The goals of this project are:
 
 ## Install
 ```
-npm install fluct
+npm install fluct -g
 ```
 
 ## Usage
