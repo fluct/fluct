@@ -26,9 +26,10 @@ export default class Composer {
    * @param {String} path
    * @param {Stirng} resourceId
    * @param {Stirng} restapiId
+   * @param {String} uri
    * @return {Promise}
    */
-  createMethodSet({ httpMethod, path, resourceId, restapiId }) {
+  createMethodSet({ httpMethod, path, resourceId, restapiId, uri }) {
     return this.getClient().putMethod({
       httpMethod: httpMethod,
       resourceId: resourceId,
@@ -39,10 +40,10 @@ export default class Composer {
         integrationHttpMethod: 'GET',
         resourceId: resourceId,
         restapiId: restapiId,
-        type: 'HTTP',
-        uri: 'http://example.com',
+        type: 'AWS',
+        uri: uri
       });
-    }).then(() => {
+    }).then((integration) => {
       return this.getClient().putMethodResponse({
         httpMethod: httpMethod,
         resourceId: resourceId,
@@ -78,7 +79,8 @@ export default class Composer {
               httpMethod: action.getHttpMethod(),
               path: action.getPath(),
               resourceId: resource.source.id,
-              restapiId: restapiId
+              restapiId: restapiId,
+              uri: action.getUri()
             });
           });
         })

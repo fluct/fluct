@@ -114,6 +114,13 @@ export default class Action {
   }
 
   /**
+   * @return {String}
+   */
+  getUri() {
+    return `arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${this.getMetadata().fluct.arn}/invocations`;
+  }
+
+  /**
    * @param {http.IncomingMessage} request
    * @param {http.ServerResponse} response
    */
