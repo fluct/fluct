@@ -27,7 +27,7 @@ export default class ServerCommand extends BaseCommand {
       application[action.getHttpMethod().toLowerCase()](
         action.getPath(),
         (request, response) => {
-          action.handler(request, response);
+          action.run(request, response);
         }
       );
     });

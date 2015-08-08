@@ -12,6 +12,15 @@ export default class Action {
   }
 
   /**
+   * @return {Function}
+   */
+  getHandler() {
+    const handlerScriptPath = `${process.cwd()}/actions/${this.name}/index.js`;
+    delete(require.cache[handlerScriptPath]);
+    return require(handlerScriptPath).handler;
+  }
+
+  /**
    * @return {String}
    */
   getHttpMethod() {
@@ -41,8 +50,8 @@ export default class Action {
    * @param {http.IncomingMessage} request
    * @param {http.ServerResponse} response
    */
-  handler(request, response) {
-    require(`${process.cwd()}/actions/${this.name}/index.js`).handler(
+  run(request, response) {
+    this.getHandler()(
       {},
       {
         done: (value) => {
