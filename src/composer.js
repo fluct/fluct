@@ -1,6 +1,8 @@
 import { Client } from 'amazon-api-gateway-client'
 import fs from 'fs'
+import glob from 'glob'
 import path from 'path'
+import yazl from 'yazl'
 
 /**
  * @class
@@ -118,15 +120,35 @@ export default class Composer {
    * @return {Promise}
    */
   deploy() {
-    return this.createRestapi().then((restapi) => {
-      return this.deleteDefaultModels({
-        restapiId: restapi.source.id
-      }).then(() => {
-        return restapi;
-      });
-    }).then((restapi) => {
-      return this.createResourceSets({
-        restapiId: restapi.source.id
+    return Promise.all(
+      this.application.getActions().map((action) => {
+        return new Promise((resolve, reject) => {
+          const zipfile = new yazl.ZipFile();
+          glob.sync(`${action.getDirectoryPath()}/dest/**/*.js`).forEach((path) => {
+            zipfile.addFile(
+              path,
+              path.substr(action.getDirectoryPath().length + 1)
+            );
+          });
+          zipfile.outputStream.pipe(
+            fs.createWriteStream(`${action.getDirectoryPath()}/dest.zip`)
+          ).on('close', () => {
+            resolve();
+          });
+          zipfile.end();
+        });
+      })
+    ).then(() => {
+      return this.createRestapi().then((restapi) => {
+        return this.deleteDefaultModels({
+          restapiId: restapi.source.id
+        }).then(() => {
+          return restapi;
+        });
+      }).then((restapi) => {
+        return this.createResourceSets({
+          restapiId: restapi.source.id
+        });
       });
     });
   }

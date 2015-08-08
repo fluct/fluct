@@ -22,11 +22,29 @@ export default class NewCommand extends BaseCommand {
     this.createDirectory(`./${this.name}/actions`);
   }
 
-  createPackageJson() {
+  createActionsKeepFile() {
+    this.createEmptyFile(`./${this.name}/actions/.keep`);
+  }
+
+  createGitIgnoreFile() {
+    this.copyFile(
+      this.getGitIgnoreTemplatePath(),
+      `./${this.name}/.gitignore`
+    );
+  }
+
+  createPackageJsonFile() {
     this.copyFile(
       this.getPackageJsonTemplatePath(),
       `./${this.name}/package.json`
     );
+  }
+
+  /**
+   * @return {String}
+   */
+  getGitIgnoreTemplatePath() {
+    return `${__dirname}/../templates/gitignore`;
   }
 
   /**
@@ -41,7 +59,9 @@ export default class NewCommand extends BaseCommand {
    */
   run() {
     this.createApplicationDirectory();
+    this.createGitIgnoreFile();
     this.createActionsDirectory();
-    this.createPackageJson();
+    this.createActionsKeepFile();
+    this.createPackageJsonFile();
   }
 }

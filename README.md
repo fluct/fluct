@@ -22,7 +22,9 @@ Create a new application (where "myapp" is the application name):
 ```
 $ fluct new myapp
   Created ./myapp
+  Created ./myapp/.gitignore
   Created ./myapp/actions
+  Created ./myapp/actions/.keep
   Created ./myapp/package.json
 ```
 
@@ -32,7 +34,8 @@ Generate a new action (where "list_users" is the action name):
 ```
 $ fluct generate action list_users
   Created ./actions/list_users
-  Created ./actions/list_users/index.js
+  Created ./actions/list_users/dest
+  Created ./actions/list_users/dest/index.js
   Created ./actions/list_users/package.json
 ```
 

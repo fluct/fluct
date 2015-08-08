@@ -20,8 +20,12 @@ export default class GenerateCommand extends BaseCommand {
     this.createDirectory(this.getActionPath());
   }
 
+  createDestDirectory() {
+    this.createDirectory(`${this.getActionPath()}/dest`);
+  }
+
   createIndexJs() {
-    this.copyFile(this.getIndexJsTemplatePath(), `${this.getActionPath()}/index.js`);
+    this.copyFile(this.getIndexJsTemplatePath(), `${this.getActionPath()}/dest/index.js`);
   }
 
   createPackageJson() {
@@ -54,6 +58,7 @@ export default class GenerateCommand extends BaseCommand {
    */
   run() {
     this.createActionDirectory();
+    this.createDestDirectory();
     this.createIndexJs();
     this.createPackageJson();
   }

@@ -22,6 +22,11 @@ export default class BaseCommand {
     this.logEntryCreatedEvent(path);
   }
 
+  createEmptyFile(path) {
+    fs.closeSync(fs.openSync(path, 'w'));
+    this.logEntryCreatedEvent(path);
+  }
+
   /**
    * @param {String} path
    */
