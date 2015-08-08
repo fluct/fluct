@@ -22,7 +22,7 @@ export default class Action {
       glob.sync(`${this.getDirectoryPath()}/dist/**/*.js`).forEach((path) => {
         zipfile.addFile(
           path,
-          path.substr(this.getDirectoryPath().length + 1)
+          path.substr(`${this.getDirectoryPath()}/dist/`.length)
         );
       });
       zipfile.outputStream.pipe(

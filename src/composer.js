@@ -1,5 +1,6 @@
 import AWS from 'aws-sdk'
 import awsLambda from 'node-aws-lambda'
+import crypto from 'crypto'
 import { Client } from 'amazon-api-gateway-client'
 
 /**
@@ -22,6 +23,7 @@ export default class Composer {
   }
 
   /**
+   * @param {String} functionName
    * @param {String} httpMethod
    * @param {String} path
    * @param {Stirng} resourceId
@@ -29,7 +31,7 @@ export default class Composer {
    * @param {String} uri
    * @return {Promise}
    */
-  createMethodSet({ httpMethod, path, resourceId, restapiId, uri }) {
+  createMethodSet({ functionName, httpMethod, path, resourceId, restapiId, uri }) {
     return this.getClient().putMethod({
       httpMethod: httpMethod,
       resourceId: resourceId,
@@ -37,7 +39,7 @@ export default class Composer {
     }).then((resource) => {
       return this.getClient().putIntegration({
         httpMethod: httpMethod,
-        integrationHttpMethod: 'GET',
+        integrationHttpMethod: 'POST',
         resourceId: resourceId,
         restapiId: restapiId,
         type: 'AWS',
@@ -57,6 +59,22 @@ export default class Composer {
         restapiId: restapiId,
         statusCode: 200
       });
+    }).then(() => {
+      return new Promise((resolve, reject) => {
+        new AWS.Lambda({
+          region: 'us-east-1'
+        }).addPermission(
+          {
+            Action: 'lambda:InvokeFunction',
+            FunctionName: functionName,
+            Principal: 'apigateway.amazonaws.com',
+            StatementId: crypto.randomBytes(20).toString('hex')
+          },
+          (error, data) => {
+            resolve();
+          }
+        );
+      })
     });
   }
 
@@ -76,6 +94,7 @@ export default class Composer {
             restapiId: restapiId
           }).then((resource) => {
             return this.createMethodSet({
+              functionName: action.getName(),
               httpMethod: action.getHttpMethod(),
               path: action.getPath(),
               resourceId: resource.source.id,
