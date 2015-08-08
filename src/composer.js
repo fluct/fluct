@@ -133,6 +133,7 @@ export default class Composer {
           zipfile.outputStream.pipe(
             fs.createWriteStream(`${action.getDirectoryPath()}/dest.zip`)
           ).on('close', () => {
+            console.log(`Created ${action.getDirectoryPath()}/dest.zip`);
             resolve();
           });
           zipfile.end();
