@@ -1,3 +1,6 @@
+## v0.0.6
+- Add a new command: `fluct deploy`
+
 ## v0.0.5
 - Make handler reloadable
 - Fix missing templates dir
