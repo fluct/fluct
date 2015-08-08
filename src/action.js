@@ -12,10 +12,17 @@ export default class Action {
   }
 
   /**
+   * @return {String}
+   */
+  getDirectoryPath() {
+    return `${process.cwd()}/actions/${this.name}`;
+  }
+
+  /**
    * @return {Function}
    */
   getHandler() {
-    const handlerScriptPath = `${process.cwd()}/actions/${this.name}/index.js`;
+    const handlerScriptPath = `${this.getDirectoryPath()}/index.js`;
     delete(require.cache[handlerScriptPath]);
     return require(handlerScriptPath).handler;
   }
@@ -33,7 +40,7 @@ export default class Action {
   getPackage() {
     if (!this.package) {
       this.package = JSON.parse(
-        fs.readFileSync(`./actions/${this.name}/package.json`)
+        fs.readFileSync(`${this.getDirectoryPath()}/package.json`)
       );
     }
     return this.package;
