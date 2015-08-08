@@ -1,3 +1,4 @@
+import AWS from 'aws-sdk'
 import awsLambda from 'node-aws-lambda'
 import { Client } from 'amazon-api-gateway-client'
 
@@ -131,6 +132,8 @@ export default class Composer {
     return this.createZipFiles().then(() => {
       return this.uploadActions();
     }).then(() => {
+      return this.updateActionsMetadata();
+    }).then(() => {
       return this.createRestapi();
     }).then((restapi) => {
       return this.deleteDefaultModels({
@@ -169,7 +172,26 @@ export default class Composer {
   }
 
   /**
-   * @return {Array.<String>}
+   * @return {Promise}
+   */
+  updateActionsMetadata() {
+    return Promise.all(
+      this.application.getActions().map((action) => {
+        return new Promise((resolve, reject) => {
+          const lambda = new AWS.Lambda({
+            region: 'us-east-1'
+          });
+          lambda.getFunction({ FunctionName: action.getName() }, (error, data) => {
+            action.writeArn(data.Configuration.FunctionArn);
+            resolve();
+          });
+        });
+      })
+    );
+  }
+
+  /**
+   * @return {Promise}
    */
   uploadActions() {
     return Promise.all(

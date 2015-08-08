@@ -19,16 +19,16 @@ export default class Action {
   createZipFile() {
     return new Promise((resolve, reject) => {
       const zipfile = new yazl.ZipFile();
-      glob.sync(`${this.getDirectoryPath()}/dest/**/*.js`).forEach((path) => {
+      glob.sync(`${this.getDirectoryPath()}/dist/**/*.js`).forEach((path) => {
         zipfile.addFile(
           path,
           path.substr(this.getDirectoryPath().length + 1)
         );
       });
       zipfile.outputStream.pipe(
-        fs.createWriteStream(`${this.getDirectoryPath()}/dest.zip`)
+        fs.createWriteStream(`${this.getDirectoryPath()}/dist.zip`)
       ).on('close', () => {
-        console.log(`Created ${this.getDirectoryPath()}/dest.zip`);
+        console.log(`Created ${this.getDirectoryPath()}/dist.zip`);
         resolve();
       });
       zipfile.end();
@@ -62,20 +62,20 @@ export default class Action {
    * @return {String}
    */
   getHttpMethod() {
-    return this.getPackage().fluct.httpMethod;
+    return this.getMetadata().fluct.httpMethod;
   }
 
   /**
    * @return {String}
    */
   getName() {
-    return this.getPackage().name;
+    return this.getMetadata().name;
   }
 
   /**
    * @return {Object}
    */
-  getPackage() {
+  getMetadata() {
     if (!this.package) {
       this.package = JSON.parse(
         fs.readFileSync(`${this.getDirectoryPath()}/package.json`)
@@ -88,7 +88,7 @@ export default class Action {
    * @return {String}
    */
   getPath() {
-    return this.getPackage().fluct.path;
+    return this.getMetadata().fluct.path;
   }
 
   /**
@@ -125,6 +125,18 @@ export default class Action {
           response.send(value);
         }
       }
+    );
+  }
+
+  /**
+   * @param {String} arn
+   */
+  writeArn(arn) {
+    const metadata = this.getMetadata();
+    metadata.fluct.arn = arn;
+    fs.writeSync(
+      fs.openSync(`${this.getDirectoryPath()}/package.json`, 'w'),
+      JSON.stringify(metadata, null, 2)
     );
   }
 }

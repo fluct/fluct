@@ -21,11 +21,11 @@ export default class GenerateCommand extends BaseCommand {
   }
 
   createDestDirectory() {
-    this.createDirectory(`${this.getActionPath()}/dest`);
+    this.createDirectory(`${this.getActionPath()}/dist`);
   }
 
   createIndexJs() {
-    this.copyFile(this.getIndexJsTemplatePath(), `${this.getActionPath()}/dest/index.js`);
+    this.copyFile(this.getIndexJsTemplatePath(), `${this.getActionPath()}/dist/index.js`);
   }
 
   createPackageJson() {
