@@ -50,6 +50,17 @@ Upload your functions to Amazon Lambda and update your endpoints on Amazon API G
 
 ```
 $ fluct deploy
+POST   https://apigateway.us-east-1.amazonaws.com/restapis
+DELETE https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/models/Empty
+DELETE https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/models/Error
+GET    https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/resources
+GET    https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/resources
+POST   https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/resources/k1xqcw5cj8
+GET    https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/resources
+PUT    https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/resources/i7qrat/methods/GET
+PUT    https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/resources/i7qrat/methods/GET/integration
+PUT    https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/resources/i7qrat/methods/GET/responses/200
+PUT    https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/resources/i7qrat/methods/GET/integration/responses/200
 ```
 
 ## Action
