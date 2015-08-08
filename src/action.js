@@ -54,8 +54,22 @@ export default class Action {
   /**
    * @return {String}
    */
+  getHandlerId() {
+    return 'index.handler';
+  }
+
+  /**
+   * @return {String}
+   */
   getHttpMethod() {
     return this.getPackage().fluct.httpMethod;
+  }
+
+  /**
+   * @return {String}
+   */
+  getName() {
+    return this.getPackage().name;
   }
 
   /**
@@ -75,6 +89,28 @@ export default class Action {
    */
   getPath() {
     return this.getPackage().fluct.path;
+  }
+
+  /**
+   * @return {String}
+   */
+  getRegion() {
+    return 'us-east-1';
+  }
+
+  /**
+   * @todo This returns dummy value for now
+   * @return {String}
+   */
+  getRole() {
+    return 'arn:aws:iam::549958975024:role/myFirstRole';
+  }
+
+  /**
+   * @return {Integer}
+   */
+  getTimeout() {
+    return 60;
   }
 
   /**

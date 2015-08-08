@@ -1,3 +1,4 @@
+import awsLambda from 'node-aws-lambda'
 import { Client } from 'amazon-api-gateway-client'
 
 /**
@@ -128,16 +129,18 @@ export default class Composer {
    */
   deploy() {
     return this.createZipFiles().then(() => {
-      return this.createRestapi().then((restapi) => {
-        return this.deleteDefaultModels({
-          restapiId: restapi.source.id
-        }).then(() => {
-          return restapi;
-        });
-      }).then((restapi) => {
-        return this.createResourceSets({
-          restapiId: restapi.source.id
-        });
+      return this.uploadActions();
+    }).then(() => {
+      return this.createRestapi();
+    }).then((restapi) => {
+      return this.deleteDefaultModels({
+        restapiId: restapi.source.id
+      }).then(() => {
+        return restapi;
+      });
+    }).then((restapi) => {
+      return this.createResourceSets({
+        restapiId: restapi.source.id
       });
     });
   }
@@ -163,6 +166,32 @@ export default class Composer {
     return this.application.getActions().map((action) => {
       return action.getPath();
     });
+  }
+
+  /**
+   * @return {Array.<String>}
+   */
+  uploadActions() {
+    return Promise.all(
+      this.application.getActions().map((action) => {
+        return new Promise((resolve, reject) => {
+          awsLambda.deploy(
+            `${action.getDirectoryPath()}/dist.zip`,
+            {
+              functionName: action.getName(),
+              handler: action.getHandlerId(),
+              region: action.getRegion(),
+              role: action.getRole(),
+              timeout: action.getTimeout()
+            },
+            () => {
+              console.log(`Uploaded ${action.getName()} function`);
+              resolve();
+            }
+          );
+        });
+      })
+    );
   }
 
   /**
