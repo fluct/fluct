@@ -53,9 +53,7 @@ Upload your functions to Amazon Lambda and update your endpoints on Amazon API G
 
 ```
 $ fluct deploy
-Created ./actions/get_user/dist.zip
 Created ./actions/list_users/dist.zip
-Uploaded get_user function
 Uploaded list_users function
 POST   https://apigateway.us-east-1.amazonaws.com/restapis
 DELETE https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/models/Empty
