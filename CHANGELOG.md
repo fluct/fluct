@@ -1,3 +1,7 @@
+## v0.0.5
+- Make handler reloadable
+- Fix missing templates dir
+
 ## v0.0.4
 - Add a new command: `fluct server`
 - Fix package.json bin property
