@@ -1,3 +1,4 @@
+import ejs from 'ejs'
 import fs from 'fs'
 import mkdirp from 'mkdirp'
 
@@ -22,9 +23,41 @@ export default class BaseCommand {
     this.logEntryCreatedEvent(path);
   }
 
+  /**
+   * @param {String} path
+   */
   createEmptyFile(path) {
     fs.closeSync(fs.openSync(path, 'w'));
     this.logEntryCreatedEvent(path);
+  }
+
+  /**
+   * @param {String} data
+   * @param {String} path
+   */
+  createFile(path, data) {
+    fs.writeFileSync(path, data);
+    this.logEntryCreatedEvent(path);
+  }
+
+  /**
+   * @param {String} destination
+   * @param {Object=} parameters
+   * @param {String} source
+   */
+  createFileFromTemplate({ destination, parameters, source }) {
+    this.createFile(
+      destination,
+      ejs.render(
+        fs.readFileSync(
+          source,
+          {
+            encoding: 'utf8'
+          }
+        ),
+        parameters || {}
+      )
+    );
   }
 
   /**

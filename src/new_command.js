@@ -28,30 +28,19 @@ export default class NewCommand extends BaseCommand {
 
   createGitIgnoreFile() {
     this.copyFile(
-      this.getGitIgnoreTemplatePath(),
+      `${__dirname}/../templates/gitignore`,
       `./${this.name}/.gitignore`
     );
   }
 
   createPackageJsonFile() {
-    this.copyFile(
-      this.getPackageJsonTemplatePath(),
-      `./${this.name}/package.json`
-    );
-  }
-
-  /**
-   * @return {String}
-   */
-  getGitIgnoreTemplatePath() {
-    return `${__dirname}/../templates/gitignore`;
-  }
-
-  /**
-   * @return {String}
-   */
-  getPackageJsonTemplatePath() {
-    return `${__dirname}/../templates/package.json`;
+    this.createFileFromTemplate({
+      destination: `./${this.name}/package.json`,
+      parameters: {
+        applicationName: this.name
+      },
+      source: `${__dirname}/../templates/application-package.json`
+    });
   }
 
   /**

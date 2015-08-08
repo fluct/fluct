@@ -25,11 +25,20 @@ export default class GenerateCommand extends BaseCommand {
   }
 
   createIndexJs() {
-    this.copyFile(this.getIndexJsTemplatePath(), `${this.getActionPath()}/dist/index.js`);
+    this.copyFile(
+      `${__dirname}/../templates/index.js`,
+      `${this.getActionPath()}/dist/index.js`
+    );
   }
 
   createPackageJson() {
-    this.copyFile(this.getPackageJsonTemplatePath(), `${this.getActionPath()}/package.json`);
+    this.createFileFromTemplate({
+      destination: `${this.getActionPath()}/package.json`,
+      parameters: {
+        actionName: this.name
+      },
+      source: `${__dirname}/../templates/action-package.json`
+    });
   }
 
   /**
@@ -37,20 +46,6 @@ export default class GenerateCommand extends BaseCommand {
    */
   getActionPath() {
     return `./actions/${this.name}`;
-  }
-
-  /**
-   * @return {String}
-   */
-  getIndexJsTemplatePath() {
-    return `${__dirname}/../templates/index.js`;
-  }
-
-  /**
-   * @return {String}
-   */
-  getPackageJsonTemplatePath() {
-    return `${__dirname}/../templates/package.json`;
   }
 
   /**

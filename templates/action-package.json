@@ -1,5 +1,5 @@
 {
-  "name": "dummy",
+  "name": "<%= actionName %>",
   "version": "0.0.1",
   "fluct": {
     "httpMethod": "GET",
