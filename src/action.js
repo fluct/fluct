@@ -15,7 +15,7 @@ export default class Action {
    * @return {String}
    */
   getDirectoryPath() {
-    return `${process.cwd()}/actions/${this.name}`;
+    return `./actions/${this.name}`;
   }
 
   /**
