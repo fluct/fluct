@@ -61,12 +61,9 @@ export default class Application {
    * @return {Object}
    */
   getPackage() {
-    if (!this.package) {
-      this.package = JSON.parse(
-        fs.readFileSync(`./package.json`)
-      );
-    }
-    return this.package;
+    return JSON.parse(
+      fs.readFileSync(`./package.json`)
+    );
   }
 
   /**
