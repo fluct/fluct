@@ -78,7 +78,7 @@ index.js defines a handler for your Amazon Lambda function.
 
 ```js
 export.handler = function (event, context) {
-  context.done('Hello, world!');
+  context.succeed({ foo: 'bar' });
 };
 ```
 
