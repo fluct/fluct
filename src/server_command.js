@@ -1,8 +1,5 @@
-import Action from './action'
+import Application from './application'
 import BaseCommand from './base_command'
-import express from 'express'
-import fs from 'fs'
-import http from 'http'
 
 const DEFAULT_PORT = 3000;
 
@@ -16,50 +13,6 @@ export default class ServerCommand extends BaseCommand {
   constructor({ command }) {
     super();
     this.command = command;
-  }
-
-  /**
-   * @return {Application}
-   */
-  buildApplication() {
-    const application = express();
-    this.getActions().forEach((action) => {
-      application[action.getHttpMethod().toLowerCase()](
-        action.getPath(),
-        (request, response) => {
-          action.run(request, response);
-        }
-      );
-    });
-    return application;
-  }
-
-  /**
-   * @return {Array.<Action>}
-   */
-  getActions() {
-    return this.getActionNames().map((actionName) => {
-      return new Action({ name: actionName });
-    });
-  }
-
-  /**
-   * @return {Array.<String>}
-   */
-  getActionNames() {
-    return fs.readdirSync('actions').filter((pathPart) => {
-      return fs.statSync(`actions/${pathPart}`).isDirectory();
-    });
-  }
-
-  /**
-   * @return {Application}
-   */
-  getApplication() {
-    if (!this.application) {
-      this.application = this.buildApplication();
-    }
-    return this.application;
   }
 
   /**
@@ -78,7 +31,7 @@ export default class ServerCommand extends BaseCommand {
    */
   run() {
     const port = this.getPort();
-    this.getApplication().listen(port, () => {
+    new Application().listen(port, () => {
       console.log(`Server starting on http://127.0.0.1:${port}`);
     });
   }
