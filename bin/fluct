@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 var program = require('commander');
+var DeployCommand = require('../lib/deploy_command');
 var GenerateCommand = require('../lib/generate_command');
 var NewCommand = require('../lib/new_command');
 var ServerCommand = require('../lib/server_command');
@@ -9,7 +10,9 @@ program
   .command('deploy')
   .description('Deploy functions to AWS')
   .action(function (command) {
-    console.log('Comming soon');
+    new DeployCommand({
+      command: command
+    }).run()
   });
 
 program
