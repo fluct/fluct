@@ -21,11 +21,11 @@ Create a new application (where "myapp" is the application name):
 
 ```
 $ fluct new myapp
-  Created ./myapp
-  Created ./myapp/.gitignore
-  Created ./myapp/actions
-  Created ./myapp/actions/.keep
-  Created ./myapp/package.json
+Created ./myapp
+Created ./myapp/.gitignore
+Created ./myapp/actions
+Created ./myapp/actions/.keep
+Created ./myapp/package.json
 ```
 
 ### fluct generate
@@ -33,10 +33,10 @@ Generate a new action (where "list_users" is the action name):
 
 ```
 $ fluct generate action list_users
-  Created ./actions/list_users
-  Created ./actions/list_users/dest
-  Created ./actions/list_users/dest/index.js
-  Created ./actions/list_users/package.json
+Created ./actions/list_users
+Created ./actions/list_users/dest
+Created ./actions/list_users/dest/index.js
+Created ./actions/list_users/package.json
 ```
 
 ### fluct server
@@ -53,8 +53,10 @@ Upload your functions to Amazon Lambda and update your endpoints on Amazon API G
 
 ```
 $ fluct deploy
-Created ./actions/get_users/dest.zip
+Created ./actions/get_user/dest.zip
 Created ./actions/list_users/dest.zip
+Uploaded get_user function
+Uploaded list_users function
 POST   https://apigateway.us-east-1.amazonaws.com/restapis
 DELETE https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/models/Empty
 DELETE https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/models/Error
