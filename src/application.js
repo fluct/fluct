@@ -51,6 +51,25 @@ export default class Application {
   }
 
   /**
+   * @return {String}
+   */
+  getName() {
+    return this.getPackage().name;
+  }
+
+  /**
+   * @return {Object}
+   */
+  getPackage() {
+    if (!this.package) {
+      this.package = JSON.parse(
+        fs.readFileSync(`./package.json`)
+      );
+    }
+    return this.package;
+  }
+
+  /**
    * @param {Integer} port
    * @param {Function=} callback
    */

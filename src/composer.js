@@ -1,7 +1,6 @@
 import { Client } from 'amazon-api-gateway-client'
 import fs from 'fs'
 import path from 'path'
-import yaml from 'js-yaml'
 
 /**
  * @class
@@ -9,39 +8,39 @@ import yaml from 'js-yaml'
 export default class Composer {
   /**
    * @param {String} accessKeyId
+   * @param {Application} application
    * @param {Client=} client
    * @param {String} region
    * @param {String} secretAccessKey
-   * @param {String} swaggerFilePath
    */
-  constructor({ accessKeyId, client, region, secretAccessKey, swaggerFilePath }) {
+  constructor({ accessKeyId, application, client, region, secretAccessKey }) {
     this.accessKeyId = accessKeyId;
+    this.application = application;
     this.client = client;
     this.region = region;
     this.secretAccessKey = secretAccessKey;
-    this.swaggerFilePath = swaggerFilePath;
   }
 
   /**
    * @param {String} httpMethod
-   * @param {Object} methodSchema
+   * @param {String} path
    * @param {Stirng} resourceId
    * @param {Stirng} restapiId
    * @return {Promise}
    */
-  createMethodSet({ httpMethod, methodSchema, resourceId, restapiId }) {
+  createMethodSet({ httpMethod, path, resourceId, restapiId }) {
     return this.getClient().putMethod({
       httpMethod: httpMethod,
       resourceId: resourceId,
       restapiId: restapiId
-    }).then(() => {
+    }).then((resource) => {
       return this.getClient().putIntegration({
         httpMethod: httpMethod,
-        integrationHttpMethod: methodSchema['x-amazon-apigateway-integration']['httpMethod'],
+        integrationHttpMethod: 'GET',
         resourceId: resourceId,
         restapiId: restapiId,
-        type: methodSchema['x-amazon-apigateway-integration']['type'] == 'http' ? 'HTTP' : 'LAMBDA',
-        uri: methodSchema['x-amazon-apigateway-integration']['uri'],
+        type: 'HTTP',
+        uri: 'http://example.com',
       });
     }).then(() => {
       return this.getClient().putMethodResponse({
@@ -61,30 +60,6 @@ export default class Composer {
   }
 
   /**
-   * @param {Object} methodsMap
-   * @param {Stirng} path
-   * @param {Stirng} restapiId
-   * @return {Promise}
-   */
-  createMethods({ methodsMap, path, restapiId }) {
-    return this.getClient().findResourceByPath({
-      path: path,
-      restapiId: restapiId
-    }).then((resource) => {
-      return Promise.all(
-        Object.keys(methodsMap).map((method) => {
-          return this.createMethodSet({
-            httpMethod: method,
-            methodSchema: methodsMap[method],
-            resourceId: resource.source.id,
-            restapiId: restapiId
-          })
-        })
-      );
-    });
-  }
-
-  /**
    * @param {String} restapiId
    * @return {Promise}
    */
@@ -93,13 +68,18 @@ export default class Composer {
       paths: this.getPaths(),
       restapiId: restapiId
     }).then(() => {
-      const pathsMap = this.getPathsMap();
       return Promise.all(
-        Object.keys(pathsMap).map((path) => {
-          return this.createMethods({
-            methodsMap: pathsMap[path],
-            path: path,
+        this.application.getActions().map((action) => {
+          return this.getClient().findResourceByPath({
+            path: action.getPath(),
             restapiId: restapiId
+          }).then((resource) => {
+            return this.createMethodSet({
+              httpMethod: action.getHttpMethod(),
+              path: action.getPath(),
+              resourceId: resource.source.id,
+              restapiId: restapiId
+            });
           });
         })
       );
@@ -111,7 +91,7 @@ export default class Composer {
    */
   createRestapi() {
     return this.getClient().createRestapi({
-      name: this.getSwagger().info.title
+      name: this.application.getName()
     });
   }
 
@@ -141,8 +121,10 @@ export default class Composer {
     return this.createRestapi().then((restapi) => {
       return this.deleteDefaultModels({
         restapiId: restapi.source.id
+      }).then(() => {
+        return restapi;
       });
-    }).then(() => {
+    }).then((restapi) => {
       return this.createResourceSets({
         restapiId: restapi.source.id
       });
@@ -167,23 +149,9 @@ export default class Composer {
    * @return {Array.<String>}
    */
   getPaths() {
-    const basePath = this.getBasePath();
-    return Object.keys(this.getSwagger().paths).map((entrypointPath) => {
-      return path.join(basePath, entrypointPath);
+    return this.application.getActions().map((action) => {
+      return action.getPath();
     });
-  }
-
-  /**
-   * @return {Object}
-   */
-  getPathsMap() {
-    const basePath = this.getBasePath();
-    const pathsMap = this.getSwagger().paths;
-    const map = {};
-    Object.keys(pathsMap).forEach((entrypointPath) => {
-      map[path.join(basePath, entrypointPath)] = pathsMap[entrypointPath];
-    });
-    return map;
   }
 
   /**
@@ -194,37 +162,10 @@ export default class Composer {
   use(middleware, options) {
     return new this.constructor({
       accessKeyId: this.accessKeyId,
+      application: this.application,
       client: this.getClient().use(middleware, options),
       region: this.region,
-      secretAccessKey: this.secretAccessKey,
-      swaggerFilePath: this.swaggerFilePath
+      secretAccessKey: this.secretAccessKey
     });
-  }
-
-  /**
-   * @private
-   * @return {String}
-   */
-  getBasePath() {
-    return this.getSwagger().basePath || '/';
-  }
-
-  /**
-   * @private
-   * @return {Object}
-   */
-  getSwagger() {
-    if (!this.swagger) {
-      this.swagger = this.parseSwaggerFile();
-    }
-    return this.swagger;
-  }
-
-  /**
-   * @private
-   * @return {Object}
-   */
-  parseSwaggerFile() {
-    return yaml.safeLoad(fs.readFileSync(this.swaggerFilePath, 'utf8'));
   }
 }
