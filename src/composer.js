@@ -3,6 +3,8 @@ import awsLambda from 'node-aws-lambda'
 import crypto from 'crypto'
 import { Client } from 'amazon-api-gateway-client'
 
+const DEFAULT_STAGE_NAME = 'production';
+
 /**
  * @class
  */
@@ -20,6 +22,17 @@ export default class Composer {
     this.client = client;
     this.region = region;
     this.secretAccessKey = secretAccessKey;
+  }
+
+  /**
+   * @param {Stirng} restapiId
+   * @return {Promise}
+   */
+  createDeployment({ restapiId }) {
+    return this.getClient().createDeployment({
+      restapiId: restapiId,
+      stageName: DEFAULT_STAGE_NAME
+    });
   }
 
   /**
@@ -167,6 +180,12 @@ export default class Composer {
       });
     }).then((restapi) => {
       return this.createResourceSets({
+        restapiId: restapi.source.id
+      }).then(() => {
+        return restapi;
+      });
+    }).then((restapi) => {
+      this.createDeployment({
         restapiId: restapi.source.id
       });
     });
