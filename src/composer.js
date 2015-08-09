@@ -113,6 +113,9 @@ export default class Composer {
   createRestapi() {
     return this.getClient().createRestapi({
       name: this.application.getName()
+    }).then((restapi) => {
+      this.application.writeRestapiId(restapi.source.id);
+      return restapi;
     });
   }
 

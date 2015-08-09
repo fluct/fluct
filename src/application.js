@@ -51,6 +51,15 @@ export default class Application {
   }
 
   /**
+   * @return {Object}
+   */
+  getMetadata() {
+    return JSON.parse(
+      fs.readFileSync('./package.json')
+    );
+  }
+
+  /**
    * @return {String}
    */
   getName() {
@@ -79,5 +88,17 @@ export default class Application {
    */
   listen(port, callback) {
     return this.getExpressApplication().listen(port, callback);
+  }
+
+  /**
+   * @param {String} restapiId
+   */
+  writeRestapiId(restapiId) {
+    const metadata = this.getMetadata();
+    metadata.fluct.restapiId = restapiId;
+    fs.writeSync(
+      fs.openSync('./package.json', 'w'),
+      JSON.stringify(metadata, null, 2)
+    );
   }
 }

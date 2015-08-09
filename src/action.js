@@ -76,12 +76,9 @@ export default class Action {
    * @return {Object}
    */
   getMetadata() {
-    if (!this.package) {
-      this.package = JSON.parse(
-        fs.readFileSync(`${this.getDirectoryPath()}/package.json`)
-      );
-    }
-    return this.package;
+    return JSON.parse(
+      fs.readFileSync(`${this.getDirectoryPath()}/package.json`)
+    );
   }
 
   /**
