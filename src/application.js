@@ -67,6 +67,13 @@ export default class Application {
   }
 
   /**
+   * @return {String}
+   */
+  getRestapiId() {
+    return this.getPackage().fluct.restapiId;
+  }
+
+  /**
    * @param {Integer} port
    * @param {Function=} callback
    */

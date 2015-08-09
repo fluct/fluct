@@ -155,7 +155,7 @@ export default class Composer {
     }).then(() => {
       return this.updateActionsMetadata();
     }).then(() => {
-      return this.createRestapi();
+      return this.findOrCreateRestapi();
     }).then((restapi) => {
       return this.deleteDefaultModels({
         restapiId: restapi.source.id
@@ -167,6 +167,18 @@ export default class Composer {
         restapiId: restapi.source.id
       });
     });
+  }
+
+  /**
+   * @return {Promise}
+   */
+  findOrCreateRestapi() {
+    const restapiId = this.application.getRestapiId();
+    if (restapiId) {
+      return this.getClient().getRestapi({ restapiId: restapiId });
+    } else {
+      return this.createRestapi();
+    }
   }
 
   /**
