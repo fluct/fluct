@@ -16,9 +16,6 @@ export default class DeployCommand extends BaseCommand {
     this.command = command;
   }
 
-  /**
-   * Call this method to run this command.
-   */
   run() {
     const LoggerMiddleware = (application) => {
       this.application = application;

@@ -68,6 +68,16 @@ PUT    https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/resources/
 PUT    https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/resources/i7qrat/methods/GET/integration/responses/200
 ```
 
+### fluct routes
+List all routes.
+
+```
+$ fluct routes
+GET    /recipes (list_recipes)
+POST   /recipes (create_recipe)
+GET    /users (list_users)
+```
+
 ## Action
 The behaviors of your application is defined as a collection of actions.
 An action is defined in a set of index.js and package.json files,

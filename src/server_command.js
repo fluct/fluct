@@ -26,9 +26,6 @@ export default class ServerCommand extends BaseCommand {
     }
   }
 
-  /**
-   * Call this method to run this command.
-   */
   run() {
     const port = this.getPort();
     new Application().listen(port, () => {

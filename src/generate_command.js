@@ -48,9 +48,6 @@ export default class GenerateCommand extends BaseCommand {
     return `./actions/${this.name}`;
   }
 
-  /**
-   * Call this method to run this command.
-   */
   run() {
     this.createActionDirectory();
     this.createDestDirectory();

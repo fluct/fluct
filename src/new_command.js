@@ -43,9 +43,6 @@ export default class NewCommand extends BaseCommand {
     });
   }
 
-  /**
-   * Call this method to run this command.
-   */
   run() {
     this.createApplicationDirectory();
     this.createGitIgnoreFile();
