@@ -1,3 +1,7 @@
+## v0.0.7
+- Create restapi only at 1st time
+- Improve generated package.json content
+
 ## v0.0.6
 - Add a new command: `fluct deploy`
 
