@@ -146,6 +146,7 @@ package.json defines package dependencies and metadata for Lambda & API Gateway.
   "name": "list_users",
   "version": "0.0.1",
   "fluct": {
+    "contentType": "text/html",
     "httpMethod": "GET",
     "path": "/users"
   }
