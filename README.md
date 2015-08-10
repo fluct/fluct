@@ -27,12 +27,14 @@ The goals of this project are:
 - Infinite scalability
 - Cost savings
 
-## Install
+## Usage
+### Install
+We recommend you to install it globally to use `fluct` executable.
+
 ```
 npm install fluct -g
 ```
 
-## Usage
 ### fluct new
 Create a new application (where "myapp" is the application name):
 
