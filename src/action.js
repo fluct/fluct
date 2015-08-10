@@ -99,7 +99,7 @@ export default class Action {
    * @todo This returns dummy value for now
    * @return {String}
    */
-  getRole() {
+  getRoleArn() {
     return 'arn:aws:iam::549958975024:role/myFirstRole';
   }
 
