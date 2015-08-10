@@ -1,6 +1,23 @@
 # Fluct
 Fluct is a web-application framework that includes everything needed to manage
 Amazon API Gateway and Amazon Lambda backend web applications.
+
+- [Goals](#goals)
+- [Install](#install)
+- [Usage](#usage)
+  - [fluct new](#fluct-new)
+  - [fluct generate](#fluct-generate)
+  - [fluct server](#fluct-server)
+  - [fluct deploy](#fluct-deploy)
+  - [fluct routes](#fluct-routes)
+- [Application](#application)
+  - [package.json](#packagejson)
+- [Action](#action)
+  - [index.js](#indexjs)
+  - [package.json](#packagejson-1)
+- [Credentials](#credentials)
+
+## Goals
 The goals of this project are:
 
 - Server-less web application
@@ -78,6 +95,35 @@ POST   /recipes (create_recipe)
 GET    /users (list_users)
 ```
 
+## Application
+A typical fluct application's file structure will be like this:
+
+```
+.
+|-- actions
+|   |-- create_recipe
+|   |-- list_users
+|   `-- list_recipes
+`-- package.json
+```
+
+### package.json
+In addition to information about npm, a fluct application's package.json has some fluct-specific
+metadata, such as `fluct.restapiId` and `fluct.roleArn`.
+Because fluct has no support to generate IAM roles yet, you need to manually create an IAM role
+that has `AWSLambdaBasicExecutionRole` and configure its ARN into `fluct.roleArn` property.
+
+```json
+{
+  "name": "myapp",
+  "version": "0.0.1",
+  "fluct": {
+    "restapiId": "b15rph8lh3",
+    "roleArn": "arn:aws:iam::012345678912:role/myExampleRole"
+  }
+}
+```
+
 ## Action
 The behaviors of your application is defined as a collection of actions.
 An action is defined in a set of index.js and package.json files,
@@ -105,3 +151,10 @@ package.json defines package dependencies and metadata for Lambda & API Gateway.
   }
 }
 ```
+
+## Credentials
+fluct will automatically detect your AWS credentials from the shared credentials file in
+`~/.aws/credentials` or environment variables such as `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`,
+and `AWS_PROFILE`. fluct internally uses AWS SDK for JavaScript, so please see
+[Configuring the SDK in Node.js — AWS SDK for JavaScript](http://docs.aws.amazon.com/AWSJavaScriptSDK/guide/node-configuring.html)
+for more details about AWS credentials settings.
