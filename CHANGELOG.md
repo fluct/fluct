@@ -1,3 +1,6 @@
+## v0.1.0
+- Use text/html response by default
+
 ## v0.0.8
 - Add new command: `fluct routes`
 - Create deployment at the end of `fluct deploy`

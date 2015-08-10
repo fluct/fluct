@@ -1,6 +1,6 @@
 {
   "name": "fluct",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "repository": "r7kamura/fluct",
   "main": "lib/index.js",
   "scripts": {
