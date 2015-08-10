@@ -1,5 +1,8 @@
 {
   "name": "1",
   "version": "0.0.1",
-  "fluct": {}
+  "fluct": {
+    "restapiId": null,
+    "roleArn": null
+  }
 }

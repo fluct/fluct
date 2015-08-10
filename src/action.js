@@ -96,14 +96,6 @@ export default class Action {
   }
 
   /**
-   * @todo This returns dummy value for now
-   * @return {String}
-   */
-  getRoleArn() {
-    return 'arn:aws:iam::549958975024:role/myFirstRole';
-  }
-
-  /**
    * @return {Integer}
    */
   getTimeout() {

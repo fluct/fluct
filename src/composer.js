@@ -258,7 +258,7 @@ export default class Composer {
               functionName: action.getName(),
               handler: action.getHandlerId(),
               region: action.getRegion(),
-              role: action.getRoleArn(),
+              role: this.application.getRoleArn(),
               timeout: action.getTimeout()
             },
             () => {

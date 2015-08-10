@@ -83,6 +83,13 @@ export default class Application {
   }
 
   /**
+   * @return {String}
+   */
+  getRoleArn() {
+    return this.getMetadata().fluct.roleArn;
+  }
+
+  /**
    * @param {Integer} port
    * @param {Function=} callback
    */
