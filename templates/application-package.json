@@ -1,5 +1,5 @@
 {
-  "name": "1",
+  "name": "<%= applicationName %>",
   "version": "0.0.1",
   "fluct": {
     "restapiId": null,
