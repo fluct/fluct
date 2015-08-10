@@ -144,24 +144,6 @@ export default class Composer {
   }
 
   /**
-   * @param {String} restapiId
-   * @return {Promise}
-   */
-  deleteDefaultModels({ restapiId }) {
-    return Promise.all(
-      [
-        'Empty',
-        'Error'
-      ].map((modelName) => {
-        return this.getClient().deleteModel({
-          modelName: modelName,
-          restapiId: restapiId
-        });
-      })
-    );
-  }
-
-  /**
    * Set up Amazon Lambda functions and API Gateway endpoints.
    * @return {Promise}
    */
@@ -172,12 +154,6 @@ export default class Composer {
       return this.updateActionsMetadata();
     }).then(() => {
       return this.findOrCreateRestapi();
-    }).then((restapi) => {
-      return this.deleteDefaultModels({
-        restapiId: restapi.source.id
-      }).then(() => {
-        return restapi;
-      });
     }).then((restapi) => {
       return this.createResourceSets({
         restapiId: restapi.source.id
