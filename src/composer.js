@@ -40,11 +40,13 @@ export default class Composer {
    * @param {String} httpMethod
    * @param {String} path
    * @param {Stirng} resourceId
+   * @param {Object} responseModels
+   * @param {Object} responseTemplates
    * @param {Stirng} restapiId
    * @param {String} uri
    * @return {Promise}
    */
-  createMethodSet({ functionName, httpMethod, path, resourceId, restapiId, uri }) {
+  createMethodSet({ functionName, httpMethod, path, resourceId, responseModels, responseTemplates, restapiId, uri }) {
     return this.getClient().putMethod({
       httpMethod: httpMethod,
       resourceId: resourceId,
@@ -62,6 +64,7 @@ export default class Composer {
       return this.getClient().putMethodResponse({
         httpMethod: httpMethod,
         resourceId: resourceId,
+        responseModels: responseModels,
         restapiId: restapiId,
         statusCode: 200
       });
@@ -69,6 +72,7 @@ export default class Composer {
       return this.getClient().putIntegrationResponse({
         httpMethod: httpMethod,
         resourceId: resourceId,
+        responseTemplates: responseTemplates,
         restapiId: restapiId,
         statusCode: 200
       });
@@ -111,6 +115,8 @@ export default class Composer {
               httpMethod: action.getHttpMethod(),
               path: action.getPath(),
               resourceId: resource.source.id,
+              responseModels: action.getResponseModels(),
+              responseTemplates: action.getResponseTemplates(),
               restapiId: restapiId,
               uri: action.getUri()
             });

@@ -134,7 +134,7 @@ index.js defines a handler for your Amazon Lambda function.
 
 ```js
 export.handler = function (event, context) {
-  context.succeed({ foo: 'bar' });
+  context.succeed('Hello, world!');
 };
 ```
 

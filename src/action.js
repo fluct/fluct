@@ -96,6 +96,28 @@ export default class Action {
   }
 
   /**
+   * @return {Object}
+   */
+  getResponseModels() {
+    if (this.getMetadata().fluct.contentType == 'application/json') {
+      return {}
+    } else {
+      return { 'text/html': 'Empty' }
+    }
+  }
+
+  /**
+   * @return {Object}
+   */
+  getResponseTemplates() {
+    if (this.getMetadata().fluct.contentType == 'application/json') {
+      return {}
+    } else {
+      return { 'text/html': "$input.path('$')" }
+    }
+  }
+
+  /**
    * @return {Integer}
    */
   getTimeout() {
