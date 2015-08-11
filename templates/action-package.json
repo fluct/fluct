@@ -2,6 +2,7 @@
   "name": "<%= actionName %>",
   "private": true,
   "fluct": {
+    "arn": null,
     "contentType": "text/html",
     "httpMethod": "GET",
     "path": "/dummy"
