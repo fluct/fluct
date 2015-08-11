@@ -1,3 +1,7 @@
+## v0.1.1
+- Add new command: `fluct install`
+- Provide command aliases
+
 ## v0.1.0
 - Use text/html response by default
 
