@@ -12,9 +12,7 @@ program
   .command('deploy')
   .description('Deploy actions to AWS')
   .action(function (command) {
-    new DeployCommand({
-      command: command
-    }).run()
+    new DeployCommand().run();
   });
 
 program
@@ -25,7 +23,6 @@ program
   .description('Generate a new resource')
   .action(function (generator, name, command) {
     new GenerateCommand({
-      command: command,
       generator: generator,
       name: name
     }).run()
@@ -45,7 +42,6 @@ program
   .description('Generate a new application')
   .action(function (name, command) {
     new NewCommand({
-      command: command,
       name: name
     }).run()
   });
@@ -62,9 +58,7 @@ program
   .description('Launch a web server')
   .option('-p, --port <number>', 'Run server on the specified port (default: 3000)')
   .action(function (command) {
-    new ServerCommand({
-      command: command
-    }).run();
+    new ServerCommand().run();
   });
 
 program.parse(process.argv);

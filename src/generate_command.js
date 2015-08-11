@@ -7,11 +7,9 @@ export default class GenerateCommand extends BaseCommand {
   /**
    * @param {String} generator Only "action" is supported
    * @param {String} name
-   * @param {Command} command A command object of commander.js
    */
-  constructor({ command, generator, name }) {
+  constructor({ generator, name }) {
     super();
-    this.command = command;
     this.generator = generator;
     this.name = name;
   }

@@ -6,11 +6,9 @@ import BaseCommand from './base_command'
 export default class NewCommand extends BaseCommand {
   /**
    * @param {String} name Passed function name
-   * @param {Command} command A command object of commander.js
    */
-  constructor({ command, name }) {
+  constructor({ name }) {
     super();
-    this.command = command;
     this.name = name;
   }
 

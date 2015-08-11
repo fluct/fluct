@@ -8,14 +8,6 @@ import { Client } from 'amazon-api-gateway-client'
  * @class
  */
 export default class DeployCommand extends BaseCommand {
-  /**
-   * @param {Command} command A command object of commander.js
-   */
-  constructor({ command }) {
-    super();
-    this.command = command;
-  }
-
   run() {
     const LoggerMiddleware = (application) => {
       this.application = application;

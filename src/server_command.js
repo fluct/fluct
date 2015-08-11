@@ -8,14 +8,6 @@ const DEFAULT_PORT = 3000;
  */
 export default class ServerCommand extends BaseCommand {
   /**
-   * @param {Command} command A command object of commander.js
-   */
-  constructor({ command }) {
-    super();
-    this.command = command;
-  }
-
-  /**
    * @return {Integer}
    */
   getPort() {
