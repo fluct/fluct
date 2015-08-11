@@ -1,3 +1,7 @@
+## v0.2.1
+- Add missing dependency (#14)
+- Fix `fluct deploy` bug
+
 ## v0.2.0
 - Change action directory structure
 - Include node_modules into zip file for Lambda function
