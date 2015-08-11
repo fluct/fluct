@@ -18,17 +18,28 @@ export default class Action {
    */
   createZipFile() {
     return new Promise((resolve, reject) => {
+      const actionPath = this.getDirectoryPath();
       const zipfile = new yazl.ZipFile();
-      glob.sync(`${this.getDirectoryPath()}/dist/**/*.js`).forEach((path) => {
-        zipfile.addFile(
-          path,
-          path.substr(`${this.getDirectoryPath()}/dist/`.length)
-        );
+      glob.sync(`${actionPath}/dist/**/*`).forEach((path) => {
+        if (!fs.lstatSync(path).isDirectory()) {
+          zipfile.addFile(
+            path,
+            path.substr(`${actionPath}/dist/`.length)
+          );
+        }
+      });
+      glob.sync(`${actionPath}/node_modules/**/*`).forEach((path) => {
+        if (!fs.lstatSync(path).isDirectory()) {
+          zipfile.addFile(
+            path,
+            path.substr(`${actionPath}/`.length)
+          );
+        }
       });
       zipfile.outputStream.pipe(
-        fs.createWriteStream(`${this.getDirectoryPath()}/dist.zip`)
+        fs.createWriteStream(`${actionPath}/dist.zip`)
       ).on('close', () => {
-        console.log(`Created ${this.getDirectoryPath()}/dist.zip`);
+        console.log(`Created ${actionPath}/dist.zip`);
         resolve();
       });
       zipfile.end();
