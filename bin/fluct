@@ -23,10 +23,7 @@ program
   .arguments('<name>')
   .description('Generate a new resource from <generator> (e.g. "action")')
   .action(function (generator, name, command) {
-    new GenerateCommand({
-      generator: generator,
-      name: name
-    }).run()
+    new GenerateCommand({ generator: generator, name: name }).run()
   });
 
 program
@@ -43,9 +40,7 @@ program
   .arguments('<name>')
   .description('Generate a new application')
   .action(function (name, command) {
-    new NewCommand({
-      name: name
-    }).run()
+    new NewCommand({ name: name }).run()
   });
 
 program
@@ -62,7 +57,7 @@ program
   .description('Launch a web server')
   .option('-p, --port <number>', 'Run server on the specified port (default: 3000)')
   .action(function (command) {
-    new ServerCommand().run();
+    new ServerCommand({ port: command.port }).run();
   });
 
 program.parse(process.argv);

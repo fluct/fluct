@@ -8,11 +8,19 @@ const DEFAULT_PORT = 3000;
  */
 export default class ServerCommand extends BaseCommand {
   /**
+   * @param {String} port
+   */
+  constructor({ port }) {
+    super();
+    this.port = port;
+  }
+
+  /**
    * @return {Integer}
    */
   getPort() {
-    if (this.command.port) {
-      return parseInt(this.command.port, 10);
+    if (this.port) {
+      return parseInt(this.port, 10);
     } else {
       return DEFAULT_PORT;
     }

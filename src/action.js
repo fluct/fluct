@@ -46,7 +46,7 @@ export default class Action {
    * @return {Function}
    */
   getHandler() {
-    const handlerScriptPath = `${this.getDirectoryPath()}/index.js`;
+    const handlerScriptPath = `${process.cwd()}/${this.getDirectoryPath()}/dist`;
     delete(require.cache[handlerScriptPath]);
     return require(handlerScriptPath).handler;
   }
@@ -139,7 +139,7 @@ export default class Action {
     this.getHandler()(
       {},
       {
-        done: (value) => {
+        succeed: (value) => {
           response.send(value);
         }
       }
