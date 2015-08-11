@@ -9,7 +9,7 @@ var ServerCommand = require('../lib/server_command');
 
 program
   .command('deploy')
-  .description('Deploy functions to AWS')
+  .description('Deploy actions to AWS')
   .action(function (command) {
     new DeployCommand({
       command: command
