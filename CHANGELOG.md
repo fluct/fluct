@@ -1,3 +1,9 @@
+## v0.2.0
+- Change action directory structure
+- Include node_modules into zip file for Lambda function
+- Improve `fluct deploy` logs
+- Improve `fluct routes` format
+
 ## v0.1.2
 - Fix broken `fluct server` command
 
