@@ -156,7 +156,7 @@ export.handler = function (event, context) {
 ### package.json
 An action's package.json has special metadata in its `fluct` property for Lambda & API Gateway.
 For example, when you want to provide an endpoint for list_users fuction via `GET /users`,
-update httpMethod and path properties.
+update httpMethod and path properties with `"GET"` and `"/users"`.
 
 ```json
 {
