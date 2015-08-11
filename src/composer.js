@@ -306,7 +306,7 @@ export default class Composer extends EventEmitter {
   uploadAction({ functionName, handlerId, region, roleArn, timeout, zipPath, }) {
     return new Promise((resolve, reject) => {
       awsLambda.deploy(
-        functionName,
+        zipPath,
         {
           functionName: functionName,
           handler: handlerId,
