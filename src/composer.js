@@ -7,7 +7,6 @@ import yazl from 'yazl'
 import { Client } from 'amazon-api-gateway-client'
 import { EventEmitter } from 'events'
 
-
 const DEFAULT_STAGE_NAME = 'production';
 
 /**
