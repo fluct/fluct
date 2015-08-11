@@ -1,8 +1,12 @@
 # Fluct
-Fluct is a web-application framework that includes everything needed to manage
-Amazon API Gateway and Amazon Lambda backend web applications.
+Fluct is a framework to build server-less web applications using AWS services,
+such as [API Gateway](https://aws.amazon.com/api-gateway/),
+[Lambda](https://aws.amazon.com/lambda/),
+[DynamoDB](https://aws.amazon.com/dynamodb/), and so on.
+This server-less architecture brings about great advantages in the web development,
+such as fully isolated components, infinitely scalability, easy and rapid development,
+cheap server cost, and more and more.
 
-- [Goals](#goals)
 - [Usage](#usage)
   - [Install](#install)
   - [fluct new](#fluct-new)
@@ -18,24 +22,11 @@ Amazon API Gateway and Amazon Lambda backend web applications.
   - [package.json](#packagejson-1)
 - [Credentials](#credentials)
 
-## Goals
-The goals of this project are:
-
-- Server-less web application
-- Easy and rapid development
-- Multiple staging environments
-- Endpoint-isolated deployments
-- Infinite scalability
-- Cost savings
-
 ## Usage
 Install fluct globally to use `fluct` executable.
 
 ```
 $ npm install fluct -g
-```
-
-```
 $ fluct --help
 
   Usage: fluct [options] [command]
