@@ -1,56 +1,24 @@
 # Fluct
-Fluct is a framework to build server-less web applications using AWS services,
-such as [API Gateway](https://aws.amazon.com/api-gateway/),
-[Lambda](https://aws.amazon.com/lambda/),
-[DynamoDB](https://aws.amazon.com/dynamodb/), and so on.
-This server-less architecture brings about great advantages in the web development,
+Fluct is a framework to build server-less web applications using
+[Lambda](https://aws.amazon.com/lambda/) and [API Gateway](https://aws.amazon.com/api-gateway/).
+This stack brings about great advantages in the web development,
 such as fully isolated components, infinitely scalability, easy and rapid development,
 cheap server cost, and more and more.
 
-- [Usage](#usage)
-  - [fluct new](#fluct-new)
-  - [fluct generate](#fluct-generate)
-  - [fluct server](#fluct-server)
-  - [fluct deploy](#fluct-deploy)
-  - [fluct routes](#fluct-routes)
-  - [fluct deployments](#fluct-deployments)
-- [Application](#application)
-  - [package.json](#packagejson)
-  - [Role](#role)
-  - [Credentials](#credentials)
-- [Action](#action)
-  - [index.js](#indexjs)
-  - [package.json](#packagejson-1)
+- [Getting Started](#getting-started)
+- [Command Line Interface](/docs/command-line-interface)
+- [Customize](/customize)
 
-## Usage
-Install fluct globally to use `fluct` executable.
+## Getting Started
+### Install
+Install `fluct` executable via npm.
 
 ```
 $ npm install fluct -g
 ```
 
-```
-$ fluct --help
-
-  Usage: fluct [options] [command]
-
-
-  Commands:
-
-    d|deploy             Deploy actions to AWS
-    l|deployments        List recent deployments
-    g|generate <name>    Generate a new resource from <generator> (e.g. "action")
-    n|new <name>         Generate a new application
-    r|routes             List all routes
-    s|server [options]   Launch a web server
-
-  Options:
-
-    -h, --help  output usage information
-```
-
-### fluct new
-Create a new application (where "myapp" is the application name):
+### Create an application
+Create a new application with an application name:
 
 ```
 $ fluct new myapp
@@ -61,126 +29,23 @@ Created ./myapp/actions/.keep
 Created ./myapp/package.json
 ```
 
-### fluct generate
-Generate a new action (where "list_users" is the action name):
+### Create an action
+Enter the application folder and generate a new action:
 
 ```
+$ cd myapp
 $ fluct generate list_users
 Created ./actions/list_users
 Created ./actions/list_users/index.js
 Created ./actions/list_users/package.json
 ```
 
-### fluct server
-Launches a local web server that behaves like Amazon API Gateway for development use.
-You'll use this any time you want to access your web application in your local machine.
+### Set up the action
+Update the action's package.json with proper httpMethod and path:
 
 ```
-$ fluct server
-Server starting on http://127.0.0.1:3000
-```
-
-### fluct deploy
-Upload your actions to Amazon Lambda and update your endpoints on Amazon API Gateway.
-
-```
-$ fluct deploy
-Created zip file: ./actions/list_users/lambda.zip
-Created zip file: ./actions/show_root/lambda.zip
-Uploaded function: list_users
-Uploaded function: show_root
-Updated endpoint: GET /
-Updated endpoint: GET /users
-Deployed: https://123ge4oabj.execute-api.us-east-1.amazonaws.com/production
-```
-
-### fluct routes
-List all routes.
-
-```
-$ fluct routes
-GET    /recipes #list_recipes
-POST   /recipes #create_recipe
-GET    /users   #list_users
-```
-
-### fluct deployments
-List recent deployments.
-
-```
-$ fluct deployments
-=== myapp deployments
-8bacdi  2015-08-11 19:27 +09:00
-lxr8fu  2015-08-11 19:26 +09:00
-vukio1  2015-08-11 18:38 +09:00
-```
-
-## Application
-A typical fluct application's file structure will be like this:
-
-```
-.
-|-- actions
-|   |-- create_recipe
-|   |-- list_users
-|   `-- list_recipes
-`-- package.json
-```
-
-### package.json
-In addition to information about npm, a fluct application's package.json has some fluct-specific
-metadata in `fluct` property, such as `restapiId` and `roleArn`.
-The `restapiId` will be automatically set when you executed `fluct deploy` at the 1st time.
-The `roleArn` is not automatically set, so you need to manually configure it (see the Role section).
-
-```json
-{
-  "name": "myapp",
-  "private": true,
-  "fluct": {
-    "restapiId": "b15rph8lh3",
-    "roleArn": "arn:aws:iam::012345678912:role/myExampleRole"
-  }
-}
-```
-
-### Role
-Because fluct has no support to generate a new IAM role, you need to manually create an IAM role
-that has `AWSLambdaBasicExecutionRole` and configure its ARN into `roleArn` property like above example.
-If you have installed aws-cli and you are authorized to create a new IAM role,
-you can create it by the following command (where `fluct-myapp` is the new role name):
-
-```
-$ aws iam create-role --role-name fluct-myapp --assume-role-policy-document arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-```
-
-### Credentials
-fluct will automatically detect your AWS credentials from the shared credentials file in
-`~/.aws/credentials` or environment variables such as `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`,
-and `AWS_PROFILE`. fluct internally uses AWS SDK for JavaScript, so please see
-[Configuring the SDK in Node.js — AWS SDK for JavaScript](http://docs.aws.amazon.com/AWSJavaScriptSDK/guide/node-configuring.html)
-for more details about AWS credentials settings.
-
-## Action
-The behaviors of your application is defined as a collection of actions.
-An action is defined in a set of index.js and package.json files,
-located in a directory named with its action name (e.g. `list_users`).
-
-### index.js
-index.js defines a handler for your Amazon Lambda function.
-
-```js
-export.handler = function (event, context) {
-  context.succeed('Hello, world!');
-};
-```
-
-### package.json
-An action's package.json has special metadata in its `fluct` property for Lambda & API Gateway.
-For example, when you want to provide an endpoint for list_users fuction via `GET /users`,
-update httpMethod and path properties with `"GET"` and `"/users"`.
-
-```json
+$ vi actions/list_users/package.json
+$ cat actions/list_users/package.json
 {
   "name": "list_users",
   "private": true,
@@ -192,3 +57,40 @@ update httpMethod and path properties with `"GET"` and `"/users"`.
   }
 }
 ```
+
+### Set your IAM role
+Head over to [AWS Console](https://console.aws.amazon.com) and create a new IAM role
+that has `AWSLambdaBasicExecutionRole` role, then set it to application's package.json.
+This ARN is used to allow API Gateway to invoke Lambda functions.
+
+```
+$ vi package.json
+$ cat package.json
+{
+  "name": "myapp",
+  "private": true,
+  "fluct": {
+    "restapiId": null,
+    "roleArn": "arn:aws:iam::012345678912:role/myExampleRole"
+  }
+}
+```
+
+### Deploy it
+Deploy your application to Lambda and API Gateway:
+
+```
+$ fluct deploy
+Created zip file: ./actions/list_users/lambda.zip
+Uploaded function: list_users
+Updated endpoint: GET /users
+Deployed: https://123ge4oabj.execute-api.us-east-1.amazonaws.com/production
+```
+
+### Done!
+Fire up the browser and go to https://123ge4oabj.execute-api.us-east-1.amazonaws.com/production/users.
+
+### Next steps
+Now that you’re up and running, here are a few things you should know.
+See [Customize](/customize) to know how to change action behavior and implement logics,
+and see [Command Line Interface](/command-line-interface) to use useful commands to develop and debug your application.
