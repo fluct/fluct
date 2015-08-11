@@ -8,12 +8,12 @@ such as fully isolated components, infinitely scalability, easy and rapid develo
 cheap server cost, and more and more.
 
 - [Usage](#usage)
-  - [Install](#install)
   - [fluct new](#fluct-new)
   - [fluct generate](#fluct-generate)
   - [fluct server](#fluct-server)
   - [fluct deploy](#fluct-deploy)
   - [fluct routes](#fluct-routes)
+  - [fluct deployments](#fluct-deployments)
 - [Application](#application)
   - [package.json](#packagejson)
   - [Role](#role)
