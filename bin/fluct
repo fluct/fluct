@@ -30,8 +30,8 @@ program
   });
 
 program
-  .command('install')
-  .alias('i')
+  .command('i')
+  .alias('install')
   .description('Run `npm install` in all actions')
   .action(function (command) {
     new InstallCommand().run();
