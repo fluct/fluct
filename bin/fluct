@@ -9,16 +9,16 @@ var RoutesCommand = require('../lib/routes_command');
 var ServerCommand = require('../lib/server_command');
 
 program
-  .command('deploy')
-  .alias('d')
+  .command('d')
+  .alias('deploy')
   .description('Deploy actions to AWS')
   .action(function (command) {
     new DeployCommand().run();
   });
 
 program
-  .command('generate')
-  .alias('g')
+  .command('g')
+  .alias('generate')
   .arguments('<generator>')
   .arguments('<name>')
   .description('Generate a new resource')
@@ -38,8 +38,8 @@ program
   });
 
 program
-  .command('new')
-  .alias('n')
+  .command('n')
+  .alias('new')
   .arguments('<name>')
   .description('Generate a new application')
   .action(function (name, command) {
@@ -49,16 +49,16 @@ program
   });
 
 program
-  .command('routes')
-  .alias('r')
+  .command('r')
+  .alias('routes')
   .description('List all routes')
   .action(function (command) {
     new RoutesCommand().run();
   });
 
 program
-  .command('server')
-  .alias('s')
+  .command('s')
+  .alias('server')
   .description('Launch a web server')
   .option('-p, --port <number>', 'Run server on the specified port (default: 3000)')
   .action(function (command) {
