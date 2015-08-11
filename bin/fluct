@@ -17,7 +17,8 @@ program
   });
 
 program
-  .command('deployments')
+  .command('l')
+  .alias('deployments')
   .description('List recent deployments')
   .action(function (command) {
     new DeploymentsCommand().run();

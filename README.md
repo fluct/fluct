@@ -35,6 +35,7 @@ $ fluct --help
   Commands:
 
     d|deploy                       Deploy actions to AWS
+    l|deployments                  List recent deployments
     g|generate <generator> <name>  Generate a new resource from <generator> (e.g. "action")
     n|new <name>                   Generate a new application
     r|routes                       List all routes
