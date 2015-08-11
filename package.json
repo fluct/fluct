@@ -16,7 +16,6 @@
   "license": "MIT",
   "devDependencies": {
     "babel": "^5.8.20",
-    "ejs": "^2.3.3",
     "gulp": "^3.9.0",
     "gulp-babel": "^5.2.0",
     "gulp-mocha": "^2.1.3"
