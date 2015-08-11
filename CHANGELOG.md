@@ -1,3 +1,6 @@
+## v0.1.2
+- Fix broken `fluct server` command
+
 ## v0.1.1
 - Add new command: `fluct install`
 - Provide command aliases
