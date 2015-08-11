@@ -12,6 +12,7 @@ Amazon API Gateway and Amazon Lambda backend web applications.
   - [fluct routes](#fluct-routes)
 - [Application](#application)
   - [package.json](#packagejson)
+  - [Role](#role)
 - [Action](#action)
   - [index.js](#indexjs)
   - [package.json](#packagejson-1)
@@ -124,7 +125,9 @@ A typical fluct application's file structure will be like this:
 
 ### package.json
 In addition to information about npm, a fluct application's package.json has some fluct-specific
-metadata, such as `fluct.restapiId` and `fluct.roleArn`.
+metadata in `fluct` property, such as `restapiId` and `roleArn`.
+The `restapiId` will be automatically set when you executed `fluct deploy` at the 1st time.
+The `roleArn` is not automatically set, so you need to manually configure it (see the Role section).
 
 ```json
 {
