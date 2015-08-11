@@ -1,3 +1,7 @@
+## v0.2.2
+- Use common package.json in all actions
+- Add `fluct deployments` command
+
 ## v0.2.1
 - Add missing dependency (#14)
 - Fix `fluct deploy` bug
