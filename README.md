@@ -125,8 +125,6 @@ A typical fluct application's file structure will be like this:
 ### package.json
 In addition to information about npm, a fluct application's package.json has some fluct-specific
 metadata, such as `fluct.restapiId` and `fluct.roleArn`.
-Because fluct has no support to generate IAM roles yet, you need to manually create an IAM role
-that has `AWSLambdaBasicExecutionRole` and configure its ARN into `fluct.roleArn` property.
 
 ```json
 {
@@ -137,6 +135,16 @@ that has `AWSLambdaBasicExecutionRole` and configure its ARN into `fluct.roleArn
     "roleArn": "arn:aws:iam::012345678912:role/myExampleRole"
   }
 }
+```
+
+### Role
+Because fluct has no support to generate a new IAM role, you need to manually create an IAM role
+that has `AWSLambdaBasicExecutionRole` and configure its ARN into `fluct.roleArn` property like above example.
+If you have installed aws-cli and you are authorized to create a new IAM role,
+you can create it by the following command (where `fluct-myapp` is the new role name):
+
+```
+$ aws iam create-role --role-name fluct-myapp --assume-role-policy-document arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
 ```
 
 ## Action
