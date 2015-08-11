@@ -1,3 +1,6 @@
+## v0.2.3
+- Change `fluct generate` command interface
+
 ## v0.2.2
 - Use common package.json in all actions
 - Add `fluct deployments` command
