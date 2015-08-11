@@ -314,8 +314,12 @@ export default class Composer extends EventEmitter {
           role: roleArn,
           timeout: timeout
         },
-        () => {
-          resolve()
+        (error) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve();
+          }
         }
       );
     }).then((value) => {
