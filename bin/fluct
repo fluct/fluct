@@ -21,7 +21,7 @@ program
   .alias('generate')
   .arguments('<generator>')
   .arguments('<name>')
-  .description('Generate a new resource')
+  .description('Generate a new resource from <generator> (e.g. "action")')
   .action(function (generator, name, command) {
     new GenerateCommand({
       generator: generator,

@@ -3,8 +3,8 @@ Fluct is a web-application framework that includes everything needed to manage
 Amazon API Gateway and Amazon Lambda backend web applications.
 
 - [Goals](#goals)
-- [Install](#install)
 - [Usage](#usage)
+  - [Install](#install)
   - [fluct new](#fluct-new)
   - [fluct generate](#fluct-generate)
   - [fluct server](#fluct-server)
@@ -28,11 +28,29 @@ The goals of this project are:
 - Cost savings
 
 ## Usage
-### Install
-We recommend you to install it globally to use `fluct` executable.
+Install fluct globally to use `fluct` executable.
 
 ```
-npm install fluct -g
+$ npm install fluct -g
+```
+
+```
+$ fluct --help
+
+  Usage: fluct [options] [command]
+
+
+  Commands:
+
+    d|deploy                       Deploy actions to AWS
+    g|generate <generator> <name>  Generate a new resource from <generator> (e.g. "action")
+    n|new <name>                   Generate a new application
+    r|routes                       List all routes
+    s|server [options]             Launch a web server
+
+  Options:
+
+    -h, --help  output usage information
 ```
 
 ### fluct new
