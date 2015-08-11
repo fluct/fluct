@@ -90,9 +90,9 @@ export default class Composer extends EventEmitter {
     }).then((restapi) => {
       this.application.writeRestapiId(restapi.source.id);
       return restapi;
-    }).then((value) => {
+    }).then((restapi) => {
       this.emit('restapiCreated', { restapiId: restapi.source.id });
-      return value;
+      return restapi;
     });
   }
 
@@ -209,8 +209,12 @@ export default class Composer extends EventEmitter {
             region: 'us-east-1'
           });
           lambda.getFunction({ FunctionName: action.getName() }, (error, data) => {
-            action.writeArn(data.Configuration.FunctionArn);
-            resolve();
+            if (error) {
+              reject(error)
+            } else {
+              action.writeArn(data.Configuration.FunctionArn);
+              resolve();
+            }
           });
         });
       })
