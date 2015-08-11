@@ -1,3 +1,6 @@
+## v0.2.4
+- Fix function upload bug
+
 ## v0.2.3
 - Change `fluct generate` command interface
 
