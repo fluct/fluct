@@ -3,7 +3,6 @@
 var program = require('commander');
 var DeployCommand = require('../lib/deploy_command');
 var GenerateCommand = require('../lib/generate_command');
-var InstallCommand = require('../lib/install_command');
 var NewCommand = require('../lib/new_command');
 var RoutesCommand = require('../lib/routes_command');
 var ServerCommand = require('../lib/server_command');
@@ -24,14 +23,6 @@ program
   .description('Generate a new resource from <generator> (e.g. "action")')
   .action(function (generator, name, command) {
     new GenerateCommand({ generator: generator, name: name }).run()
-  });
-
-program
-  .command('i')
-  .alias('install')
-  .description('Run `npm install` in all actions')
-  .action(function (command) {
-    new InstallCommand().run();
   });
 
 program

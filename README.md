@@ -90,8 +90,6 @@ Upload your actions to Amazon Lambda and update your endpoints on Amazon API Gat
 
 ```
 $ fluct deploy
-Running `npm install` in ./actions/list_users
-Running `npm install` in ./actions/show_root
 Created zip file: ./actions/list_users/lambda.zip
 Created zip file: ./actions/show_root/lambda.zip
 Uploaded function: list_users
