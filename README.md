@@ -85,7 +85,7 @@ Server starting on http://127.0.0.1:3000
 ```
 
 ### fluct deploy
-Upload your functions to Amazon Lambda and update your endpoints on Amazon API Gateway.
+Upload your actions to Amazon Lambda and update your endpoints on Amazon API Gateway.
 
 ```
 $ fluct deploy
