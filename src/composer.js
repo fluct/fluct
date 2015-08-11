@@ -235,7 +235,7 @@ export default class Composer {
       this.application.getActions().map((action) => {
         return new Promise((resolve, reject) => {
           awsLambda.deploy(
-            `${action.getDirectoryPath()}/dist.zip`,
+            `${action.getDirectoryPath()}/lambda.zip`,
             {
               functionName: action.getName(),
               handler: action.getHandlerId(),

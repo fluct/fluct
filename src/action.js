@@ -19,31 +19,31 @@ export default class Action {
   createZipFile() {
     return new Promise((resolve, reject) => {
       const actionPath = this.getDirectoryPath();
-      const zipfile = new yazl.ZipFile();
-      glob.sync(`${actionPath}/dist/**/*`).forEach((path) => {
+      const zipFile = new yazl.ZipFile();
+      const zipPath = this.getZipPath();
+      this.deleteZipFileIfExists()
+      glob.sync(`${actionPath}/**/*`).forEach((path) => {
         if (!fs.lstatSync(path).isDirectory()) {
-          zipfile.addFile(
-            path,
-            path.substr(`${actionPath}/dist/`.length)
-          );
-        }
-      });
-      glob.sync(`${actionPath}/node_modules/**/*`).forEach((path) => {
-        if (!fs.lstatSync(path).isDirectory()) {
-          zipfile.addFile(
+          zipFile.addFile(
             path,
             path.substr(`${actionPath}/`.length)
           );
         }
       });
-      zipfile.outputStream.pipe(
-        fs.createWriteStream(`${actionPath}/dist.zip`)
+      zipFile.outputStream.pipe(
+        fs.createWriteStream(zipPath)
       ).on('close', () => {
-        console.log(`Created ${actionPath}/dist.zip`);
+        console.log(`Created ${zipPath}`);
         resolve();
       });
-      zipfile.end();
+      zipFile.end();
     });
+  }
+
+  deleteZipFileIfExists() {
+    if (fs.existsSync(this.getZipPath())) {
+      fs.unlinkSync(this.getZipPath());
+    }
   }
 
   /**
@@ -57,7 +57,7 @@ export default class Action {
    * @return {Function}
    */
   getHandler() {
-    const handlerScriptPath = `${process.cwd()}/${this.getDirectoryPath()}/dist`;
+    const handlerScriptPath = `${process.cwd()}/${this.getDirectoryPath()}`;
     delete(require.cache[handlerScriptPath]);
     return require(handlerScriptPath).handler;
   }
@@ -140,6 +140,13 @@ export default class Action {
    */
   getUri() {
     return `arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${this.getMetadata().fluct.arn}/invocations`;
+  }
+
+  /**
+   * @return {String}
+   */
+  getZipPath() {
+    return `${this.getDirectoryPath()}/lambda.zip`;
   }
 
   /**

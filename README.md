@@ -71,8 +71,7 @@ Generate a new action (where "list_users" is the action name):
 ```
 $ fluct generate action list_users
 Created ./actions/list_users
-Created ./actions/list_users/dist
-Created ./actions/list_users/dist/index.js
+Created ./actions/list_users/index.js
 Created ./actions/list_users/package.json
 ```
 
@@ -90,7 +89,7 @@ Upload your functions to Amazon Lambda and update your endpoints on Amazon API G
 
 ```
 $ fluct deploy
-Created ./actions/list_users/dist.zip
+Created ./actions/list_users/lambda.zip
 Uploaded list_users function
 POST   https://apigateway.us-east-1.amazonaws.com/restapis
 DELETE https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/models/Empty

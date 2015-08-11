@@ -18,14 +18,10 @@ export default class GenerateCommand extends BaseCommand {
     this.createDirectory(this.getActionPath());
   }
 
-  createDestDirectory() {
-    this.createDirectory(`${this.getActionPath()}/dist`);
-  }
-
   createIndexJs() {
     this.copyFile(
       `${__dirname}/../templates/index.js`,
-      `${this.getActionPath()}/dist/index.js`
+      `${this.getActionPath()}/index.js`
     );
   }
 
@@ -48,7 +44,6 @@ export default class GenerateCommand extends BaseCommand {
 
   run() {
     this.createActionDirectory();
-    this.createDestDirectory();
     this.createIndexJs();
     this.createPackageJson();
   }
