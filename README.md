@@ -17,10 +17,10 @@ cheap server cost, and more and more.
 - [Application](#application)
   - [package.json](#packagejson)
   - [Role](#role)
+  - [Credentials](#credentials)
 - [Action](#action)
   - [index.js](#indexjs)
   - [package.json](#packagejson-1)
-- [Credentials](#credentials)
 
 ## Usage
 Install fluct globally to use `fluct` executable.
@@ -150,6 +150,13 @@ you can create it by the following command (where `fluct-myapp` is the new role 
 $ aws iam create-role --role-name fluct-myapp --assume-role-policy-document arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
 ```
 
+### Credentials
+fluct will automatically detect your AWS credentials from the shared credentials file in
+`~/.aws/credentials` or environment variables such as `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`,
+and `AWS_PROFILE`. fluct internally uses AWS SDK for JavaScript, so please see
+[Configuring the SDK in Node.js — AWS SDK for JavaScript](http://docs.aws.amazon.com/AWSJavaScriptSDK/guide/node-configuring.html)
+for more details about AWS credentials settings.
+
 ## Action
 The behaviors of your application is defined as a collection of actions.
 An action is defined in a set of index.js and package.json files,
@@ -181,10 +188,3 @@ update httpMethod and path properties with `"GET"` and `"/users"`.
   }
 }
 ```
-
-## Credentials
-fluct will automatically detect your AWS credentials from the shared credentials file in
-`~/.aws/credentials` or environment variables such as `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`,
-and `AWS_PROFILE`. fluct internally uses AWS SDK for JavaScript, so please see
-[Configuring the SDK in Node.js — AWS SDK for JavaScript](http://docs.aws.amazon.com/AWSJavaScriptSDK/guide/node-configuring.html)
-for more details about AWS credentials settings.
