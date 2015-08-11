@@ -10,7 +10,6 @@ import { Client } from 'amazon-api-gateway-client'
 export default class RoutesCommand extends BaseCommand {
   run() {
     const application = new Application();
-    console.log(`=== ${application.getName()} deployments`);
     new Client({
       accessKeyId: AWS.config.credentials.accessKeyId,
       region: 'us-east-1',
