@@ -25,6 +25,7 @@
     "amazon-api-gateway-client": "^0.1.2",
     "aws-sdk": "^2.1.44",
     "commander": "^2.8.1",
+    "ejs": "^2.3.3",
     "express": "^4.13.3",
     "glob": "^5.0.14",
     "mkdirp": "^0.5.1",
