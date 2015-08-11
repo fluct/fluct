@@ -106,7 +106,23 @@ Deployed: https://123ge4oabj.execute-api.us-east-1.amazonaws.com/production
 ```
 
 ### 7. Done!
-Fire up the browser and try to send HTTP requests to your endpoints.
+Try to send HTTP requests to your endpoints.
+
+```
+$ curl https://123ge4oabj.execute-api.us-east-1.amazonaws.com/production/recipes -i
+HTTP/1.1 200 OK
+Content-Type: text/html
+Content-Length: 13
+Connection: keep-alive
+Date: Tue, 11 Aug 2015 19:22:33 GMT
+x-amzn-RequestId: 512f8391-405e-11e5-acef-2125b850bbe1
+X-Cache: Miss from cloudfront
+Via: 1.1 6145a790e7dca1c0c567e1f5decce786.cloudfront.net (CloudFront)
+X-Amz-Cf-Id: 5LvHm6SaEQnTj1ubwlCvJhew6G86AU6FFEGB2ic3FI-r7kwNfwDCXg==
+
+Hello, world!
+```
+
 Now that you’re up and running, here are a few things you should know.
 See [Customize](/customize) to know how to change action behavior and implement logics,
 and see [Command Line Interface](/command-line-interface) to use useful commands to develop and debug your application.
