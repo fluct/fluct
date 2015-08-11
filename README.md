@@ -6,19 +6,37 @@ such as fully isolated components, infinitely scalability, easy and rapid develo
 cheap server cost, and more and more.
 
 - [Getting Started](#getting-started)
-- [Command Line Interface](/docs/command-line-interface)
-- [Customize](/customize)
+  - [1. Install](#install)
+  - [2. Create an application](#create-an-application)
+  - [3. Create an action](#create-an-action)
+  - [4. Set up the action](#set-up-the-action)
+  - [5. Set your IAM role](#set-your-iam-role)
+  - [6. Deploy it](#deploy-it)
+  - [7. Done!](#done)
+- [Command Line Interface](/docs/command-line-interface.md)
+  - [fluct new](/docs/command-line-interface.md#fluct-new)
+  - [fluct generate](/docs/command-line-interface.md#fluct-generate)
+  - [fluct server](/docs/command-line-interface.md#fluct-server)
+  - [fluct deploy](/docs/command-line-interface.md#fluct-deploy)
+  - [fluct routes](/docs/command-line-interface.md#fluct-routes)
+  - [fluct deployments](/docs/command-line-interface.md#fluct-deployments)
+- [Customize](/docs/customize.md)
+  - [Application](/docs/customize.md#application)
+  - [Role](/docs/customize.md#role)
+  - [Credentials](/docs/customize.md#credentials)
+  - [Action](/docs/customize.md#action)
+  - [Handler](/docs/customize.md#handler)
 
 ## Getting Started
-### Install
+### 1. Install
 Install `fluct` executable via npm.
 
 ```
 $ npm install fluct -g
 ```
 
-### Create an application
-Create a new application with an application name:
+### 2. Create an application
+Create a new application with an application name.
 
 ```
 $ fluct new myapp
@@ -29,8 +47,8 @@ Created ./myapp/actions/.keep
 Created ./myapp/package.json
 ```
 
-### Create an action
-Enter the application folder and generate a new action:
+### 3. Create an action
+Enter the application folder and generate a new action.
 
 ```
 $ cd myapp
@@ -40,8 +58,8 @@ Created ./actions/list_users/index.js
 Created ./actions/list_users/package.json
 ```
 
-### Set up the action
-Update the action's package.json with proper httpMethod and path:
+### 4. Set up the action
+Update the action's package.json with proper httpMethod and path.
 
 ```
 $ vi actions/list_users/package.json
@@ -58,10 +76,10 @@ $ cat actions/list_users/package.json
 }
 ```
 
-### Set your IAM role
+### 5. Set your IAM role
 Head over to [AWS Console](https://console.aws.amazon.com) and create a new IAM role
-that has `AWSLambdaBasicExecutionRole` role, then set it to application's package.json.
-This ARN is used to allow API Gateway to invoke Lambda functions.
+that has `AWSLambdaBasicExecutionRole`, then set it to application's package.json.
+This role is used to allow API Gateway to invoke Lambda functions.
 
 ```
 $ vi package.json
@@ -76,8 +94,8 @@ $ cat package.json
 }
 ```
 
-### Deploy it
-Deploy your application to Lambda and API Gateway:
+### 6. Deploy it
+Deploy your application to Lambda and API Gateway.
 
 ```
 $ fluct deploy
@@ -87,10 +105,8 @@ Updated endpoint: GET /users
 Deployed: https://123ge4oabj.execute-api.us-east-1.amazonaws.com/production
 ```
 
-### Done!
-Fire up the browser and go to https://123ge4oabj.execute-api.us-east-1.amazonaws.com/production/users.
-
-### Next steps
+### 7. Done!
+Fire up the browser and try to send HTTP requests to your endpoints.
 Now that you’re up and running, here are a few things you should know.
 See [Customize](/customize) to know how to change action behavior and implement logics,
 and see [Command Line Interface](/command-line-interface) to use useful commands to develop and debug your application.
