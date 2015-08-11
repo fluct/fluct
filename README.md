@@ -10,7 +10,7 @@ cheap server cost, and more and more.
   - [2. Create an application](#create-an-application)
   - [3. Create an action](#create-an-action)
   - [4. Set up the action](#set-up-the-action)
-  - [5. Set your IAM role](#set-your-iam-role)
+  - [5. Set up the IAM role](#set-up-the-iam-role)
   - [6. Deploy it](#deploy-it)
   - [7. Done!](#done)
 - [Command Line Interface](/docs/command-line-interface.md)
@@ -76,7 +76,7 @@ $ cat actions/list_users/package.json
 }
 ```
 
-### 5. Set your IAM role
+### 5. Set up the IAM role
 Head over to [AWS Console](https://console.aws.amazon.com) and create a new IAM role
 that has `AWSLambdaBasicExecutionRole`, then set it to application's package.json.
 This role is used to allow API Gateway to invoke Lambda functions.
