@@ -100,6 +100,17 @@ POST   /recipes #create_recipe
 GET    /users   #list_users
 ```
 
+### fluct deployments
+List recent deployments.
+
+```
+$ fluct deployments
+=== myapp deployments
+8bacdi  2015-08-11 19:27 +09:00
+lxr8fu  2015-08-11 19:26 +09:00
+vukio1  2015-08-11 18:38 +09:00
+```
+
 ## Application
 A typical fluct application's file structure will be like this:
 
