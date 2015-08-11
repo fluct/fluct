@@ -89,19 +89,15 @@ Upload your actions to Amazon Lambda and update your endpoints on Amazon API Gat
 
 ```
 $ fluct deploy
-Created ./actions/list_users/lambda.zip
-Uploaded list_users function
-POST   https://apigateway.us-east-1.amazonaws.com/restapis
-DELETE https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/models/Empty
-DELETE https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/models/Error
-GET    https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/resources
-GET    https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/resources
-POST   https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/resources/k1xqcw5cj8
-GET    https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/resources
-PUT    https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/resources/i7qrat/methods/GET
-PUT    https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/resources/i7qrat/methods/GET/integration
-PUT    https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/resources/i7qrat/methods/GET/responses/200
-PUT    https://apigateway.us-east-1.amazonaws.com/restapis/nob3eusi70/resources/i7qrat/methods/GET/integration/responses/200
+Running `npm install` in ./actions/list_users
+Running `npm install` in ./actions/show_root
+Created zip file: ./actions/list_users/lambda.zip
+Created zip file: ./actions/show_root/lambda.zip
+Uploaded function: list_users
+Uploaded function: show_root
+Updated endpoint: GET /
+Updated endpoint: GET /users
+Deployed: https://123ge4oabj.execute-api.us-east-1.amazonaws.com/production
 ```
 
 ### fluct routes
