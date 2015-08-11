@@ -27,6 +27,9 @@ Install fluct globally to use `fluct` executable.
 
 ```
 $ npm install fluct -g
+```
+
+```
 $ fluct --help
 
   Usage: fluct [options] [command]
@@ -34,12 +37,12 @@ $ fluct --help
 
   Commands:
 
-    d|deploy                       Deploy actions to AWS
-    l|deployments                  List recent deployments
-    g|generate <generator> <name>  Generate a new resource from <generator> (e.g. "action")
-    n|new <name>                   Generate a new application
-    r|routes                       List all routes
-    s|server [options]             Launch a web server
+    d|deploy             Deploy actions to AWS
+    l|deployments        List recent deployments
+    g|generate <name>    Generate a new resource from <generator> (e.g. "action")
+    n|new <name>         Generate a new application
+    r|routes             List all routes
+    s|server [options]   Launch a web server
 
   Options:
 
@@ -62,7 +65,7 @@ Created ./myapp/package.json
 Generate a new action (where "list_users" is the action name):
 
 ```
-$ fluct generate action list_users
+$ fluct generate list_users
 Created ./actions/list_users
 Created ./actions/list_users/index.js
 Created ./actions/list_users/package.json
@@ -143,7 +146,7 @@ The `roleArn` is not automatically set, so you need to manually configure it (se
 
 ### Role
 Because fluct has no support to generate a new IAM role, you need to manually create an IAM role
-that has `AWSLambdaBasicExecutionRole` and configure its ARN into `fluct.roleArn` property like above example.
+that has `AWSLambdaBasicExecutionRole` and configure its ARN into `roleArn` property like above example.
 If you have installed aws-cli and you are authorized to create a new IAM role,
 you can create it by the following command (where `fluct-myapp` is the new role name):
 

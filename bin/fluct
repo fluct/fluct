@@ -27,11 +27,10 @@ program
 program
   .command('g')
   .alias('generate')
-  .arguments('<generator>')
   .arguments('<name>')
   .description('Generate a new resource from <generator> (e.g. "action")')
-  .action(function (generator, name, command) {
-    new GenerateCommand({ generator: generator, name: name }).run()
+  .action(function (name, command) {
+    new GenerateCommand({ name: name }).run()
   });
 
 program

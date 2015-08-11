@@ -5,12 +5,10 @@ import BaseCommand from './base_command'
  */
 export default class GenerateCommand extends BaseCommand {
   /**
-   * @param {String} generator Only "action" is supported
    * @param {String} name
    */
-  constructor({ generator, name }) {
+  constructor({ name }) {
     super();
-    this.generator = generator;
     this.name = name;
   }
 
