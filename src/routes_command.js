@@ -5,6 +5,13 @@ import BaseCommand from './base_command'
  * @class
  */
 export default class RoutesCommand extends BaseCommand {
+  /**
+   * @return {Integer}
+   */
+  getMaxPathLength() {
+    return Math.max.apply(null, new Application().getActions().map(action => action.getPath().length));
+  }
+
   run() {
     console.log(
       new Application().getActions().sort((a, b) => {
@@ -24,7 +31,10 @@ export default class RoutesCommand extends BaseCommand {
           return 0;
         }
       }).map((action) => {
-        return `${(action.getHttpMethod() + '   ').substr(0, 6)} ${action.getPath()} (${action.getName()})`;
+        const httpMethod = (action.getHttpMethod() + '   ').substr(0, 6);
+        const path = (action.getPath() + Array(this.getMaxPathLength()).join(' ')).substr(0, this.getMaxPathLength());
+        const name = action.getName()
+        return `${httpMethod} ${path} #${name}`;
       }).join('\n')
     );
   }
