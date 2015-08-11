@@ -18,6 +18,7 @@ program
 
 program
   .command('generate')
+  .alias('g')
   .arguments('<generator>')
   .arguments('<name>')
   .description('Generate a new resource')
