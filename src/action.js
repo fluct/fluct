@@ -1,6 +1,4 @@
 import fs from 'fs'
-import glob from 'glob'
-import yazl from 'yazl'
 
 /**
  * @class
@@ -11,39 +9,6 @@ export default class Action {
    */
   constructor({ name }) {
     this.name = name;
-  }
-
-  /**
-   * @return {Promise}
-   */
-  createZipFile() {
-    return new Promise((resolve, reject) => {
-      const actionPath = this.getDirectoryPath();
-      const zipFile = new yazl.ZipFile();
-      const zipPath = this.getZipPath();
-      this.deleteZipFileIfExists()
-      glob.sync(`${actionPath}/**/*`).forEach((path) => {
-        if (!fs.lstatSync(path).isDirectory()) {
-          zipFile.addFile(
-            path,
-            path.substr(`${actionPath}/`.length)
-          );
-        }
-      });
-      zipFile.outputStream.pipe(
-        fs.createWriteStream(zipPath)
-      ).on('close', () => {
-        console.log(`Created ${zipPath}`);
-        resolve();
-      });
-      zipFile.end();
-    });
-  }
-
-  deleteZipFileIfExists() {
-    if (fs.existsSync(this.getZipPath())) {
-      fs.unlinkSync(this.getZipPath());
-    }
   }
 
   /**

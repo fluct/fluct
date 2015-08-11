@@ -3,7 +3,6 @@ import Application from './application'
 import BaseCommand from './base_command'
 import Composer from './composer'
 import InstallCommand from './install_command'
-import LoggerMiddleware from './logger_middleware'
 import { Client } from 'amazon-api-gateway-client'
 
 /**
@@ -18,7 +17,21 @@ export default class DeployCommand extends BaseCommand {
         region: 'us-east-1',
         secretAccessKey: AWS.config.credentials.secretAccessKey
       })
-        .use(LoggerMiddleware)
+        .on('deploymentCreated', ({ restapiId, stageName }) => {
+          console.log(`Deployed: https://${restapiId}.execute-api.us-east-1.amazonaws.com/${stageName}`);
+        })
+        .on('functionUploaded', ({ functionName }) => {
+          console.log(`Uploaded function: ${functionName}`);
+        })
+        .on('methodSetUpdated', ({ httpMethod, path }) => {
+          console.log(`Updated endpoint: ${httpMethod} ${path}`);
+        })
+        .on('restapiCreated', ({ restapiId }) => {
+          console.log(`Created restapi: ${restapiId}`);
+        })
+        .on('zipFileCreated', ({ zipPath }) => {
+          console.log(`Created zip: ${zipPath}`);
+        })
         .deploy()
         .catch((error) => {
           console.log(error.stack);

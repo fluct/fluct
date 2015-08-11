@@ -1,14 +1,19 @@
 import AWS from 'aws-sdk'
 import awsLambda from 'node-aws-lambda'
 import crypto from 'crypto'
+import fs from 'fs'
+import glob from 'glob'
+import yazl from 'yazl'
 import { Client } from 'amazon-api-gateway-client'
+import { EventEmitter } from 'events'
+
 
 const DEFAULT_STAGE_NAME = 'production';
 
 /**
  * @class
  */
-export default class Composer {
+export default class Composer extends EventEmitter {
   /**
    * @param {String} accessKeyId
    * @param {Application} application
@@ -17,6 +22,7 @@ export default class Composer {
    * @param {String} secretAccessKey
    */
   constructor({ accessKeyId, application, client, region, secretAccessKey }) {
+    super();
     this.accessKeyId = accessKeyId;
     this.application = application;
     this.client = client;
@@ -32,66 +38,15 @@ export default class Composer {
     return this.getClient().createDeployment({
       restapiId: restapiId,
       stageName: DEFAULT_STAGE_NAME
-    });
-  }
-
-  /**
-   * @param {String} functionName
-   * @param {String} httpMethod
-   * @param {String} path
-   * @param {Stirng} resourceId
-   * @param {Object} responseModels
-   * @param {Object} responseTemplates
-   * @param {Stirng} restapiId
-   * @param {String} uri
-   * @return {Promise}
-   */
-  createMethodSet({ functionName, httpMethod, path, resourceId, responseModels, responseTemplates, restapiId, uri }) {
-    return this.getClient().putMethod({
-      httpMethod: httpMethod,
-      resourceId: resourceId,
-      restapiId: restapiId
-    }).then((resource) => {
-      return this.getClient().putIntegration({
-        httpMethod: httpMethod,
-        integrationHttpMethod: 'POST',
-        resourceId: resourceId,
-        restapiId: restapiId,
-        type: 'AWS',
-        uri: uri
-      });
-    }).then((integration) => {
-      return this.getClient().putMethodResponse({
-        httpMethod: httpMethod,
-        resourceId: resourceId,
-        responseModels: responseModels,
-        restapiId: restapiId,
-        statusCode: 200
-      });
-    }).then(() => {
-      return this.getClient().putIntegrationResponse({
-        httpMethod: httpMethod,
-        resourceId: resourceId,
-        responseTemplates: responseTemplates,
-        restapiId: restapiId,
-        statusCode: 200
-      });
-    }).then(() => {
-      return new Promise((resolve, reject) => {
-        new AWS.Lambda({
-          region: 'us-east-1'
-        }).addPermission(
-          {
-            Action: 'lambda:InvokeFunction',
-            FunctionName: functionName,
-            Principal: 'apigateway.amazonaws.com',
-            StatementId: crypto.randomBytes(20).toString('hex')
-          },
-          (error, data) => {
-            resolve();
-          }
-        );
-      })
+    }).then((value) => {
+      this.emit(
+        'deploymentCreated',
+        {
+          restapiId: restapiId,
+          stageName: DEFAULT_STAGE_NAME
+        }
+      );
+      return value;
     });
   }
 
@@ -110,7 +65,7 @@ export default class Composer {
             path: action.getPath(),
             restapiId: restapiId
           }).then((resource) => {
-            return this.createMethodSet({
+            return this.updateMethodSet({
               functionName: action.getName(),
               httpMethod: action.getHttpMethod(),
               path: action.getPath(),
@@ -135,6 +90,41 @@ export default class Composer {
     }).then((restapi) => {
       this.application.writeRestapiId(restapi.source.id);
       return restapi;
+    }).then((value) => {
+      this.emit('restapiCreated', { restapiId: restapi.source.id });
+      return value;
+    });
+  }
+
+  /**
+   * @param {Action} action
+   * @return {Promise}
+   */
+  createZipFile({ action }) {
+    return new Promise((resolve, reject) => {
+      const actionPath = action.getDirectoryPath();
+      const zipFile = new yazl.ZipFile();
+      const zipPath = action.getZipPath();
+      if (fs.existsSync(zipPath)) {
+        fs.unlinkSync(zipPath);
+      }
+      glob.sync(`${actionPath}/**/*`).forEach((path) => {
+        if (!fs.lstatSync(path).isDirectory()) {
+          zipFile.addFile(
+            path,
+            path.substr(`${actionPath}/`.length)
+          );
+        }
+      });
+      zipFile.outputStream.pipe(
+        fs.createWriteStream(zipPath)
+      ).on('close', () => {
+        resolve();
+      });
+      zipFile.end();
+    }).then((value) => {
+      this.emit('zipFileCreated', { zipPath: action.getZipPath() });
+      return value;
     });
   }
 
@@ -144,7 +134,7 @@ export default class Composer {
   createZipFiles() {
     return Promise.all(
       this.application.getActions().map((action) => {
-        return action.createZipFile();
+        return this.createZipFile({ action: action });
       })
     );
   }
@@ -228,26 +218,117 @@ export default class Composer {
   }
 
   /**
+   * @param {String} functionName
+   * @param {String} httpMethod
+   * @param {String} path
+   * @param {Stirng} resourceId
+   * @param {Object} responseModels
+   * @param {Object} responseTemplates
+   * @param {Stirng} restapiId
+   * @param {String} uri
+   * @return {Promise}
+   */
+  updateMethodSet({ functionName, httpMethod, path, resourceId, responseModels, responseTemplates, restapiId, uri }) {
+    return this.getClient().putMethod({
+      httpMethod: httpMethod,
+      resourceId: resourceId,
+      restapiId: restapiId
+    }).then((resource) => {
+      return this.getClient().putIntegration({
+        httpMethod: httpMethod,
+        integrationHttpMethod: 'POST',
+        resourceId: resourceId,
+        restapiId: restapiId,
+        type: 'AWS',
+        uri: uri
+      });
+    }).then((integration) => {
+      return this.getClient().putMethodResponse({
+        httpMethod: httpMethod,
+        resourceId: resourceId,
+        responseModels: responseModels,
+        restapiId: restapiId,
+        statusCode: 200
+      });
+    }).then(() => {
+      return this.getClient().putIntegrationResponse({
+        httpMethod: httpMethod,
+        resourceId: resourceId,
+        responseTemplates: responseTemplates,
+        restapiId: restapiId,
+        statusCode: 200
+      });
+    }).then(() => {
+      return new Promise((resolve, reject) => {
+        new AWS.Lambda({
+          region: 'us-east-1'
+        }).addPermission(
+          {
+            Action: 'lambda:InvokeFunction',
+            FunctionName: functionName,
+            Principal: 'apigateway.amazonaws.com',
+            StatementId: crypto.randomBytes(20).toString('hex')
+          },
+          (error, data) => {
+            resolve();
+          }
+        );
+      })
+    }).then((value) => {
+      this.emit(
+        'methodSetUpdated',
+        {
+          httpMethod: httpMethod,
+          path: path
+        }
+      );
+      return value;
+    });
+  }
+
+  /**
+   * @param {String} functionName
+   * @param {String} handlerId
+   * @param {String} region
+   * @param {String} roleArn
+   * @param {Integer} timeout
+   * @param {String} zipPath
+   * @return {Promise}
+   */
+  uploadAction({ functionName, handlerId, region, roleArn, timeout, zipPath, }) {
+    return new Promise((resolve, reject) => {
+      awsLambda.deploy(
+        functionName,
+        {
+          functionName: functionName,
+          handler: handlerId,
+          region: region,
+          role: roleArn,
+          timeout: timeout
+        },
+        () => {
+          resolve()
+        }
+      );
+    }).then((value) => {
+      this.emit('functionUploaded', { functionName: functionName });
+      return value;
+    });
+  }
+
+  /**
    * @return {Promise}
    */
   uploadActions() {
     return Promise.all(
       this.application.getActions().map((action) => {
-        return new Promise((resolve, reject) => {
-          awsLambda.deploy(
-            `${action.getDirectoryPath()}/lambda.zip`,
-            {
-              functionName: action.getName(),
-              handler: action.getHandlerId(),
-              region: action.getRegion(),
-              role: this.application.getRoleArn(),
-              timeout: action.getTimeout()
-            },
-            () => {
-              console.log(`Uploaded ${action.getName()} function`);
-              resolve();
-            }
-          );
+        this.uploadAction({
+          zipPath: `${action.getDirectoryPath()}/lambda.zip`,
+          functionName: action.getName(),
+          handlerId: action.getHandlerId(),
+          region: action.getRegion(),
+          rolearn: this.application.getRoleArn(),
+          timeout: action.getTimeout()
         });
       })
     );
