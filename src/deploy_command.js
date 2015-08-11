@@ -2,6 +2,8 @@ import AWS from 'aws-sdk'
 import Application from './application'
 import BaseCommand from './base_command'
 import Composer from './composer'
+import InstallCommand from './install_command'
+import LoggerMiddleware from './logger_middleware'
 import { Client } from 'amazon-api-gateway-client'
 
 /**
@@ -9,20 +11,18 @@ import { Client } from 'amazon-api-gateway-client'
  */
 export default class DeployCommand extends BaseCommand {
   run() {
-    const LoggerMiddleware = (application) => {
-      this.application = application;
-    };
-    LoggerMiddleware.prototype.call = (environment) => {
-      console.log((environment.method + '     ').substr(0, 7) + environment.url);
-      return this.application.call(environment);
-    };
-    new Composer({
-      accessKeyId: AWS.config.credentials.accessKeyId,
-      application: new Application(),
-      region: 'us-east-1',
-      secretAccessKey: AWS.config.credentials.secretAccessKey
-    }).use(LoggerMiddleware).deploy().catch((error) => {
-      console.log(error.stack);
+    new InstallCommand().run().then(() => {
+      new Composer({
+        accessKeyId: AWS.config.credentials.accessKeyId,
+        application: new Application(),
+        region: 'us-east-1',
+        secretAccessKey: AWS.config.credentials.secretAccessKey
+      })
+        .use(LoggerMiddleware)
+        .deploy()
+        .catch((error) => {
+          console.log(error.stack);
+        });
     });
   }
 }
