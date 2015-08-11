@@ -1,6 +1,7 @@
 {
   "name": "<%= applicationName %>",
   "version": "0.0.1",
+  "private": true,
   "fluct": {
     "restapiId": null,
     "roleArn": null
