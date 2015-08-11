@@ -95,9 +95,9 @@ List all routes.
 
 ```
 $ fluct routes
-GET    /recipes (list_recipes)
-POST   /recipes (create_recipe)
-GET    /users (list_users)
+GET    /recipes #list_recipes
+POST   /recipes #create_recipe
+GET    /users   #list_users
 ```
 
 ## Application
