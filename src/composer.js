@@ -335,7 +335,7 @@ export default class Composer extends EventEmitter {
           functionName: action.getName(),
           handlerId: action.getHandlerId(),
           region: action.getRegion(),
-          rolearn: this.application.getRoleArn(),
+          roleArn: this.application.getRoleArn(),
           timeout: action.getTimeout()
         });
       })
