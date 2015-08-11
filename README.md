@@ -121,7 +121,7 @@ The `roleArn` is not automatically set, so you need to manually configure it (se
 ```json
 {
   "name": "myapp",
-  "version": "0.0.1",
+  "private": true,
   "fluct": {
     "restapiId": "b15rph8lh3",
     "roleArn": "arn:aws:iam::012345678912:role/myExampleRole"
@@ -159,7 +159,7 @@ package.json defines package dependencies and metadata for Lambda & API Gateway.
 ```json
 {
   "name": "list_users",
-  "version": "0.0.1",
+  "private": true,
   "fluct": {
     "contentType": "text/html",
     "httpMethod": "GET",
