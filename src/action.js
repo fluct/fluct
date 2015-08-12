@@ -13,6 +13,14 @@ export default class Action {
 
   /**
    * @return {String}
+   * @example 'text/html'
+   */
+  getContentType() {
+    return this.getMetadata().fluct.contentType;
+  }
+
+  /**
+   * @return {String}
    */
   getDirectoryPath() {
     return `./actions/${this.name}`;
@@ -73,13 +81,15 @@ export default class Action {
 
   /**
    * @return {Object}
+   * @example { 'text/html': 'Empty' }
    */
   getResponseModels() {
-    if (this.getMetadata().fluct.contentType == 'application/json') {
-      return {}
-    } else {
-      return { 'text/html': 'Empty' }
+    const contentType = this.getContentType();
+    const returnedValue = {};
+    if (contentType !== 'application/json') {
+      returnedValue[contentType] = 'Empty';
     }
+    return returnedValue;
   }
 
   /**
@@ -123,6 +133,7 @@ export default class Action {
       {},
       {
         succeed: (value) => {
+          response.header('Content-Type', this.getContentType());
           response.send(value);
         }
       }
