@@ -1,3 +1,6 @@
+## v0.2.6
+- Support any Content-Type
+
 ## v0.2.5
 - Fix `fluct deploy` error on uploading new function
 
