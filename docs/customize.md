@@ -74,3 +74,6 @@ export.handler = function (event, context) {
   context.succeed('Hello, world!');
 };
 ```
+
+## Example application
+See https://github.com/r7kamura/fluct-example

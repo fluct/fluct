@@ -26,6 +26,7 @@ cheap server cost, and more and more.
   - [Credentials](/docs/customize.md#credentials)
   - [Action](/docs/customize.md#action)
   - [Handler](/docs/customize.md#handler)
+  - [Example application](/docs/customize.md#example-application)
 
 ## Getting Started
 ### 1. Install
