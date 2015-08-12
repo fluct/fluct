@@ -110,7 +110,7 @@ Deployed: https://123ge4oabj.execute-api.us-east-1.amazonaws.com/production
 Try to send HTTP requests to your endpoints.
 
 ```
-$ curl https://123ge4oabj.execute-api.us-east-1.amazonaws.com/production/recipes -i
+$ curl https://123ge4oabj.execute-api.us-east-1.amazonaws.com/production/users -i
 HTTP/1.1 200 OK
 Content-Type: text/html
 Content-Length: 13
