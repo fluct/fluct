@@ -334,7 +334,7 @@ export default class Composer extends EventEmitter {
   uploadActions() {
     return Promise.all(
       this.application.getActions().map((action) => {
-        this.uploadAction({
+        return this.uploadAction({
           zipPath: `${action.getDirectoryPath()}/lambda.zip`,
           functionName: action.getName(),
           handlerId: action.getHandlerId(),
