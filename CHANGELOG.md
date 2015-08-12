@@ -1,3 +1,6 @@
+## v0.2.5
+- Fix `fluct deploy` error on uploading new function
+
 ## v0.2.4
 - Fix function upload bug
 
