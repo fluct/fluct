@@ -1,2 +1,3 @@
 /actions/*/lambda.zip
 /actions/*/node_modules
+/node_modules
