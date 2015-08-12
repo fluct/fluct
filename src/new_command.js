@@ -41,8 +41,19 @@ export default class NewCommand extends BaseCommand {
     });
   }
 
+  createReadmeFile() {
+    this.createFileFromTemplate({
+      destination: `./${this.name}/README.md`,
+      parameters: {
+        applicationName: this.name
+      },
+      source: `${__dirname}/../templates/README.md`
+    });
+  }
+
   run() {
     this.createApplicationDirectory();
+    this.createReadmeFile();
     this.createGitIgnoreFile();
     this.createActionsDirectory();
     this.createActionsKeepFile();
