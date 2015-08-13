@@ -20,13 +20,8 @@ cheap server cost, and more and more.
   - [fluct deploy](/docs/command-line-interface.md#fluct-deploy)
   - [fluct routes](/docs/command-line-interface.md#fluct-routes)
   - [fluct deployments](/docs/command-line-interface.md#fluct-deployments)
-- [Customize](/docs/customize.md)
-  - [Application](/docs/customize.md#application)
-  - [Role](/docs/customize.md#role)
-  - [Credentials](/docs/customize.md#credentials)
-  - [Action](/docs/customize.md#action)
-  - [Handler](/docs/customize.md#handler)
-  - [Example application](/docs/customize.md#example-application)
+- [Demo](https://github.com/r7kamura/fluct-example)
+- [FAQ](/docs/faq.md)
 
 ## Getting Started
 ### 1. Install
@@ -125,6 +120,5 @@ Hello, world!
 ```
 
 Now that you’re up and running, here are a few things you should know.
-See [Customize](/customize.md) to know how to change actions behaviors,
-and see [Command Line Interface](/command-line-interface.md) to use useful commands
-to develop and debug your application.
+See [Command Line Interface](/docs/command-line-interface.md) to use utility commands
+to develop your application, and see [FAQ](/docs/faq.md) to know how to customize your application.
