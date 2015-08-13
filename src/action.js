@@ -90,26 +90,26 @@ export default class Action {
         "apiId": "$context.apiId",
         "apiKey": "$context.identity.apiKey",
         "caller": "$context.identity.caller",
-        "headerParams": {
+        "headers": {
       #foreach( $key in $input.params().header.keySet() )
           "$key": "$input.params().header.get($key)"#if( $foreach.hasNext ),#end
       #end
         },
         "httpMethod": "$context.httpMethod",
-        "pathParams": {
+        "path": "$context.resourcePath",
+        "pathParameters": {
       #foreach( $key in $input.params().path.keySet() )
           "$key": "$input.params().path.get($key)"#if( $foreach.hasNext ),#end
       #end
         },
-        "queryParams": {
+        "queryParameters": {
       #foreach( $key in $input.params().querystring.keySet() )
           "$key": "$input.params().querystring.get($key)"#if( $foreach.hasNext ),#end
       #end
         },
         "requestId": "$context.requestId",
+        "requestParameters": $input.json('$'),
         "resourceId": "$context.resourceId",
-        "resourcePath": "$context.resourcePath",
-        "responseBody": $input.json('$'),
         "sourceIp": "$context.identity.sourceIp",
         "stage": "$context.stage",
         "user": "$context.identity.user",
