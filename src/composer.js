@@ -68,6 +68,7 @@ export default class Composer extends EventEmitter {
               functionName: action.getName(),
               httpMethod: action.getHttpMethod(),
               path: action.getPath(),
+              requestTemplates: action.getRequestTemplates(),
               resourceId: resource.source.id,
               responseModels: action.getResponseModels(),
               responseTemplates: action.getResponseTemplates(),
@@ -229,6 +230,7 @@ export default class Composer extends EventEmitter {
    * @param {String} functionName
    * @param {String} httpMethod
    * @param {String} path
+   * @param {Object} requestTemplates
    * @param {Stirng} resourceId
    * @param {Object} responseModels
    * @param {Object} responseTemplates
@@ -236,7 +238,7 @@ export default class Composer extends EventEmitter {
    * @param {String} uri
    * @return {Promise}
    */
-  updateMethodSet({ functionName, httpMethod, path, resourceId, responseModels, responseTemplates, restapiId, uri }) {
+  updateMethodSet({ functionName, httpMethod, path, requestTemplates, resourceId, responseModels, responseTemplates, restapiId, uri }) {
     return this.getClient().putMethod({
       httpMethod: httpMethod,
       resourceId: resourceId,
@@ -245,6 +247,7 @@ export default class Composer extends EventEmitter {
       return this.getClient().putIntegration({
         httpMethod: httpMethod,
         integrationHttpMethod: 'POST',
+        requestTemplates: requestTemplates,
         resourceId: resourceId,
         restapiId: restapiId,
         type: 'AWS',

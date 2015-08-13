@@ -81,6 +81,46 @@ export default class Action {
 
   /**
    * @return {Object}
+   */
+  getRequestTemplates() {
+    return {
+      'application/json': `
+      {
+        "accountId": "$context.identity.accountId",
+        "apiId": "$context.apiId",
+        "apiKey": "$context.identity.apiKey",
+        "caller": "$context.identity.caller",
+        "headerParams": {
+      #foreach( $key in $input.params().header.keySet() )
+          "$key": "$input.params().header.get($key)"#if( $foreach.hasNext ),#end
+      #end
+        },
+        "httpMethod": "$context.httpMethod",
+        "pathParams": {
+      #foreach( $key in $input.params().path.keySet() )
+          "$key": "$input.params().path.get($key)"#if( $foreach.hasNext ),#end
+      #end
+        },
+        "queryParams": {
+      #foreach( $key in $input.params().querystring.keySet() )
+          "$key": "$input.params().querystring.get($key)"#if( $foreach.hasNext ),#end
+      #end
+        },
+        "requestId": "$context.requestId",
+        "resourceId": "$context.resourceId",
+        "resourcePath": "$context.resourcePath",
+        "responseBody": $input.json('$'),
+        "sourceIp": "$context.identity.sourceIp",
+        "stage": "$context.stage",
+        "user": "$context.identity.user",
+        "userAgent": "$context.identity.userAgent",
+        "userArn": "$context.identity.userArn"
+      }`.replace(/^      /gm, '')
+    };
+  }
+
+  /**
+   * @return {Object}
    * @example { 'text/html': 'Empty' }
    */
   getResponseModels() {
