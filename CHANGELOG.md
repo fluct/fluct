@@ -1,3 +1,6 @@
+## v0.2.7
+- Include HTTP request data into event object
+
 ## v0.2.6
 - Support any Content-Type
 
