@@ -13,15 +13,9 @@ cheap server cost, and more and more.
   - [5. Set up the IAM role](#set-up-the-iam-role)
   - [6. Deploy it](#deploy-it)
   - [7. Done!](#done)
-- [Command Line Interface](/docs/command-line-interface.md)
-  - [fluct new](/docs/command-line-interface.md#fluct-new)
-  - [fluct generate](/docs/command-line-interface.md#fluct-generate)
-  - [fluct server](/docs/command-line-interface.md#fluct-server)
-  - [fluct deploy](/docs/command-line-interface.md#fluct-deploy)
-  - [fluct routes](/docs/command-line-interface.md#fluct-routes)
-  - [fluct deployments](/docs/command-line-interface.md#fluct-deployments)
-- [Demo](https://github.com/r7kamura/fluct-example)
+- [CLI](/docs/cli.md)
 - [FAQ](/docs/faq.md)
+- [Demo](https://github.com/r7kamura/fluct-example)
 
 ## Getting Started
 ### 1. Install
@@ -120,5 +114,5 @@ Hello, world!
 ```
 
 Now that you’re up and running, here are a few things you should know.
-See [Command Line Interface](/docs/command-line-interface.md) to use utility commands
+See [CLI](/docs/cli.md) to use utility commands
 to develop your application, and see [FAQ](/docs/faq.md) to know how to customize your application.
