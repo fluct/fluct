@@ -125,6 +125,6 @@ Hello, world!
 ```
 
 Now that you’re up and running, here are a few things you should know.
-See [Customize](/customize) to know how to change actions behaviors,
-and see [Command Line Interface](/command-line-interface) to use useful commands
+See [Customize](/customize.md) to know how to change actions behaviors,
+and see [Command Line Interface](/command-line-interface.md) to use useful commands
 to develop and debug your application.
