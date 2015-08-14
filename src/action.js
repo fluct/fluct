@@ -76,7 +76,7 @@ export default class Action {
    * @return {String}
    */
   getRegion() {
-    return 'us-east-1';
+    return new Application().getRegion();
   }
 
   /**

@@ -76,6 +76,14 @@ export default class Application {
   }
 
   /**
+   * @todo
+   * @return {String}
+   */
+  getRegion() {
+    return 'us-east-1';
+  }
+
+  /**
    * @return {String}
    */
   getRestapiId() {
