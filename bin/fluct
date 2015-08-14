@@ -47,7 +47,7 @@ program
 program
   .command('o')
   .alias('open')
-  .description('Open production root URL')
+  .description('Open the production root URL in your browser')
   .action(function (command) {
     new OpenCommand().run();
   });

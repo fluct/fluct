@@ -71,3 +71,10 @@ $ fluct deployments
 lxr8fu  2015-08-11 19:26 +09:00
 vukio1  2015-08-11 18:38 +09:00
 ```
+
+## fluct open
+Open the production root URL in your browser.
+
+```
+$ fluct open
+```
