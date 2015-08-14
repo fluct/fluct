@@ -5,6 +5,7 @@
 - [fluct deploy](#fluct-deploy)
 - [fluct routes](#fluct-routes)
 - [fluct deployments](#fluct-deployments)
+- [fluct open](#fluct-open)
 
 ## fluct new
 Create a new application (where "myapp" is the application name):
