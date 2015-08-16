@@ -1,3 +1,9 @@
+## v0.3.0
+- Add new command: `fluct open`
+- Require accountID and role name
+- Only include production dependencies into lambda.zip
+- Support other response status code
+
 ## v0.2.7
 - Include HTTP request data into event object
 
