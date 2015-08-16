@@ -86,7 +86,7 @@ export default class Application {
    * @return {Arrray.<String>}
    */
   getProductionPackageNames() {
-    return Object.keys(this.getMetadata().dependencies);
+    return Object.keys(this.getMetadata().dependencies || {});
   }
 
   /**
