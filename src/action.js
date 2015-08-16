@@ -1,3 +1,4 @@
+import Application from './application'
 import fs from 'fs'
 
 /**
