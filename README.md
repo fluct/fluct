@@ -6,13 +6,13 @@ such as fully isolated components, infinitely scalability, easy and rapid develo
 cheap server cost, and more and more.
 
 - [Getting Started](#getting-started)
-  - [1. Install](#install)
-  - [2. Create an application](#create-an-application)
-  - [3. Create an action](#create-an-action)
-  - [4. Set up the action](#set-up-the-action)
-  - [5. Set up the IAM role](#set-up-the-iam-role)
-  - [6. Deploy it](#deploy-it)
-  - [7. Done!](#done)
+  - [1. Install](#1-install)
+  - [2. Create an application](#2-create-an-application)
+  - [3. Create an action](#3-create-an-action)
+  - [4. Set up the action](#4-set-up-the-action)
+  - [5. Set up the package.json](#5-set-up-the-package-json)
+  - [6. Deploy it](#6-deploy-it)
+  - [7. Done!](#7-done)
 - [CLI](/docs/cli.md)
 - [FAQ](/docs/faq.md)
 - [Demo](https://github.com/r7kamura/fluct-example)
@@ -66,7 +66,7 @@ $ cat actions/list_users/package.json
 }
 ```
 
-### 5. Set up the Account ID & IAM role
+### 5. Set up the package.json
 Head over to [AWS Console](https://console.aws.amazon.com) and create a new IAM role
 that has `AWSLambdaBasicExecutionRole`, then set its role name and your account ID
 to application's package.json (Account ID is written in integers in user's ARN).
