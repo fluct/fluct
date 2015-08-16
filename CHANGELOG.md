@@ -1,3 +1,6 @@
+## v0.3.1
+- Fix fluct-deploy bug
+
 ## v0.3.0
 - Add new command: `fluct open`
 - Require accountID and role name
