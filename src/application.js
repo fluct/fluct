@@ -23,6 +23,13 @@ export default class Application {
   }
 
   /**
+   * @return {String}
+   */
+  getAccountId() {
+    return this.getMetadata().fluct.accountId;
+  }
+
+  /**
    * @return {Array.<Action>}
    */
   getActions() {
@@ -94,7 +101,14 @@ export default class Application {
    * @return {String}
    */
   getRoleArn() {
-    return this.getMetadata().fluct.roleArn;
+    return `arn:aws:iam::${this.getAccountId()}:role/${this.getRoleName()}`;
+  }
+
+  /**
+   * @return {String}
+   */
+  getRoleName() {
+    return this.getMetadata().fluct.roleName;
   }
 
   /**

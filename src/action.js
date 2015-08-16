@@ -28,6 +28,13 @@ export default class Action {
   }
 
   /**
+   * @return {String}
+   */
+  getFunctionArn() {
+    return `arn:aws:lambda:us-east-1:${new Application().getAccountId()}:function:${this.getName()}`;
+  }
+
+  /**
    * @return {Function}
    */
   getHandler() {
@@ -155,7 +162,7 @@ export default class Action {
    * @return {String}
    */
   getUri() {
-    return `arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${this.getMetadata().fluct.arn}/invocations`;
+    return `arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${this.getFunctionArn()}/invocations`;
   }
 
   /**
@@ -178,18 +185,6 @@ export default class Action {
           response.send(value);
         }
       }
-    );
-  }
-
-  /**
-   * @param {String} arn
-   */
-  writeArn(arn) {
-    const metadata = this.getMetadata();
-    metadata.fluct.arn = arn;
-    fs.writeSync(
-      fs.openSync(`${this.getDirectoryPath()}/package.json`, 'w'),
-      JSON.stringify(metadata, null, 2)
     );
   }
 }
