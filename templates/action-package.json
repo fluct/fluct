@@ -4,6 +4,7 @@
   "fluct": {
     "contentType": "text/html",
     "httpMethod": "GET",
-    "path": "/dummy"
+    "path": "/dummy",
+    "statusCode": 200
   }
 }

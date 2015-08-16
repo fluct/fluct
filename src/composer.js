@@ -73,6 +73,7 @@ export default class Composer extends EventEmitter {
               responseModels: action.getResponseModels(),
               responseTemplates: action.getResponseTemplates(),
               restapiId: restapiId,
+              statusCode: action.getStatusCode(),
               uri: action.getUri()
             });
           });
@@ -210,10 +211,11 @@ export default class Composer extends EventEmitter {
    * @param {Object} responseModels
    * @param {Object} responseTemplates
    * @param {Stirng} restapiId
+   * @param {Integer} statusCode
    * @param {String} uri
    * @return {Promise}
    */
-  updateMethodSet({ functionName, httpMethod, path, requestTemplates, resourceId, responseModels, responseTemplates, restapiId, uri }) {
+  updateMethodSet({ functionName, httpMethod, path, requestTemplates, resourceId, responseModels, responseTemplates, restapiId, statusCode, uri }) {
     return this.getClient().putMethod({
       httpMethod: httpMethod,
       resourceId: resourceId,
@@ -234,7 +236,7 @@ export default class Composer extends EventEmitter {
         resourceId: resourceId,
         responseModels: responseModels,
         restapiId: restapiId,
-        statusCode: 200
+        statusCode: statusCode
       });
     }).then(() => {
       return this.getClient().putIntegrationResponse({
@@ -242,7 +244,7 @@ export default class Composer extends EventEmitter {
         resourceId: resourceId,
         responseTemplates: responseTemplates,
         restapiId: restapiId,
-        statusCode: 200
+        statusCode: statusCode
       });
     }).then(() => {
       return new Promise((resolve, reject) => {

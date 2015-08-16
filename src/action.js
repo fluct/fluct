@@ -154,6 +154,13 @@ export default class Action {
   /**
    * @return {Integer}
    */
+  getStatusCode() {
+    return this.getMetadata().fluct.statusCode || 200;
+  }
+
+  /**
+   * @return {Integer}
+   */
   getTimeout() {
     return 60;
   }
