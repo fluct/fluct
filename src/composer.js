@@ -152,8 +152,6 @@ export default class Composer extends EventEmitter {
     return this.createZipFiles().then(() => {
       return this.uploadActions();
     }).then(() => {
-      return this.updateActionsMetadata();
-    }).then(() => {
       return this.findOrCreateRestapi();
     }).then((restapi) => {
       return this.createResourceSets({
@@ -201,29 +199,6 @@ export default class Composer extends EventEmitter {
     return this.application.getActions().map((action) => {
       return action.getPath();
     });
-  }
-
-  /**
-   * @return {Promise}
-   */
-  updateActionsMetadata() {
-    return Promise.all(
-      this.application.getActions().map((action) => {
-        return new Promise((resolve, reject) => {
-          const lambda = new AWS.Lambda({
-            region: 'us-east-1'
-          });
-          lambda.getFunction({ FunctionName: action.getName() }, (error, data) => {
-            if (error) {
-              reject(error)
-            } else {
-              action.writeArn(data.Configuration.FunctionArn);
-              resolve();
-            }
-          });
-        });
-      })
-    );
   }
 
   /**

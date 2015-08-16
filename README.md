@@ -66,9 +66,10 @@ $ cat actions/list_users/package.json
 }
 ```
 
-### 5. Set up the IAM role
+### 5. Set up the Account ID & IAM role
 Head over to [AWS Console](https://console.aws.amazon.com) and create a new IAM role
-that has `AWSLambdaBasicExecutionRole`, then set it to application's package.json.
+that has `AWSLambdaBasicExecutionRole`, then set its role name and your account ID
+to application's package.json (Account ID is written in integers in user's ARN).
 This role is used to allow API Gateway to invoke Lambda functions.
 
 ```
@@ -78,8 +79,9 @@ $ cat package.json
   "name": "myapp",
   "private": true,
   "fluct": {
+    "accountId": "012345678912",
     "restapiId": null,
-    "roleArn": "arn:aws:iam::012345678912:role/myExampleRole"
+    "roleName": "fluct-example-role"
   }
 }
 ```
