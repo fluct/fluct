@@ -56,7 +56,8 @@ Open your action's package.json and edit properties of `fluct` property like thi
     "arn": null,
     "contentType": "text/html",
     "httpMethod": "GET",
-    "path": "/users"
+    "path": "/users",
+    "statusCode": 200
   }
 }
 ```
