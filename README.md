@@ -58,10 +58,10 @@ $ cat actions/list_users/package.json
   "name": "list_users",
   "private": true,
   "fluct": {
-    "arn": null,
     "contentType": "text/html",
     "httpMethod": "GET",
-    "path": "/users"
+    "path": "/users",
+    "statusCode": 200
   }
 }
 ```
