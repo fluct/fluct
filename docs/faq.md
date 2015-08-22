@@ -1,36 +1,37 @@
 # FAQ
-- [What is restapiId and roleArn in package.json?](#what-is-restapiid-and-rolearn-in-packagejson)
-- [How to prepare roleArn?](#how-to-prepare-rolearn)
+- [What is the fluct property in application's package.json?](#what-is-the-fluct-property-in-applications-packagejson)
+- [How to prepare roleName?](#how-to-prepare-rolename)
 - [How to configure AWS credentials?](#how-to-configure-aws-credentials)
 - [How to change an action's method/path/content-type?](#how-to-change-an-actions-methodpathcontent-type)
 - [How to change an action's behavior?](#how-to-change-an-actions-behavior)
 - [How to access to HTTP request data?](#how-to-access-to-http-request-data)
 - [Is there a demo application using fluct?](#is-there-a-demo-application-using-fluct)
 
-## What is restapiId and roleArn in package.json?
+## What is the fluct property in application's package.json?
 In addition to typical information about npm,
-fluct adds some fluct-specific metadata in `fluct` property such as `restapiId` and `roleArn`.
-The `restapiId` is automatically set when you invoke `fluct deploy` at the 1st time.
-This value is used to detect which Restapi is associated to the application.
+fluct adds some fluct-specific metadata in `fluct` property such as `accountId`, `restapiId` and `roleName`.
 
-The `roleArn` is also a fluct-specific property like `restapiId` but it's not automatically set,
-so you need to manually prepare and configure it.
-This value is attached to your AWS Lambda functions to allow them to be invoked from Amazon API Gateway.
+The `accountId` is integers in user's ARN. It is used to compose ARNs of your AWS Lambda functions and the role attached to them. You need to manually configure it.
+
+The `restapiId` is used to detect which Restapi is associated to the application. It is automatically set when you invoke `fluct deploy` at the 1st time.
+
+The `roleName` is the name of the role that is attached to your AWS Lambda functions to allow them to be invoked from Amazon API Gateway. You need to manually prepare and configure it.
 
 ```json
 {
   "name": "myapp",
   "private": true,
   "fluct": {
+    "accountId": "012345678912",
     "restapiId": "b15rph8lh3",
-    "roleArn": "arn:aws:iam::012345678912:role/myExampleRole"
+    "roleName": "fluct-example-role"
   }
 }
 ```
 
-## How to prepare roleArn?
+## How to prepare roleName?
 Head over to [AWS Console](https://console.aws.amazon.com) and create a new IAM role
-that has `AWSLambdaBasicExecutionRole`, then copy its ARN value and paste it into package.json.
+that has `AWSLambdaBasicExecutionRole`, then copy its name and paste it into package.json.
 If you have installed aws-cli and you have a permission to create a new IAM role,
 you can also create it by the following command (where `fluct-myapp` is the new role name):
 
@@ -53,7 +54,6 @@ Open your action's package.json and edit properties of `fluct` property like thi
   "name": "list_users",
   "private": true,
   "fluct": {
-    "arn": null,
     "contentType": "text/html",
     "httpMethod": "GET",
     "path": "/users",
