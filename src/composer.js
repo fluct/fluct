@@ -122,6 +122,11 @@ export default class Composer extends EventEmitter {
           zipFile.addFile(path, path);
         }
       });
+      glob.sync(`./config/*`).forEach((path) => {
+        if (!fs.lstatSync(path).isDirectory()) {
+          zipFile.addFile(path, path);
+        }
+      });
       zipFile.outputStream.pipe(
         fs.createWriteStream(zipPath)
       ).on('close', () => {
