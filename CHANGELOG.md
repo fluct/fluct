@@ -1,3 +1,6 @@
+## v0.3.2
+- Support node-config
+
 ## v0.3.1
 - Fix fluct-deploy bug
 
