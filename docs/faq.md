@@ -117,5 +117,13 @@ This is an event object example:
 }
 ```
 
+## How to use node-config for fluct?
+node-config the npm module is integrated.
+If you want, please make `config` directory in your fluct root.
+Fluct will include the directory into `lambda.zip` on compile.
+Rerferences:
+https://github.com/lorenwest/node-config#quick-start
+http://qiita.com/_daisuke/items/0d3a76a1290f08f4fea5
+
 ## Is there a demo application using fluct?
 I'm very pleased that you asked that! See https://github.com/r7kamura/fluct-example
