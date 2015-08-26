@@ -5,6 +5,7 @@
 - [How to change an action's method/path/content-type?](#how-to-change-an-actions-methodpathcontent-type)
 - [How to change an action's behavior?](#how-to-change-an-actions-behavior)
 - [How to access to HTTP request data?](#how-to-access-to-http-request-data)
+- [How to use node-config for fluct?](#how-to-use-node-config-for-fluct)
 - [Is there a demo application using fluct?](#is-there-a-demo-application-using-fluct)
 
 ## What is the fluct property in application's package.json?
