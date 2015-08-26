@@ -122,7 +122,7 @@ This is an event object example:
 node-config the npm module is integrated.
 If you want, please make `config` directory in your fluct root.
 Fluct will include the directory into `lambda.zip` on compile.
-Rerferences:
+References:
 https://github.com/lorenwest/node-config#quick-start
 http://qiita.com/_daisuke/items/0d3a76a1290f08f4fea5
 
