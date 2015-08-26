@@ -1,3 +1,6 @@
+## v0.3.3
+- Fix missing lib dir in npm package
+
 ## v0.3.2
 - Support node-config
 
