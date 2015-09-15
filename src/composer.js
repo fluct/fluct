@@ -20,13 +20,12 @@ export default class Composer extends EventEmitter {
    * @param {String} region
    * @param {String} secretAccessKey
    */
-  constructor({ accessKeyId, application, client, region, secretAccessKey }) {
+  constructor({ accessKeyId, application, client, secretAccessKey }) {
     super();
     this.accessKeyId = accessKeyId;
+    this.secretAccessKey = secretAccessKey;
     this.application = application;
     this.client = client;
-    this.region = region;
-    this.secretAccessKey = secretAccessKey;
   }
 
   /**
@@ -42,6 +41,7 @@ export default class Composer extends EventEmitter {
         'deploymentCreated',
         {
           restapiId: restapiId,
+          region: this.application.getRegion(),
           stageName: DEFAULT_STAGE_NAME
         }
       );
@@ -65,6 +65,7 @@ export default class Composer extends EventEmitter {
             restapiId: restapiId
           }).then((resource) => {
             return this.updateMethodSet({
+              region: this.application.getRegion(),
               functionName: action.getName(),
               httpMethod: action.getHttpMethod(),
               path: action.getPath(),
@@ -191,8 +192,8 @@ export default class Composer extends EventEmitter {
     if (!this.client) {
       this.client = new Client({
         accessKeyId: this.accessKeyId,
-        region: this.region,
-        secretAccessKey: this.secretAccessKey
+        secretAccessKey: this.secretAccessKey,
+        region: this.application.getRegion()
       });
     }
     return this.client;
@@ -220,7 +221,7 @@ export default class Composer extends EventEmitter {
    * @param {String} uri
    * @return {Promise}
    */
-  updateMethodSet({ functionName, httpMethod, path, requestTemplates, resourceId, responseModels, responseTemplates, restapiId, statusCode, uri }) {
+  updateMethodSet({ functionName, httpMethod, path, requestTemplates, resourceId, responseModels, responseTemplates, restapiId, region, statusCode, uri }) {
     return this.getClient().putMethod({
       httpMethod: httpMethod,
       resourceId: resourceId,
@@ -232,6 +233,7 @@ export default class Composer extends EventEmitter {
         requestTemplates: requestTemplates,
         resourceId: resourceId,
         restapiId: restapiId,
+        region: region,
         type: 'AWS',
         uri: uri
       });
@@ -254,7 +256,7 @@ export default class Composer extends EventEmitter {
     }).then(() => {
       return new Promise((resolve, reject) => {
         new AWS.Lambda({
-          region: 'us-east-1'
+          region: region
         }).addPermission(
           {
             Action: 'lambda:InvokeFunction',
@@ -321,10 +323,10 @@ export default class Composer extends EventEmitter {
       this.application.getActions().map((action) => {
         return this.uploadAction({
           zipPath: `${action.getDirectoryPath()}/lambda.zip`,
+          region: this.application.getRegion(),
+          roleArn: this.application.getRoleArn(),
           functionName: action.getName(),
           handlerId: action.getHandlerId(),
-          region: action.getRegion(),
-          roleArn: this.application.getRoleArn(),
           timeout: action.getTimeout()
         });
       })
@@ -339,10 +341,9 @@ export default class Composer extends EventEmitter {
   use(middleware, options) {
     return new this.constructor({
       accessKeyId: this.accessKeyId,
+      secretAccessKey: this.secretAccessKey,
       application: this.application,
-      client: this.getClient().use(middleware, options),
-      region: this.region,
-      secretAccessKey: this.secretAccessKey
+      client: this.getClient().use(middleware, options)
     });
   }
 }

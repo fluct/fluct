@@ -8,7 +8,8 @@ export default class Action {
   /**
    * @param {String} name
    */
-  constructor({ name }) {
+  constructor({ application, name }) {
+    this.application = application;
     this.name = name;
   }
 
@@ -31,7 +32,7 @@ export default class Action {
    * @return {String}
    */
   getFunctionArn() {
-    return `arn:aws:lambda:us-east-1:${new Application().getAccountId()}:function:${this.getName()}`;
+    return `arn:aws:lambda:${this.application.getRegion()}:${this.application.getAccountId()}:function:${this.getName()}`;
   }
 
   /**
@@ -78,13 +79,6 @@ export default class Action {
    */
   getPath() {
     return this.getMetadata().fluct.path;
-  }
-
-  /**
-   * @return {String}
-   */
-  getRegion() {
-    return new Application().getRegion();
   }
 
   /**
@@ -169,7 +163,7 @@ export default class Action {
    * @return {String}
    */
   getUri() {
-    return `arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${this.getFunctionArn()}/invocations`;
+    return `arn:aws:apigateway:${this.application.getRegion()}:lambda:path/2015-03-31/functions/${this.getFunctionArn()}/invocations`;
   }
 
   /**
