@@ -1,3 +1,6 @@
+## v0.3.4
+- Support configuration of AWS region (#31)
+
 ## v0.3.3
 - Fix missing lib dir in npm package
 
