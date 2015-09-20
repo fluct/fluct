@@ -11,12 +11,11 @@ export default class DeployCommand extends BaseCommand {
   run() {
     new Composer({
       accessKeyId: AWS.config.credentials.accessKeyId,
-      application: new Application(),
-      region: 'us-east-1',
-      secretAccessKey: AWS.config.credentials.secretAccessKey
+      secretAccessKey: AWS.config.credentials.secretAccessKey,
+      application: new Application()
     })
-      .on('deploymentCreated', ({ restapiId, stageName }) => {
-        console.log(`Deployed: https://${restapiId}.execute-api.us-east-1.amazonaws.com/${stageName}`);
+      .on('deploymentCreated', ({ restapiId, region, stageName }) => {
+        console.log(`Deployed: https://${restapiId}.execute-api.${region}.amazonaws.com/${stageName}`);
       })
       .on('functionUploaded', ({ functionName }) => {
         console.log(`Uploaded function: ${functionName}`);

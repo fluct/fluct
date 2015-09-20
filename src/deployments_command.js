@@ -12,8 +12,8 @@ export default class RoutesCommand extends BaseCommand {
     const application = new Application();
     new Client({
       accessKeyId: AWS.config.credentials.accessKeyId,
-      region: 'us-east-1',
-      secretAccessKey: AWS.config.credentials.secretAccessKey
+      secretAccessKey: AWS.config.credentials.secretAccessKey,
+      region: application.getRegion()
     }).listDeployments({ restapiId: application.getRestapiId() }).then((deployments) => {
       console.log(
         deployments.map((deployment) => {

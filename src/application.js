@@ -34,7 +34,7 @@ export default class Application {
    */
   getActions() {
     return this.getActionNames().map((actionName) => {
-      return new Action({ name: actionName });
+      return new Action({ application: this, name: actionName });
     });
   }
 
@@ -90,11 +90,10 @@ export default class Application {
   }
 
   /**
-   * @todo
    * @return {String}
    */
   getRegion() {
-    return 'us-east-1';
+    return this.getPackage().fluct.region || 'us-east-1';
   }
 
   /**
