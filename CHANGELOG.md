@@ -1,3 +1,7 @@
+## v0.3.5
+- Escape input in request template (#33)
+- Support memorySize option (#34)
+
 ## v0.3.4
 - Support configuration of AWS region (#31)
 
