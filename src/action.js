@@ -160,6 +160,13 @@ export default class Action {
   }
 
   /**
+   * @return {Integer}
+   */
+  getMemorySize() {
+    return this.getMetadata().fluct.memorySize || 128;
+  }
+
+  /**
    * @return {String}
    */
   getUri() {

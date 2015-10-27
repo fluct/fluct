@@ -287,10 +287,11 @@ export default class Composer extends EventEmitter {
    * @param {String} region
    * @param {String} roleArn
    * @param {Integer} timeout
+   * @param {Integer} memorySize
    * @param {String} zipPath
    * @return {Promise}
    */
-  uploadAction({ functionName, handlerId, region, roleArn, timeout, zipPath, }) {
+  uploadAction({ functionName, handlerId, region, roleArn, timeout, memorySize, zipPath, }) {
     return new Promise((resolve, reject) => {
       awsLambda.deploy(
         zipPath,
@@ -299,7 +300,8 @@ export default class Composer extends EventEmitter {
           handler: handlerId,
           region: region,
           role: roleArn,
-          timeout: timeout
+          timeout: timeout,
+          memorySize: memorySize
         },
         (error) => {
           if (error) {
@@ -327,7 +329,8 @@ export default class Composer extends EventEmitter {
           roleArn: this.application.getRoleArn(),
           functionName: action.getName(),
           handlerId: action.getHandlerId(),
-          timeout: action.getTimeout()
+          timeout: action.getTimeout(),
+          memorySize: action.getMemorySize()
         });
       })
     );
