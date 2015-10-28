@@ -1,4 +1,4 @@
-## v0.3.5
+## v0.3.6
 - Escape input in request template (#33)
 - Support memorySize option (#34)
 
