@@ -2,7 +2,6 @@ import AWS from 'aws-sdk'
 import Application from './application'
 import BaseCommand from './base_command'
 import Composer from './composer'
-import { Client } from 'amazon-api-gateway-client'
 
 /**
  * @class
