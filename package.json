@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.1.44",
+    "aws-sdk-promise": "^0.0.2",
     "commander": "^2.8.1",
     "config": "^1.15.0",
     "ejs": "^2.3.3",
