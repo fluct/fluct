@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk'
+import AWS from 'aws-sdk-promise'
 import awsLambda from 'node-aws-lambda'
 import crypto from 'crypto'
 import fs from 'fs'
