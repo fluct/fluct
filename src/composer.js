@@ -312,7 +312,7 @@ export default class Composer extends EventEmitter {
         resourceId: resourceId,
         responseModels: responseModels,
         restApiId: restApiId,
-        statusCode: statusCode
+        statusCode: statusCode.toString()
       }).promise();
     }).then(() => {
       return this.getClient().putIntegrationResponse({
@@ -320,7 +320,7 @@ export default class Composer extends EventEmitter {
         resourceId: resourceId,
         responseTemplates: responseTemplates,
         restApiId: restApiId,
-        statusCode: statusCode
+        statusCode: statusCode.toString()
       }).promise();
     }).then(() => {
       return new Promise((resolve, reject) => {
