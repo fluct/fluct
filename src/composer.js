@@ -28,23 +28,23 @@ export default class Composer extends EventEmitter {
   }
 
   /**
-   * @param {Stirng} restapiId
+   * @param {Stirng} restApiId
    * @return {Promise}
    */
-  createDeployment({ restapiId }) {
+  createDeployment({ restApiId }) {
     return this.getClient().createDeployment({
-      restapiId: restapiId,
+      restApiId: restApiId,
       stageName: DEFAULT_STAGE_NAME
-    }).then((value) => {
+    }).promise().then((value) => {
       this.emit(
         'deploymentCreated',
         {
-          restapiId: restapiId,
+          restApiId: restApiId,
           region: this.application.getRegion(),
           stageName: DEFAULT_STAGE_NAME
         }
       );
-      return value;
+      return value.data;
     });
   }
 
@@ -85,15 +85,15 @@ export default class Composer extends EventEmitter {
   /**
    * @return {Promise}
    */
-  createRestapi() {
-    return this.getClient().createRestapi({
+  createRestApi() {
+    return this.getClient().createRestApi({
       name: this.application.getName()
-    }).then((restapi) => {
-      this.application.writeRestapiId(restapi.source.id);
-      return restapi;
-    }).then((restapi) => {
-      this.emit('restapiCreated', { restapiId: restapi.source.id });
-      return restapi;
+    }).promise().then((restApi) => {
+      this.application.writeRestApiId(restApi.data.id);
+      return restApi;
+    }).then((restApi) => {
+      this.emit('restApiCreated', { restApiId: restApi.data.id });
+      return restApi;
     });
   }
 
@@ -158,16 +158,16 @@ export default class Composer extends EventEmitter {
     return this.createZipFiles().then(() => {
       return this.uploadActions();
     }).then(() => {
-      return this.findOrCreateRestapi();
-    }).then((restapi) => {
+      return this.findOrCreateRestApi();
+    }).then((restApi) => {
       return this.createResourceSets({
-        restapiId: restapi.source.id
+        restApiId: restApi.data.id
       }).then(() => {
-        return restapi;
+        return restApi.data;
       });
-    }).then((restapi) => {
+    }).then((restApi) => {
       this.createDeployment({
-        restapiId: restapi.source.id
+        restApiId: restApi.data.params.restApiId
       });
     });
   }
@@ -175,12 +175,12 @@ export default class Composer extends EventEmitter {
   /**
    * @return {Promise}
    */
-  findOrCreateRestapi() {
-    const restapiId = this.application.getRestapiId();
-    if (restapiId) {
-      return this.getClient().getRestapi({ restapiId: restapiId });
+  findOrCreateRestApi() {
+    const restApiId = this.application.getRestApiId();
+    if (restApiId) {
+      return this.getClient().getRestApi({ restApiId: restApiId }).promise();
     } else {
-      return this.createRestapi();
+      return this.createRestApi();
     }
   }
 
@@ -215,43 +215,43 @@ export default class Composer extends EventEmitter {
    * @param {Stirng} resourceId
    * @param {Object} responseModels
    * @param {Object} responseTemplates
-   * @param {Stirng} restapiId
+   * @param {Stirng} restApiId
    * @param {Integer} statusCode
    * @param {String} uri
    * @return {Promise}
    */
-  updateMethodSet({ functionName, httpMethod, path, requestTemplates, resourceId, responseModels, responseTemplates, restapiId, region, statusCode, uri }) {
+  updateMethodSet({ functionName, httpMethod, path, requestTemplates, resourceId, responseModels, responseTemplates, restApiId, region, statusCode, uri }) {
     return this.getClient().putMethod({
+      authorizationType: 'NONE',
       httpMethod: httpMethod,
       resourceId: resourceId,
-      restapiId: restapiId
-    }).then((resource) => {
+      restApiId: restApiId
+    }).promise().then((resource) => {
       return this.getClient().putIntegration({
         httpMethod: httpMethod,
         integrationHttpMethod: 'POST',
         requestTemplates: requestTemplates,
         resourceId: resourceId,
-        restapiId: restapiId,
-        region: region,
+        restApiId: restApiId,
         type: 'AWS',
         uri: uri
-      });
+      }).promise();
     }).then((integration) => {
       return this.getClient().putMethodResponse({
         httpMethod: httpMethod,
         resourceId: resourceId,
         responseModels: responseModels,
-        restapiId: restapiId,
+        restApiId: restApiId,
         statusCode: statusCode
-      });
+      }).promise();
     }).then(() => {
       return this.getClient().putIntegrationResponse({
         httpMethod: httpMethod,
         resourceId: resourceId,
         responseTemplates: responseTemplates,
-        restapiId: restapiId,
+        restApiId: restApiId,
         statusCode: statusCode
-      });
+      }).promise();
     }).then(() => {
       return new Promise((resolve, reject) => {
         new AWS.Lambda({
@@ -276,7 +276,7 @@ export default class Composer extends EventEmitter {
           path: path
         }
       );
-      return value;
+      return value.data;
     });
   }
 

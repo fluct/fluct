@@ -99,8 +99,8 @@ export default class Application {
   /**
    * @return {String}
    */
-  getRestapiId() {
-    return this.getPackage().fluct.restapiId;
+  getRestApiId() {
+    return this.getPackage().fluct.restApiId;
   }
 
   /**
@@ -126,11 +126,11 @@ export default class Application {
   }
 
   /**
-   * @param {String} restapiId
+   * @param {String} restApiId
    */
-  writeRestapiId(restapiId) {
+  writeRestApiId(restApiId) {
     const metadata = this.getMetadata();
-    metadata.fluct.restapiId = restapiId;
+    metadata.fluct.restApiId = restApiId;
     fs.writeSync(
       fs.openSync('./package.json', 'w'),
       JSON.stringify(metadata, null, 2)

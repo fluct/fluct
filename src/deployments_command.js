@@ -13,7 +13,7 @@ export default class RoutesCommand extends BaseCommand {
       accessKeyId: AWS.config.credentials.accessKeyId,
       secretAccessKey: AWS.config.credentials.secretAccessKey,
       region: application.getRegion()
-    }).listDeployments({ restapiId: application.getRestapiId() }).then((deployments) => {
+    }).listDeployments({ restApiId: application.getRestApiId() }).then((deployments) => {
       console.log(
         deployments.map((deployment) => {
           return `${deployment.source.id}  ${moment.unix(deployment.source.createdDate).format('YYYY-MM-DD HH:mm Z')}`;
