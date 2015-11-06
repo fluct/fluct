@@ -49,33 +49,112 @@ export default class Composer extends EventEmitter {
   }
 
   /**
-   * @param {String} restapiId
+   * @param {Array.<Object>} resources
    * @return {Promise}
    */
-  createResourceSets({ restapiId }) {
-    return this.getClient().createResources({
-      paths: this.getPaths(),
-      restapiId: restapiId
-    }).then(() => {
-      return Promise.all(
-        this.application.getActions().map((action) => {
-          return this.getClient().findResourceByPath({
-            path: action.getPath(),
-            restapiId: restapiId
+  _sortResourceByPathHierarchy(resources) {
+    return new Promise((resolve, reject) => {
+      resolve(resources.sort((a, b) => {
+        /* sort descending */
+        let aPathDepth = a.path.split('/').filter((dir) => { return dir !== '' }).length;
+        let bPathDepth = a.path.split('/').filter((dir) => { return dir !== '' }).length;
+        if (aPathDepth < bPathDepth) {
+          return 1;
+        } else if (aPathDepth > bPathDepth) {
+          return -1;
+        } else {
+          return 0;
+        }
+      }));
+    });
+  }
+
+  /**
+   * @param {Array.<Object>} resources
+   * @param {String} path
+   * @return {Promise}
+   */
+  _findParentResourceByPath({ existingResources, path }) {
+    return this._sortResourceByPathHierarchy(existingResources).then((resources) => {
+      for (var i = 0; i < resources.length; i++) {
+        if (path.indexOf(resources[i].path) == 0) {
+          return resources[i];
+        }
+      }
+      throw new Error("path '" + path + "' does not have any parent resources");
+    });
+  }
+
+  /**
+   * @param {String} restApiId
+   * @return {Promise}
+   */
+  createResourceWithRecursivePath({ existingResources, restApiId, path }) {
+    return this._findParentResourceByPath({
+      existingResources: existingResources,
+      path: path
+    }).then((existingParentResource) => {
+      let restPaths = path.slice(existingParentResource.path.length).split('/').filter((dir) => { return dir !== '' });
+      return restPaths.map((pathPart) => {
+        return (parentResource) => {
+          return this.getClient().createResource({
+            parentId: parentResource.id,
+            pathPart: pathPart,
+            restApiId: restApiId
+          }).promise();
+        };
+      }).reduce((promise, task) => {
+        return promise.then(task).then((resource) => {
+          return resource.data;
+        });
+      }, Promise.resolve(existingParentResource));
+    });
+  }
+
+  /**
+   * @param {String} restApiId
+   * @return {Promise}
+   */
+  createResourceSets({ restApiId }) {
+    return this.getClient().getResources({
+      restApiId: restApiId
+    }).promise().then((resources) => {
+      return this.application.getActions().map((action) => {
+        return () => {
+          return this.createResourceWithRecursivePath({
+            existingResources: resources.data.items,
+            restApiId: restApiId,
+            path: action.getPath()
           }).then((resource) => {
-            return this.updateMethodSet({
-              region: this.application.getRegion(),
-              functionName: action.getName(),
-              httpMethod: action.getHttpMethod(),
-              path: action.getPath(),
-              requestTemplates: action.getRequestTemplates(),
-              resourceId: resource.source.id,
-              responseModels: action.getResponseModels(),
-              responseTemplates: action.getResponseTemplates(),
-              restapiId: restapiId,
-              statusCode: action.getStatusCode(),
-              uri: action.getUri()
-            });
+            return {
+              action: action,
+              resource: resource
+            };
+          });
+        };
+      }).reduce((promise, task) => {
+        return promise.then(task).then((results, value) => {
+          results.push(value);
+          return results;
+        }.bind(null, []));
+      }, Promise.resolve());
+    }).then((result) => {
+      return Promise.all(
+        result.map((item) => {
+          let resource = item.resource;
+          let action = item.action;
+          return this.updateMethodSet({
+            region: this.application.getRegion(),
+            functionName: action.getName(),
+            httpMethod: action.getHttpMethod(),
+            path: action.getPath(),
+            requestTemplates: action.getRequestTemplates(),
+            resourceId: resource.id,
+            responseModels: action.getResponseModels(),
+            responseTemplates: action.getResponseTemplates(),
+            restApiId: restApiId,
+            statusCode: action.getStatusCode(),
+            uri: action.getUri()
           });
         })
       );
@@ -196,15 +275,6 @@ export default class Composer extends EventEmitter {
       });
     }
     return this.client;
-  }
-
-  /**
-   * @return {Array.<String>}
-   */
-  getPaths() {
-    return this.application.getActions().map((action) => {
-      return action.getPath();
-    });
   }
 
   /**
