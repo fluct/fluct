@@ -189,7 +189,7 @@ export default class Composer extends EventEmitter {
    */
   getClient() {
     if (!this.client) {
-      this.client = new Client({
+      this.client = new AWS.APIGateway({
         accessKeyId: this.accessKeyId,
         secretAccessKey: this.secretAccessKey,
         region: this.application.getRegion()
