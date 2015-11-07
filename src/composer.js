@@ -115,6 +115,27 @@ export default class Composer extends EventEmitter {
   }
 
   /**
+   * @param {String} existingResources
+   * @param {Object} action
+   * @param {String} restApiId
+   * @return {Promise}
+   */
+  buildResource({ existingResources, action, restApiId }) {
+    return this.createResourceWithRecursivePath({
+      existingResources: existingResources,
+      restApiId: restApiId,
+      path: action.getPath()
+    }).then((resource) => {
+      return this.updateMethodSet({
+        region: this.application.getRegion(),
+        restApiId: restApiId,
+        resource: resource,
+        action: action
+      });
+    });
+  }
+
+  /**
    * @param {String} restApiId
    * @return {Promise}
    */
@@ -125,37 +146,15 @@ export default class Composer extends EventEmitter {
       resources = resources.data.items;
       return this.application.getActions().map((action) => {
         return () => {
-          return this.createResourceWithRecursivePath({
+          return this.buildResource({
             existingResources: resources,
             restApiId: restApiId,
-            path: action.getPath()
-          }).then((resource) => {
-            resources.push(resource);
-            return {
-              action: action,
-              resource: resource
-            };
+            action: action
           });
         };
       }).reduce((promise, task) => {
-        return promise.then(task).then((results, value) => {
-          results.push(value);
-          return results;
-        }.bind(null, []));
+        return promise.then(task);
       }, Promise.resolve());
-    }).then((result) => {
-      return Promise.all(
-        result.map((item) => {
-          return this.updateMethodSet({
-            region: this.application.getRegion(),
-            restApiId: restApiId,
-            resource: item.resource,
-            action: item.action
-          });
-        })
-      ).then(() => {
-        return restApiId;
-      });
     });
   }
 
