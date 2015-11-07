@@ -237,11 +237,11 @@ export default class Composer extends EventEmitter {
       return this.createResourceSets({
         restApiId: restApi.data.id
       }).then(() => {
-        return restApi.data;
+        return restApi;
       });
     }).then((restApi) => {
       this.createDeployment({
-        restApiId: restApi.data.params.restApiId
+        restApiId: restApi.id
       });
     });
   }
