@@ -119,7 +119,7 @@ export default class Composer extends EventEmitter {
     return this.getClient().getResources({
       restApiId: restApiId
     }).promise().then((resources) => {
-      let resources = resources.data.items;
+      resources = resources.data.items;
       return this.application.getActions().map((action) => {
         return () => {
           return this.createResourceWithRecursivePath({
