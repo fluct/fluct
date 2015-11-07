@@ -252,7 +252,15 @@ export default class Composer extends EventEmitter {
   findOrCreateRestApi() {
     const restApiId = this.application.getRestApiId();
     if (restApiId) {
-      return this.getClient().getRestApi({ restApiId: restApiId }).promise();
+      return this.getClient().getRestApi({
+        restApiId: restApiId
+      }).promise().then((restApi) => {
+        return restApi;
+      }).catch((reason) => {
+        if (reason.code === 'NotFoundException') {
+          return this.createRestApi();
+        }
+      });
     } else {
       return this.createRestApi();
     }
