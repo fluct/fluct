@@ -143,20 +143,11 @@ export default class Composer extends EventEmitter {
     }).then((result) => {
       return Promise.all(
         result.map((item) => {
-          let resource = item.resource;
-          let action = item.action;
           return this.updateMethodSet({
             region: this.application.getRegion(),
-            functionName: action.getName(),
-            httpMethod: action.getHttpMethod(),
-            path: action.getPath(),
-            requestTemplates: action.getRequestTemplates(),
-            resourceId: resource.id,
-            responseModels: action.getResponseModels(),
-            responseTemplates: action.getResponseTemplates(),
             restApiId: restApiId,
-            statusCode: action.getStatusCode(),
-            uri: action.getUri()
+            resource: item.resource,
+            action: item.action
           });
         })
       );
@@ -280,49 +271,43 @@ export default class Composer extends EventEmitter {
   }
 
   /**
-   * @param {String} functionName
-   * @param {String} httpMethod
-   * @param {String} path
-   * @param {Object} requestTemplates
-   * @param {Stirng} resourceId
-   * @param {Object} responseModels
-   * @param {Object} responseTemplates
-   * @param {Stirng} restApiId
-   * @param {Integer} statusCode
-   * @param {String} uri
+   * @param {String} region
+   * @param {String} restApiId
+   * @param {Object} action
+   * @param {Object} resource
    * @return {Promise}
    */
-  updateMethodSet({ functionName, httpMethod, path, requestTemplates, resourceId, responseModels, responseTemplates, restApiId, region, statusCode, uri }) {
+  updateMethodSet({ region, restApiId, action, resource }) {
     return this.getClient().putMethod({
       authorizationType: 'NONE',
-      httpMethod: httpMethod,
-      resourceId: resourceId,
+      httpMethod: action.getHttpMethod(),
+      resourceId: resource.id,
       restApiId: restApiId
     }).promise().then((resource) => {
       return this.getClient().putIntegration({
-        httpMethod: httpMethod,
+        httpMethod: action.getHttpMethod(),
         integrationHttpMethod: 'POST',
-        requestTemplates: requestTemplates,
-        resourceId: resourceId,
+        requestTemplates: action.getRequestTemplates(),
+        resourceId: resource.id,
         restApiId: restApiId,
         type: 'AWS',
-        uri: uri
+        uri: action.getUri()
       }).promise();
     }).then((integration) => {
       return this.getClient().putMethodResponse({
-        httpMethod: httpMethod,
-        resourceId: resourceId,
-        responseModels: responseModels,
+        httpMethod: action.getHttpMethod(),
+        resourceId: resource.id,
+        responseModels: action.getResponseModels(),
         restApiId: restApiId,
-        statusCode: statusCode.toString()
+        statusCode: action.getStatusCode().toString()
       }).promise();
     }).then(() => {
       return this.getClient().putIntegrationResponse({
-        httpMethod: httpMethod,
-        resourceId: resourceId,
-        responseTemplates: responseTemplates,
+        httpMethod: action.getHttpMethod(),
+        resourceId: resource.id,
+        responseTemplates: action.getResponseTemplates(),
         restApiId: restApiId,
-        statusCode: statusCode.toString()
+        statusCode: action.getStatusCode().toString()
       }).promise();
     }).then(() => {
       return new Promise((resolve, reject) => {
@@ -330,7 +315,7 @@ export default class Composer extends EventEmitter {
           region: region
         }).addPermission({
           Action: 'lambda:InvokeFunction',
-          FunctionName: functionName,
+          FunctionName: action.getName(),
           Principal: 'apigateway.amazonaws.com',
           StatementId: crypto.randomBytes(20).toString('hex')
         }).promise();
@@ -339,8 +324,8 @@ export default class Composer extends EventEmitter {
       this.emit(
         'methodSetUpdated',
         {
-          httpMethod: httpMethod,
-          path: path
+          httpMethod: action.getHttpMethod(),
+          path: action.getPath()
         }
       );
       return value.data;
