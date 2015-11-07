@@ -336,16 +336,14 @@ export default class Composer extends EventEmitter {
         statusCode: action.getStatusCode().toString()
       }).promise();
     }).then(() => {
-      return new Promise((resolve, reject) => {
-        new AWS.Lambda({
-          region: region
-        }).addPermission({
-          Action: 'lambda:InvokeFunction',
-          FunctionName: action.getName(),
-          Principal: 'apigateway.amazonaws.com',
-          StatementId: crypto.randomBytes(20).toString('hex')
-        }).promise();
-      })
+      return new AWS.Lambda({
+        region: region
+      }).addPermission({
+        Action: 'lambda:InvokeFunction',
+        FunctionName: action.getName(),
+        Principal: 'apigateway.amazonaws.com',
+        StatementId: crypto.randomBytes(20).toString('hex')
+      }).promise();
     }).then((value) => {
       this.emit(
         'methodSetUpdated',
