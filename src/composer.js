@@ -57,7 +57,7 @@ export default class Composer extends EventEmitter {
       resolve(resources.sort((a, b) => {
         /* sort descending */
         let aPathDepth = a.path.split('/').filter((dir) => { return dir !== '' }).length;
-        let bPathDepth = a.path.split('/').filter((dir) => { return dir !== '' }).length;
+        let bPathDepth = b.path.split('/').filter((dir) => { return dir !== '' }).length;
         if (aPathDepth < bPathDepth) {
           return 1;
         } else if (aPathDepth > bPathDepth) {
