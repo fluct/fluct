@@ -107,6 +107,7 @@ export default class Composer extends EventEmitter {
         };
       }).reduce((promise, task) => {
         return promise.then(task).then((resource) => {
+          existingResources.push(resource.data);
           return resource.data;
         });
       }, Promise.resolve(existingParentResource));
