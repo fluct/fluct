@@ -150,7 +150,9 @@ export default class Composer extends EventEmitter {
             action: item.action
           });
         })
-      );
+      ).then(() => {
+        return restApiId;
+      });
     });
   }
 
