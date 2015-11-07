@@ -70,7 +70,7 @@ export default class Composer extends EventEmitter {
   }
 
   /**
-   * @param {Array.<Object>} resources
+   * @param {Array.<Object>} existingResources
    * @param {String} path
    * @return {Promise}
    */
@@ -86,7 +86,9 @@ export default class Composer extends EventEmitter {
   }
 
   /**
+   * @param {Array.<Object>} existingResources
    * @param {String} restApiId
+   * @param {String} path
    * @return {Promise}
    */
   createResourceWithRecursivePath({ existingResources, restApiId, path }) {
