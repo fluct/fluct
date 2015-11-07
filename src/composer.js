@@ -280,12 +280,21 @@ export default class Composer extends EventEmitter {
    * @return {Promise}
    */
   updateMethodSet({ region, restApiId, action, resource }) {
-    return this.getClient().putMethod({
-      authorizationType: 'NONE',
-      httpMethod: action.getHttpMethod(),
-      resourceId: resource.id,
-      restApiId: restApiId
-    }).promise().then((resource) => {
+    (() => {
+      let foundMethod = Object.keys(resource.resourceMethods).find((method) => {
+        return method === action.getHttpMethod();
+      });
+      if (foundMethod) {
+        return Promise.resolve(resource.resourceMethods[foundMethod]);
+      } else {
+        return this.getClient().putMethod({
+          authorizationType: 'NONE',
+          httpMethod: action.getHttpMethod(),
+          resourceId: resource.id,
+          restApiId: restApiId
+        }).promise()
+      }
+    })().then((method) => {
       return this.getClient().putIntegration({
         httpMethod: action.getHttpMethod(),
         integrationHttpMethod: 'POST',
