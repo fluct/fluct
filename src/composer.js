@@ -288,7 +288,7 @@ export default class Composer extends EventEmitter {
    * @return {Promise}
    */
   updateMethodSet({ region, restApiId, action, resource }) {
-    (() => {
+    return (() => {
       let foundMethod;
       if (resource.resourceMethods) {
         foundMethod = Object.keys(resource.resourceMethods).find((method) => {
