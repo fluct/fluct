@@ -300,7 +300,11 @@ export default class Composer extends EventEmitter {
         foundMethod = false;
       }
       if (foundMethod) {
-        return Promise.resolve(resource.resourceMethods[foundMethod]);
+        return this.getClient().getMethod({
+          httpMethod: action.getHttpMethod(),
+          resourceId: resource.id,
+          restApiId: restApiId
+        }).promise()
       } else {
         return this.getClient().putMethod({
           authorizationType: 'NONE',
