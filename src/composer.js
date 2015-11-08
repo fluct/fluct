@@ -314,6 +314,31 @@ export default class Composer extends EventEmitter {
         }).promise()
       }
     })().then((method) => {
+      let foundMethodResponse;
+      if (method.data.methodResponses) {
+        foundMethodResponse = Object.keys(method.data.methodResponses).find((methodResponse) => {
+          return methodResponse.toString() === action.getStatusCode().toString();
+        });
+      } else {
+        foundMethodResponse = false;
+      }
+      if (foundMethodResponse) {
+        return this.getClient().getMethodResponse({
+          httpMethod: action.getHttpMethod(),
+          resourceId: resource.id,
+          restApiId: restApiId,
+          statusCode: action.getStatusCode().toString()
+        }).promise();
+      } else {
+        return this.getClient().putMethodResponse({
+          httpMethod: action.getHttpMethod(),
+          resourceId: resource.id,
+          responseModels: action.getResponseModels(),
+          restApiId: restApiId,
+          statusCode: action.getStatusCode().toString()
+        }).promise();
+      }
+    }).then((methodResponse) => {
       return this.getClient().putIntegration({
         httpMethod: action.getHttpMethod(),
         integrationHttpMethod: 'POST',
@@ -322,14 +347,6 @@ export default class Composer extends EventEmitter {
         restApiId: restApiId,
         type: 'AWS',
         uri: action.getUri()
-      }).promise();
-    }).then((integration) => {
-      return this.getClient().putMethodResponse({
-        httpMethod: action.getHttpMethod(),
-        resourceId: resource.id,
-        responseModels: action.getResponseModels(),
-        restApiId: restApiId,
-        statusCode: action.getStatusCode().toString()
       }).promise();
     }).then(() => {
       return this.getClient().putIntegrationResponse({
