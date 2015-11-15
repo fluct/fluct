@@ -2,7 +2,6 @@ import AWS from 'aws-sdk'
 import Application from './application'
 import BaseCommand from './base_command'
 import Composer from './composer'
-import { Client } from 'amazon-api-gateway-client'
 
 /**
  * @class
@@ -14,8 +13,8 @@ export default class DeployCommand extends BaseCommand {
       secretAccessKey: AWS.config.credentials.secretAccessKey,
       application: new Application()
     })
-      .on('deploymentCreated', ({ restapiId, region, stageName }) => {
-        console.log(`Deployed: https://${restapiId}.execute-api.${region}.amazonaws.com/${stageName}`);
+      .on('deploymentCreated', ({ restApiId, region, stageName }) => {
+        console.log(`Deployed: https://${restApiId}.execute-api.${region}.amazonaws.com/${stageName}`);
       })
       .on('functionUploaded', ({ functionName }) => {
         console.log(`Uploaded function: ${functionName}`);
@@ -23,8 +22,8 @@ export default class DeployCommand extends BaseCommand {
       .on('methodSetUpdated', ({ httpMethod, path }) => {
         console.log(`Updated endpoint: ${httpMethod} ${path}`);
       })
-      .on('restapiCreated', ({ restapiId }) => {
-        console.log(`Created restapi: ${restapiId}`);
+      .on('restApiCreated', ({ restApiId }) => {
+        console.log(`Created restApi: ${restApiId}`);
       })
       .on('zipFileCreated', ({ zipPath }) => {
         console.log(`Created zip: ${zipPath}`);

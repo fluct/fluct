@@ -1,10 +1,9 @@
-import AWS from 'aws-sdk'
+import AWS from 'aws-sdk-promise'
 import awsLambda from 'node-aws-lambda'
 import crypto from 'crypto'
 import fs from 'fs'
 import glob from 'glob'
 import yazl from 'yazl'
-import { Client } from 'amazon-api-gateway-client'
 import { EventEmitter } from 'events'
 
 const DEFAULT_STAGE_NAME = 'production';
@@ -29,72 +28,148 @@ export default class Composer extends EventEmitter {
   }
 
   /**
-   * @param {Stirng} restapiId
+   * @param {Stirng} restApiId
    * @return {Promise}
    */
-  createDeployment({ restapiId }) {
+  createDeployment({ restApiId }) {
     return this.getClient().createDeployment({
-      restapiId: restapiId,
+      restApiId: restApiId,
       stageName: DEFAULT_STAGE_NAME
-    }).then((value) => {
+    }).promise().then((value) => {
       this.emit(
         'deploymentCreated',
         {
-          restapiId: restapiId,
+          restApiId: restApiId,
           region: this.application.getRegion(),
           stageName: DEFAULT_STAGE_NAME
         }
       );
-      return value;
+      return value.data;
     });
   }
 
   /**
-   * @param {String} restapiId
+   * @param {Array.<Object>} resources
    * @return {Promise}
    */
-  createResourceSets({ restapiId }) {
-    return this.getClient().createResources({
-      paths: this.getPaths(),
-      restapiId: restapiId
-    }).then(() => {
-      return Promise.all(
-        this.application.getActions().map((action) => {
-          return this.getClient().findResourceByPath({
-            path: action.getPath(),
-            restapiId: restapiId
-          }).then((resource) => {
-            return this.updateMethodSet({
-              region: this.application.getRegion(),
-              functionName: action.getName(),
-              httpMethod: action.getHttpMethod(),
-              path: action.getPath(),
-              requestTemplates: action.getRequestTemplates(),
-              resourceId: resource.source.id,
-              responseModels: action.getResponseModels(),
-              responseTemplates: action.getResponseTemplates(),
-              restapiId: restapiId,
-              statusCode: action.getStatusCode(),
-              uri: action.getUri()
-            });
+  _sortResourceByPathHierarchy(resources) {
+    return new Promise((resolve, reject) => {
+      resolve(resources.sort((a, b) => {
+        /* sort descending */
+        let aPathDepth = a.path.split('/').filter((dir) => { return dir !== '' }).length;
+        let bPathDepth = b.path.split('/').filter((dir) => { return dir !== '' }).length;
+        if (aPathDepth < bPathDepth) {
+          return 1;
+        } else if (aPathDepth > bPathDepth) {
+          return -1;
+        } else {
+          return 0;
+        }
+      }));
+    });
+  }
+
+  /**
+   * @param {Array.<Object>} existingResources
+   * @param {String} path
+   * @return {Promise}
+   */
+  _findParentResourceByPath({ existingResources, path }) {
+    return this._sortResourceByPathHierarchy(existingResources).then((resources) => {
+      for (var i = 0; i < resources.length; i++) {
+        if (path.indexOf(resources[i].path) == 0) {
+          return resources[i];
+        }
+      }
+      throw new Error("path '" + path + "' does not have any parent resources");
+    });
+  }
+
+  /**
+   * @param {Array.<Object>} existingResources
+   * @param {String} restApiId
+   * @param {String} path
+   * @return {Promise}
+   */
+  createResourceWithRecursivePath({ existingResources, restApiId, path }) {
+    return this._findParentResourceByPath({
+      existingResources: existingResources,
+      path: path
+    }).then((existingParentResource) => {
+      let restPaths = path.slice(existingParentResource.path.length).split('/').filter((dir) => { return dir !== '' });
+      return restPaths.map((pathPart) => {
+        return (parentResource) => {
+          return this.getClient().createResource({
+            parentId: parentResource.id,
+            pathPart: pathPart,
+            restApiId: restApiId
+          }).promise();
+        };
+      }).reduce((promise, task) => {
+        return promise.then(task).then((resource) => {
+          existingResources.push(resource.data);
+          return resource.data;
+        });
+      }, Promise.resolve(existingParentResource));
+    });
+  }
+
+  /**
+   * @param {String} existingResources
+   * @param {Object} action
+   * @param {String} restApiId
+   * @return {Promise}
+   */
+  buildResource({ existingResources, action, restApiId }) {
+    return this.createResourceWithRecursivePath({
+      existingResources: existingResources,
+      restApiId: restApiId,
+      path: action.getPath()
+    }).then((resource) => {
+      return this.updateMethodSet({
+        region: this.application.getRegion(),
+        restApiId: restApiId,
+        resource: resource,
+        action: action
+      });
+    });
+  }
+
+  /**
+   * @param {String} restApiId
+   * @return {Promise}
+   */
+  createResourceSets({ restApiId }) {
+    return this.getClient().getResources({
+      restApiId: restApiId
+    }).promise().then((resources) => {
+      resources = resources.data.items;
+      return this.application.getActions().map((action) => {
+        return () => {
+          return this.buildResource({
+            existingResources: resources,
+            restApiId: restApiId,
+            action: action
           });
-        })
-      );
+        };
+      }).reduce((promise, task) => {
+        return promise.then(task);
+      }, Promise.resolve());
     });
   }
 
   /**
    * @return {Promise}
    */
-  createRestapi() {
-    return this.getClient().createRestapi({
+  createRestApi() {
+    return this.getClient().createRestApi({
       name: this.application.getName()
-    }).then((restapi) => {
-      this.application.writeRestapiId(restapi.source.id);
-      return restapi;
-    }).then((restapi) => {
-      this.emit('restapiCreated', { restapiId: restapi.source.id });
-      return restapi;
+    }).promise().then((restApi) => {
+      this.application.writeRestApiId(restApi.data.id);
+      return restApi;
+    }).then((restApi) => {
+      this.emit('restApiCreated', { restApiId: restApi.data.id });
+      return restApi;
     });
   }
 
@@ -159,16 +234,16 @@ export default class Composer extends EventEmitter {
     return this.createZipFiles().then(() => {
       return this.uploadActions();
     }).then(() => {
-      return this.findOrCreateRestapi();
-    }).then((restapi) => {
+      return this.findOrCreateRestApi();
+    }).then((restApi) => {
       return this.createResourceSets({
-        restapiId: restapi.source.id
+        restApiId: restApi.data.id
       }).then(() => {
-        return restapi;
+        return restApi.data;
       });
-    }).then((restapi) => {
+    }).then((restApi) => {
       this.createDeployment({
-        restapiId: restapi.source.id
+        restApiId: restApi.id
       });
     });
   }
@@ -176,12 +251,20 @@ export default class Composer extends EventEmitter {
   /**
    * @return {Promise}
    */
-  findOrCreateRestapi() {
-    const restapiId = this.application.getRestapiId();
-    if (restapiId) {
-      return this.getClient().getRestapi({ restapiId: restapiId });
+  findOrCreateRestApi() {
+    const restApiId = this.application.getRestApiId();
+    if (restApiId) {
+      return this.getClient().getRestApi({
+        restApiId: restApiId
+      }).promise().then((restApi) => {
+        return restApi;
+      }).catch((reason) => {
+        if (reason.code === 'NotFoundException') {
+          return this.createRestApi();
+        }
+      });
     } else {
-      return this.createRestapi();
+      return this.createRestApi();
     }
   }
 
@@ -190,7 +273,7 @@ export default class Composer extends EventEmitter {
    */
   getClient() {
     if (!this.client) {
-      this.client = new Client({
+      this.client = new AWS.APIGateway({
         accessKeyId: this.accessKeyId,
         secretAccessKey: this.secretAccessKey,
         region: this.application.getRegion()
@@ -200,84 +283,97 @@ export default class Composer extends EventEmitter {
   }
 
   /**
-   * @return {Array.<String>}
-   */
-  getPaths() {
-    return this.application.getActions().map((action) => {
-      return action.getPath();
-    });
-  }
-
-  /**
-   * @param {String} functionName
-   * @param {String} httpMethod
-   * @param {String} path
-   * @param {Object} requestTemplates
-   * @param {Stirng} resourceId
-   * @param {Object} responseModels
-   * @param {Object} responseTemplates
-   * @param {Stirng} restapiId
-   * @param {Integer} statusCode
-   * @param {String} uri
+   * @param {String} region
+   * @param {String} restApiId
+   * @param {Object} action
+   * @param {Object} resource
    * @return {Promise}
    */
-  updateMethodSet({ functionName, httpMethod, path, requestTemplates, resourceId, responseModels, responseTemplates, restapiId, region, statusCode, uri }) {
-    return this.getClient().putMethod({
-      httpMethod: httpMethod,
-      resourceId: resourceId,
-      restapiId: restapiId
-    }).then((resource) => {
+  updateMethodSet({ region, restApiId, action, resource }) {
+    return (() => {
+      let foundMethod;
+      if (resource.resourceMethods) {
+        foundMethod = Object.keys(resource.resourceMethods).find((method) => {
+          return method === action.getHttpMethod();
+        });
+      } else {
+        foundMethod = false;
+      }
+      if (foundMethod) {
+        return this.getClient().getMethod({
+          httpMethod: action.getHttpMethod(),
+          resourceId: resource.id,
+          restApiId: restApiId
+        }).promise()
+      } else {
+        return this.getClient().putMethod({
+          authorizationType: 'NONE',
+          httpMethod: action.getHttpMethod(),
+          resourceId: resource.id,
+          restApiId: restApiId
+        }).promise()
+      }
+    })().then((method) => {
+      let foundMethodResponse;
+      if (method.data.methodResponses) {
+        foundMethodResponse = Object.keys(method.data.methodResponses).find((methodResponse) => {
+          return methodResponse.toString() === action.getStatusCode().toString();
+        });
+      } else {
+        foundMethodResponse = false;
+      }
+      if (foundMethodResponse) {
+        return this.getClient().getMethodResponse({
+          httpMethod: action.getHttpMethod(),
+          resourceId: resource.id,
+          restApiId: restApiId,
+          statusCode: action.getStatusCode().toString()
+        }).promise();
+      } else {
+        return this.getClient().putMethodResponse({
+          httpMethod: action.getHttpMethod(),
+          resourceId: resource.id,
+          responseModels: action.getResponseModels(),
+          restApiId: restApiId,
+          statusCode: action.getStatusCode().toString()
+        }).promise();
+      }
+    }).then((methodResponse) => {
       return this.getClient().putIntegration({
-        httpMethod: httpMethod,
+        httpMethod: action.getHttpMethod(),
         integrationHttpMethod: 'POST',
-        requestTemplates: requestTemplates,
-        resourceId: resourceId,
-        restapiId: restapiId,
-        region: region,
+        requestTemplates: action.getRequestTemplates(),
+        resourceId: resource.id,
+        restApiId: restApiId,
         type: 'AWS',
-        uri: uri
-      });
-    }).then((integration) => {
-      return this.getClient().putMethodResponse({
-        httpMethod: httpMethod,
-        resourceId: resourceId,
-        responseModels: responseModels,
-        restapiId: restapiId,
-        statusCode: statusCode
-      });
+        uri: action.getUri()
+      }).promise();
     }).then(() => {
       return this.getClient().putIntegrationResponse({
-        httpMethod: httpMethod,
-        resourceId: resourceId,
-        responseTemplates: responseTemplates,
-        restapiId: restapiId,
-        statusCode: statusCode
-      });
+        httpMethod: action.getHttpMethod(),
+        resourceId: resource.id,
+        responseTemplates: action.getResponseTemplates(),
+        restApiId: restApiId,
+        statusCode: action.getStatusCode().toString()
+      }).promise();
     }).then(() => {
-      return new Promise((resolve, reject) => {
-        new AWS.Lambda({
-          region: region
-        }).addPermission(
-          {
-            Action: 'lambda:InvokeFunction',
-            FunctionName: functionName,
-            Principal: 'apigateway.amazonaws.com',
-            StatementId: crypto.randomBytes(20).toString('hex')
-          },
-          (error, data) => {
-            resolve();
-          }
-        );
-      })
+      return new AWS.Lambda({
+        region: region
+      }).addPermission({
+        Action: 'lambda:InvokeFunction',
+        FunctionName: action.getName(),
+        Principal: 'apigateway.amazonaws.com',
+        StatementId: crypto.randomBytes(20).toString('hex')
+      }).promise();
     }).then((value) => {
       this.emit(
         'methodSetUpdated',
         {
-          httpMethod: httpMethod,
-          path: path
+          httpMethod: action.getHttpMethod(),
+          path: action.getPath()
         }
       );
-      return value;
+      return value.data;
     });
   }
 
