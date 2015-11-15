@@ -1,3 +1,6 @@
+## v0.4.0
+- Use aws-sdk-promise
+
 ## v0.3.6
 - Escape input in request template (#33)
 - Support memorySize option (#34)
