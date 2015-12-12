@@ -1,7 +1,7 @@
 var babel = require('gulp-babel');
 var gulp = require('gulp');
 var mocha = require('gulp-mocha');
-var register = require('babel/register');
+var register = require('babel-register');
 
 gulp.task('build', function () {
   return gulp.src('src/**/*.js')
