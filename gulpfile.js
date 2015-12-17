@@ -3,11 +3,13 @@ var rename = require('gulp-rename');
 var gulp = require('gulp');
 var mocha = require('gulp-mocha');
 var register = require('babel-register');
+var replace = require('gulp-replace');
 
 gulp.task('build', ['build-bin', 'build-lib']);
 
 gulp.task('build-bin', function() {
   return gulp.src('src/fluct.js')
+    .pipe(replace(/\n/m, "\nimport 'babel-polyfill'"))
     .pipe(babel())
     .pipe(rename('fluct'))
     .pipe(gulp.dest('bin'));
