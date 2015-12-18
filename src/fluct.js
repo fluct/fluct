@@ -1,19 +1,19 @@
 #!/usr/bin/env node
 
-var program = require('commander');
-var DeployCommand = require('../lib/deploy_command');
-var DeploymentsCommand = require('../lib/deployments_command');
-var GenerateCommand = require('../lib/generate_command');
-var NewCommand = require('../lib/new_command');
-var OpenCommand = require('../lib/open_command');
-var RoutesCommand = require('../lib/routes_command');
-var ServerCommand = require('../lib/server_command');
+import program from 'commander'
+import DeployCommand from '../lib/deploy_command'
+import DeploymentsCommand from '../lib/deployments_command'
+import GenerateCommand from '../lib/generate_command'
+import NewCommand from '../lib/new_command'
+import OpenCommand from '../lib/open_command'
+import RoutesCommand from '../lib/routes_command'
+import ServerCommand from '../lib/server_command'
 
 program
   .command('d')
   .alias('deploy')
   .description('Deploy actions to AWS')
-  .action(function (command) {
+  .action((command) => {
     new DeployCommand().run();
   });
 
@@ -21,7 +21,7 @@ program
   .command('l')
   .alias('deployments')
   .description('List recent deployments')
-  .action(function (command) {
+  .action((command) => {
     new DeploymentsCommand().run();
   });
 
@@ -30,7 +30,7 @@ program
   .alias('generate')
   .arguments('<name>')
   .description('Generate a new resource from <generator> (e.g. "action")')
-  .action(function (name, command) {
+  .action((name, command) => {
     new GenerateCommand({ name: name }).run()
   });
 
@@ -39,7 +39,7 @@ program
   .alias('new')
   .arguments('<name>')
   .description('Generate a new application')
-  .action(function (name, command) {
+  .action((name, command) => {
     new NewCommand({ name: name }).run()
   });
 
@@ -48,7 +48,7 @@ program
   .command('o')
   .alias('open')
   .description('Open the production root URL in your browser')
-  .action(function (command) {
+  .action((command) => {
     new OpenCommand().run();
   });
 
@@ -56,7 +56,7 @@ program
   .command('r')
   .alias('routes')
   .description('List all routes')
-  .action(function (command) {
+  .action((command) => {
     new RoutesCommand().run();
   });
 
@@ -65,7 +65,7 @@ program
   .alias('server')
   .description('Launch a web server')
   .option('-p, --port <number>', 'Run server on the specified port (default: 3000)')
-  .action(function (command) {
+  .action((command) => {
     new ServerCommand({ port: command.port }).run();
   });
 

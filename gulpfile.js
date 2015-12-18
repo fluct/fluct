@@ -1,10 +1,22 @@
 var babel = require('gulp-babel');
+var rename = require('gulp-rename');
 var gulp = require('gulp');
 var mocha = require('gulp-mocha');
-var register = require('babel/register');
+var register = require('babel-register');
+var replace = require('gulp-replace');
 
-gulp.task('build', function () {
-  return gulp.src('src/**/*.js')
+gulp.task('build', ['build-bin', 'build-lib']);
+
+gulp.task('build-bin', function() {
+  return gulp.src('src/fluct.js')
+    .pipe(replace(/\n/m, "\nimport 'babel-polyfill'"))
+    .pipe(babel())
+    .pipe(rename('fluct'))
+    .pipe(gulp.dest('bin'));
+});
+
+gulp.task('build-lib', function() {
+  return gulp.src(['src/**/*.js', '!src/fluct.js'])
     .pipe(babel())
     .pipe(gulp.dest('lib'));
 });
