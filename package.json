@@ -16,7 +16,6 @@
   "license": "MIT",
   "devDependencies": {
     "babel": "^6.3.13",
-    "babel-polyfill": "^6.3.14",
     "babel-preset-es2015": "^6.3.13",
     "babel-register": "^6.3.13",
     "gulp": "^3.9.0",
@@ -28,6 +27,7 @@
   "dependencies": {
     "aws-sdk": "^2.2.22",
     "aws-sdk-promise": "^0.0.2",
+    "babel-polyfill": "^6.3.14",
     "commander": "^2.9.0",
     "config": "^1.17.1",
     "ejs": "^2.3.4",
