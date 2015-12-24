@@ -1,3 +1,6 @@
+## v0.4.1
+- Add some dependencies
+
 ## v0.4.0
 - Use aws-sdk-promise
 
