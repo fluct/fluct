@@ -1,9 +1,0 @@
-{
-  "name": "<%= applicationName %>",
-  "private": true,
-  "fluct": {
-    "accountId": "WRITE_YOUR_AWS_ACCOUNT_ID",
-    "restapiId": null,
-    "roleName": "WRITE_IAM_ROLE_NAME"
-  }
-}

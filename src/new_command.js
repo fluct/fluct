@@ -33,11 +33,11 @@ export default class NewCommand extends BaseCommand {
 
   createPackageJsonFile() {
     this.createFileFromTemplate({
-      destination: `./${this.name}/package.json`,
+      destination: `./${this.name}/fluct.json`,
       parameters: {
         applicationName: this.name
       },
-      source: `${__dirname}/../templates/application-package.json`
+      source: `${__dirname}/../templates/application-fluct.json`
     });
   }
 

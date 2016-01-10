@@ -26,7 +26,7 @@ export default class Application {
    * @return {String}
    */
   getAccountId() {
-    return this.getMetadata().fluct.accountId;
+    return this.getMetadata().accountId;
   }
 
   /**
@@ -62,7 +62,7 @@ export default class Application {
    */
   getMetadata() {
     return JSON.parse(
-      fs.readFileSync('./package.json')
+      fs.readFileSync('./fluct.json')
     );
   }
 
@@ -70,7 +70,7 @@ export default class Application {
    * @return {String}
    */
   getName() {
-    return this.getPackage().name;
+    return this.getMetadata().name;
   }
 
   /**
@@ -86,21 +86,21 @@ export default class Application {
    * @return {Arrray.<String>}
    */
   getProductionPackageNames() {
-    return Object.keys(this.getMetadata().dependencies || {});
+    return Object.keys(this.getPackage().dependencies || {});
   }
 
   /**
    * @return {String}
    */
   getRegion() {
-    return this.getPackage().fluct.region || 'us-east-1';
+    return this.getMetadata().region || 'us-east-1';
   }
 
   /**
    * @return {String}
    */
   getRestApiId() {
-    return this.getPackage().fluct.restApiId;
+    return this.getMetadata().restApiId;
   }
 
   /**
@@ -114,7 +114,7 @@ export default class Application {
    * @return {String}
    */
   getRoleName() {
-    return this.getMetadata().fluct.roleName;
+    return this.getMetadata().roleName;
   }
 
   /**
@@ -130,9 +130,9 @@ export default class Application {
    */
   writeRestApiId(restApiId) {
     const metadata = this.getMetadata();
-    metadata.fluct.restApiId = restApiId;
+    metadata.restApiId = restApiId;
     fs.writeSync(
-      fs.openSync('./package.json', 'w'),
+      fs.openSync('./fluct.json', 'w'),
       JSON.stringify(metadata, null, 2)
     );
   }

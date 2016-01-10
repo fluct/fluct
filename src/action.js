@@ -18,7 +18,7 @@ export default class Action {
    * @example 'text/html'
    */
   getContentType() {
-    return this.getMetadata().fluct.contentType;
+    return this.getMetadata().contentType;
   }
 
   /**
@@ -55,7 +55,7 @@ export default class Action {
    * @return {String}
    */
   getHttpMethod() {
-    return this.getMetadata().fluct.httpMethod;
+    return this.getMetadata().httpMethod;
   }
 
   /**
@@ -70,7 +70,7 @@ export default class Action {
    */
   getMetadata() {
     return JSON.parse(
-      fs.readFileSync(`${this.getDirectoryPath()}/package.json`)
+      fs.readFileSync(`${this.getDirectoryPath()}/fluct.json`)
     );
   }
 
@@ -78,7 +78,7 @@ export default class Action {
    * @return {String}
    */
   getPath() {
-    return this.getMetadata().fluct.path;
+    return this.getMetadata().path;
   }
 
   /**
@@ -138,7 +138,7 @@ export default class Action {
    * @return {Object}
    */
   getResponseTemplates() {
-    if (this.getMetadata().fluct.contentType == 'application/json') {
+    if (this.getMetadata().contentType == 'application/json') {
       return {}
     } else {
       return { 'text/html': "$input.path('$')" }
@@ -149,7 +149,7 @@ export default class Action {
    * @return {Integer}
    */
   getStatusCode() {
-    return this.getMetadata().fluct.statusCode || 200;
+    return this.getMetadata().statusCode || 200;
   }
 
   /**
@@ -163,7 +163,7 @@ export default class Action {
    * @return {Integer}
    */
   getMemorySize() {
-    return this.getMetadata().fluct.memorySize || 128;
+    return this.getMetadata().memorySize || 128;
   }
 
   /**

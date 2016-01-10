@@ -25,11 +25,11 @@ export default class GenerateCommand extends BaseCommand {
 
   createPackageJson() {
     this.createFileFromTemplate({
-      destination: `${this.getActionPath()}/package.json`,
+      destination: `${this.getActionPath()}/fluct.json`,
       parameters: {
         actionName: this.name
       },
-      source: `${__dirname}/../templates/action-package.json`
+      source: `${__dirname}/../templates/action-fluct.json`
     });
   }
 

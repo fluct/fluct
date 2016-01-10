@@ -1,0 +1,8 @@
+{
+  "name": "<%= actionName %>",
+  "private": true,
+  "contentType": "text/html",
+  "httpMethod": "GET",
+  "path": "/dummy",
+  "statusCode": 200
+}
