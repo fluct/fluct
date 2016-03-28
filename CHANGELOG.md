@@ -1,3 +1,6 @@
+## v0.4.2
+- Support ./bin/* files (#48)
+
 ## v0.4.1
 - Add some dependencies
 
