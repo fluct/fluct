@@ -1,7 +1,7 @@
 {
   "name": "fluct",
   "version": "0.4.1",
-  "repository": "r7kamura/fluct",
+  "repository": "fluct/fluct",
   "main": "lib/index.js",
   "scripts": {
     "build": "gulp build",
